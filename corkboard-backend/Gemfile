@@ -5,6 +5,10 @@ gem "rails", "~> 8.1.2"
 gem "puma", ">= 5.0"
 gem "jbuilder"
 gem "pg", "~> 1.1"
+gem "rack-cors"
+gem "devise"
+gem "devise-jwt"
+gem "jsonapi-serializer"
 
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
@@ -20,7 +24,6 @@ gem "bootsnap", require: false
 gem "image_processing", "~> 1.2"
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
-# gem "rack-cors"
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
