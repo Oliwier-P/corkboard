@@ -13,4 +13,16 @@ class User < ApplicationRecord
               message: "cannot contain spaces"
             }
   validates :password, presence: true, length: { minimum: 6 }
+
+  def email_required?
+    false
+  end
+
+  def email_changed?
+    false
+  end
+
+  def email
+    self.username
+  end
 end

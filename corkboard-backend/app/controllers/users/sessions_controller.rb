@@ -1,7 +1,29 @@
 class Users::SessionsController < Devise::SessionsController
   respond_to :json
 
+  def create
+    user = User.find_by(username: params[:user][:username])
+
+    if user&.valid_password?(params[:user][:password])
+      sign_in(user)
+      token = request.env['warden-jwt_auth.token']
+
+      render json: {
+        status: 200,
+        message: 'Logged in successfully',
+        token: token,
+        data: UserSerializer.new(user).serializable_hash[:data][:attributes]
+      }
+    else
+      render json: { status: 401, message: 'Invalid username or password' }, status: :unauthorized
+    end
+  end
+
   private
+
+  def set_flash_message(*args)
+
+  end
 
   def respond_with(resource, _opt = {})
     @token = request.env['warden-jwt_auth.token']

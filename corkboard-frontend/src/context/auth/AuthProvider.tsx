@@ -1,0 +1,29 @@
+import {type SetStateAction, useEffect, useState} from "react";
+import type {User} from "./types.ts";
+import {api} from "../../api/api.ts";
+import {AuthContext} from "./AuthContext.ts";
+
+type AuthProviderProps = {
+    children: React.ReactNode;
+}
+
+export const AuthProvider = ({children}: AuthProviderProps) => {
+    const [user, setUser] = useState<User | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            api.get('/users/me')
+                .then((res: { data: SetStateAction<User | null>; }) => setUser(res.data))
+                .catch(() => localStorage.removeItem('token'))
+                .finally(() => setLoading(false))
+        }
+    }, []);
+
+    return (
+        <AuthContext.Provider value={{user, setUser, loading}}>
+            {children}
+        </AuthContext.Provider>
+    )
+}

@@ -9,5 +9,8 @@ Rails.application.routes.draw do
              controllers: {
                sessions: "users/sessions",
                registrations: "users/registrations"
-             }
+             },
+             defaults: { format: :json }
+
+  get "users/me", to: "users#me"
 end

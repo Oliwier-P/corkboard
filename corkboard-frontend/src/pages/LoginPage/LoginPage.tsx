@@ -2,6 +2,8 @@ import "./LoginPage.scss";
 import {Button} from "../../components/ui/./Button/Button.tsx";
 import {LabeledInput} from "../../components/ui/LabeledInput/LabeledInput.tsx";
 import {type SubmitHandler, useForm} from "react-hook-form";
+import {api} from "../../api/api.ts";
+import {useNavigate} from "react-router-dom";
 
 type Inputs = {
     username: string,
@@ -9,11 +11,19 @@ type Inputs = {
 }
 
 export const LoginPage = () => {
-
     const {
-        register, handleSubmit, formState: {}
+        register, handleSubmit
     } = useForm<Inputs>()
-    const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+
+    const navigate = useNavigate()
+
+    const onSubmit: SubmitHandler<Inputs> = (data) => {
+        api.post("/login", {user: data})
+            .then((res) => {
+                localStorage.setItem("token", res.data.token)
+                navigate("/home")
+            })
+    };
 
     return (
         <div className="login-page">
