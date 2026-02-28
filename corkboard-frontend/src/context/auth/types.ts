@@ -1,6 +1,5 @@
 export type User = {
-    avatar_url: string | undefined;
-    uid: string;
+    id: string;
     username: string;
 }
 
