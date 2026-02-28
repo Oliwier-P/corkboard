@@ -1,8 +1,19 @@
-.labeled-input{
+@use '../../../global/colors' as colors;
+
+.labeled-input {
   display: flex;
   flex-direction: column;
 
-  &__label{
+  &__label {
     font-size: 12px;
   }
+
+  &--required > &__label {
+    &:after{
+      content: '*';
+      margin-left: 2px;
+      color: colors.$red;
+    }
+  }
+
 }

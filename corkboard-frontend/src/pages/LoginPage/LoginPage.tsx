@@ -53,7 +53,7 @@ export const LoginPage = () => {
 
                 <div className="login-page__sign-up">
                     <span className="small-text">Don't have an account?</span>
-                    <Button variant="text">Sign Up</Button>
+                    <Button variant="text" onClick={() => navigate("/signup")}>Sign Up</Button>
                 </div>
             </div>
         </div>
