@@ -1,0 +1,22 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: corkboard_development
+  username: postgres
+  password: admin
+  host: localhost
+  port: 5432
+
+test:
+  <<: *default
+  database: corkboard_test
+
+production:
+  <<: *default
+  database: corkboard_production
+  username: <%= ENV["CORKBOARD_BACKEND_DATABASE_USER"] %>
+  password: <%= ENV["CORKBOARD_BACKEND_DATABASE_PASSWORD"] %>
