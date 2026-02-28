@@ -1,0 +1,62 @@
+@use '../../../global/colors' as colors;
+
+.button {
+  display: grid;
+  grid-template-columns: auto;
+  gap: 16px;
+
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  text-align: left;
+
+  min-width: 100px;
+  padding: 4px 16px;
+  width: auto;
+  font-size: 0.9rem;
+  font-weight: bold;
+  font-family: "Poppins", sans-serif;
+
+  background-color: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  border: none;
+  transition: 0.1s ease;
+
+  color: rgba(0, 0, 0, 0.4);
+
+  &:hover {
+    scale: 1.05;
+  }
+  &:active {
+    scale: 1;
+  }
+
+  &--primary {
+    background-color: colors.$primary-color;
+
+    &:active {
+      background-color: darken(colors.$primary-color, 5);
+      scale: 1;
+    }
+  }
+
+  &--square {
+    border-radius: 2px;
+  }
+
+  &--rounded {
+    border-radius: 32px;
+    padding: 0 16px;
+  }
+
+  &--text {
+    text-decoration: underline;
+    background: none;
+    color: #fff;
+    font-weight: 500;
+    height: auto;
+    width: auto;
+    padding: 0;
+
+  }
+}

@@ -1,0 +1,8 @@
+.labeled-input{
+  display: flex;
+  flex-direction: column;
+
+  &__label{
+    font-size: 12px;
+  }
+}
