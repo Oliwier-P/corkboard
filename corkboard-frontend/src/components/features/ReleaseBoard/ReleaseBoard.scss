@@ -1,8 +1,6 @@
 .release-board {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(5, auto);
   gap: 25px;
 
   padding: 16px;

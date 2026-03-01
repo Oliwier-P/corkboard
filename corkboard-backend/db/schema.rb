@@ -10,9 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_28_204357) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_01_021754) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "releases", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.boolean "current"
+    t.string "name", null: false
+    t.integer "order", null: false
+    t.datetime "updated_at", null: false
+    t.integer "workspace_id", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -26,4 +35,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_28_204357) do
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
+
+  create_table "workspaces", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name"
+    t.integer "owner_id"
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "releases", "workspaces"
+  add_foreign_key "workspaces", "users", column: "owner_id", on_delete: :nullify
 end

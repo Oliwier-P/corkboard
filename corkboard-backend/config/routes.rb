@@ -13,4 +13,11 @@ Rails.application.routes.draw do
              defaults: { format: :json }
 
   get "users/me", to: "users#me"
+
+  resources :releases do
+    collection do
+      get "current"
+    end
+  end
+
 end

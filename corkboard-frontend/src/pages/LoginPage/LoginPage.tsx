@@ -4,6 +4,7 @@ import {LabeledInput} from "../../components/ui/LabeledInput/LabeledInput.tsx";
 import {type SubmitHandler, useForm} from "react-hook-form";
 import {api} from "../../api/api.ts";
 import {useNavigate} from "react-router-dom";
+import {Icon} from "../../components/ui/Icons/Icon.tsx";
 
 type Inputs = {
     username: string,
@@ -29,6 +30,7 @@ export const LoginPage = () => {
         <div className="login-page">
             <div className="login-page__content">
                 <div className="login-page__header">
+                    <Icon icon="AppLogo" className="login-page__app-logo" />
                     <div className="login-page__app-name">
                         Corkboard
                     </div>

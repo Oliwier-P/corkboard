@@ -6,6 +6,7 @@ import {api} from "../../api/api.ts";
 import {useNavigate} from "react-router-dom";
 import * as yup from "yup"
 import {yupResolver} from "@hookform/resolvers/yup";
+import {Icon} from "../../components/ui/Icons/Icon.tsx";
 
 
 const schema = yup.object({
@@ -34,12 +35,11 @@ export const SignUpPage = () => {
             })
     };
 
-    console.log(errors)
-
     return (
         <div className="signup-page">
             <div className="signup-page__content">
                 <div className="signup-page__header">
+                    <Icon icon="AppLogo" className="login-page__app-logo" />
                     <div className="signup-page__app-name">
                         Corkboard
                     </div>
