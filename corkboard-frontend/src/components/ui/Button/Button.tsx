@@ -8,11 +8,21 @@ type ButtonProps = {
     color?: "primary" | "secondary" | "edit" | "delete";
     variant?: "rounded" | "square" | "text"
     type?: "button" | "submit" | "reset"
+    size?: "medium" | "small"
 }
 
-export const Button = ({onClick, children, className, color, variant = "square", type}: ButtonProps) => {
+export const Button = ({
+                           onClick,
+                           children,
+                           className,
+                           color,
+                           variant = "square",
+                           type,
+                           size = "medium"
+                       }: ButtonProps) => {
     return (
-        <button className={ClassNames("button", className, [color, variant])} onClick={onClick && onClick} type={type}>
+        <button className={ClassNames("button", className, [color, variant, size])} onClick={onClick && onClick}
+                type={type}>
             <span className="button__content">
                 {children}
             </span>

@@ -1,0 +1,20 @@
+.navbar {
+  height: 100vh;
+  width: 150px;
+  background: rgba(255, 255, 255, 0.02);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+
+  &__app-info{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+
+    user-select: none;
+  }
+
+  &__logo{
+    width: 20px;
+  }
+}

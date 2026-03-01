@@ -1,0 +1,33 @@
+.navbar-item {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+
+  gap: 8px;
+
+  color: rgba(255, 255, 255, 0.4);
+  padding: 2px 4px;
+  margin: 8px;
+
+  border-radius: 4px;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  &__label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 12px;
+  }
+
+  &__icon {
+    width: 20px;
+  }
+
+
+}

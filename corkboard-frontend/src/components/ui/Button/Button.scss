@@ -15,7 +15,7 @@
   padding: 4px 16px;
   width: auto;
   font-size: 0.9rem;
-  font-weight: bold;
+  font-weight: 600;
   font-family: "Poppins", sans-serif;
 
   background-color: rgba(255, 255, 255, 0.05);
@@ -39,6 +39,10 @@
       background-color: color.adjust(colors.$primary-color, $lightness: -5%);
       scale: 1;
     }
+  }
+
+  &--small{
+    padding: 2px 8px;
   }
 
   &--square {
