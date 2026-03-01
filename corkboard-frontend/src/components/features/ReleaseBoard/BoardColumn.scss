@@ -25,6 +25,11 @@
     border-radius: 100%;
   }
 
+  &__tasks{
+    padding: 8px 0;
+    box-sizing: border-box;
+  }
+
   &__add-task {
     text-decoration: none;
     padding: 8px;
