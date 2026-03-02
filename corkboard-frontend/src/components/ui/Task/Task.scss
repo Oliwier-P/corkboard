@@ -1,23 +1,38 @@
+@use '../../../global/colors' as colors;
+
 .task {
   display: flex;
   justify-content: start;
-  align-items: center;
+  align-items: start;
+  flex-direction: column;
 
-  padding: 4px;
-
+  padding: 8px;
   min-height: 50px;
   width: 100%;
   background: #060606;
-
   border: 1px solid #222222;
   border-radius: 8px;
 
   user-select: none;
   font-size: 14px;
+  cursor: pointer;
+
+  gap: 4px;
 
   &__header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+
+  &__user {
+    width: 25px;
+  }
+
+  &__placeholder {
+    width: 100%;
+    height: 2px;
+    background: rgba(#fff, 0.2);
+    border-radius: 16px;
   }
 }

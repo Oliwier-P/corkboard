@@ -19,7 +19,19 @@ class TasksController < ApplicationController
     end
   end
 
+  def update
+    task = Task.find(params[:id])
+    order = tasks_params[:order]
+    task.release.tasks.where(status: task.status, order: tasks_params[:order]...).where.not(id: params[:id]).each do |t|
+      order = order + 1
+      t.update_column(:order, order)
+    end
+
+    task.update!(tasks_params)
+    render json: {}, status: :created
+  end
+
   def tasks_params
-    params.require(:task).permit(:name, :description, :release_id, :status)
+    params.require(:task).permit(:name, :description, :release_id, :status, :order)
   end
 end

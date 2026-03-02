@@ -4,6 +4,7 @@ import Bookmarks from "./svgs/bookmarks.svg?react"
 import AppLogo from "./svgs/app-logo.svg?react"
 import Edit from "./svgs/edit.svg?react"
 import Trash from "./svgs/trash.svg?react"
+import UserCircle from "./svgs/user-circle.svg?react"
 
 export const icons = {
     Box,
@@ -11,5 +12,6 @@ export const icons = {
     Bookmarks,
     AppLogo,
     Edit,
-    Trash
+    Trash,
+    UserCircle
 }
