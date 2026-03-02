@@ -1,0 +1,46 @@
+.releases-list-item {
+  position: relative;
+  width: 95%;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #555555;
+
+  &:hover {
+    .releases-list-item__menu {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &__input {
+    all: unset; // remove all input styles
+    box-sizing: border-box;
+    padding: 15px;
+  }
+
+  &__name {
+    padding: 15px;
+  }
+
+  &__menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out;
+    gap: 10px;
+
+    .edit {
+      width: 30px;
+      cursor: pointer;
+      color: #484848;
+    }
+
+    .delete {
+      width: 30px;
+      cursor: pointer;
+      color: #484848;
+    }
+  }
+}

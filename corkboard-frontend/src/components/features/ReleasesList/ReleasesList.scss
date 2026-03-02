@@ -1,18 +1,19 @@
 .releases-list {
-  width: 500px;
-  margin: 50px 0 0 50px;
+  width: 100%;
 
-  background-color: #262626;
+  background-color: rgba(#353535FF, 0.3);
   border: 2px solid #555555;
   border-radius: 10px;
 
-  &--item {
-    padding: 15px;
-    border-bottom: 1px solid #555555;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   &--button {
     padding: 15px;
     color: #6C6C6C;
+    cursor: pointer;
+    align-self: flex-start;
+    margin-left: 2.5%;
   }
 }
