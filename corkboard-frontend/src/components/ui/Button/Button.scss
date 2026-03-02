@@ -26,8 +26,9 @@
   color: rgba(0, 0, 0, 0.4);
 
   &:hover {
-    scale: 1.05;
+    scale: 1.02;
   }
+
   &:active {
     scale: 1;
   }
@@ -41,7 +42,15 @@
     }
   }
 
-  &--small{
+  &--outlined {
+    background: none;
+    border: 1px solid #383838;
+    color: #383838;
+    min-width: auto;
+    padding: 0;
+  }
+
+  &--small {
     padding: 2px 8px;
   }
 
@@ -62,6 +71,5 @@
     height: auto;
     width: auto;
     padding: 0;
-
   }
 }

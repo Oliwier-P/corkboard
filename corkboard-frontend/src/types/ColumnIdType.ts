@@ -1,0 +1,1 @@
+export type ColumnIdType = "adjustments" | "todo" | "in_progress" | "review_pending" | "testing" | "accepted"

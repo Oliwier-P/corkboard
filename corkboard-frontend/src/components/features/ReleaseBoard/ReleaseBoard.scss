@@ -6,9 +6,12 @@
 
   padding: 16px 32px;
 
-  &__column-group{
+  &__column-group {
     display: flex;
     flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    height: fit-content;
     gap: 16px;
   }
 }

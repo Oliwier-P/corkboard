@@ -5,35 +5,55 @@ import * as _ from 'lodash'
 import {useState} from "react";
 import {TaskForm} from "../TaskForm/TaskForm.tsx";
 import type {TaskType} from "../../../types/TaskType.ts";
+import {useDroppable} from "@dnd-kit/core";
+import {SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
+import type {PlaceHolderType} from "../../../types/PlaceholderType.ts";
 import {Task} from "../../ui/Task/Task.tsx";
 
 type BoardColumnProps = {
-    type: "adjustments" | "todo" | "in_progress" | "review_pending" | "testing" | "accepted"
+    type: string
     onTaskAdd: (name: string, status: string) => void;
     children?: React.ReactNode;
     tasks: TaskType[]
+    placeholder: PlaceHolderType | null
 }
-export const BoardColumn = ({type, onTaskAdd, tasks}: BoardColumnProps) => {
+export const BoardColumn = ({type, onTaskAdd, tasks, placeholder}: BoardColumnProps) => {
     const [showCreateTask, setShowCreateTask] = useState(false)
+    const {setNodeRef} = useDroppable({id: type})
 
     const handleTaskAdd = (name: string) => {
         onTaskAdd(name, type)
     }
 
     return (
-        <div className={ClassNames("board-column", [type])}>
+        <div className={ClassNames("board-column", [type])} ref={setNodeRef}>
             <div className="board-column__header">
                 <div className="board-column__dot"/>
                 {_.upperCase(type)}
             </div>
-            <div className="board-column__tasks">
-                {tasks.filter(task => task.status === type).map(task => (
-                    <Task name={task.name}/>
-                ))}
-                {showCreateTask && (
-                    <TaskForm onSave={handleTaskAdd}/>
-                )}
-            </div>
+            <SortableContext
+                key={type} items={tasks.map(t => t.id)}
+                strategy={verticalListSortingStrategy}>
+                <div className="board-column__tasks">
+                    {tasks.length === 0 && placeholder?.column === type && (
+                        <div className="board-column__placeholder"/>
+                    )}
+                    {tasks.map((task, index) => (
+                        <>
+                            {placeholder && placeholder.column === type && placeholder.index === index && (
+                                <div className="board-column__placeholder" style={{height: placeholder.height}}/>
+                            )}
+                            <Task id={task.id} name={task.name}/>
+                        </>
+                    ))}
+                    {tasks.length > 0 && placeholder?.index === tasks.length && placeholder.column === type && (
+                        <div className="board-column__placeholder"/>
+                    )}
+                    {showCreateTask && (
+                        <TaskForm onSave={handleTaskAdd}/>
+                    )}
+                </div>
+            </SortableContext>
             <Button className="board-column__add-task"
                     variant="text"
                     onClick={() => setShowCreateTask(true)}>
