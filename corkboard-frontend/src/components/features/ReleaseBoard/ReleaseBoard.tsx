@@ -4,15 +4,17 @@ import type {releaseType} from "../../../types/ReleaseType.ts";
 import {api} from "../../../api/api.ts";
 import {useEffect, useState} from "react";
 import type {TaskType} from "../../../types/TaskType.ts";
-import {arrayMove} from "@dnd-kit/sortable";
-import {closestCorners, DndContext, type DragEndEvent, DragOverlay} from "@dnd-kit/core";
+import {DndContext, type DragEndEvent, type DragOverEvent, DragOverlay, pointerWithin} from "@dnd-kit/core";
 import {Task} from "../../ui/Task/Task.tsx";
+import type {PlaceHolderType} from "../../../types/PlaceholderType.ts";
+import type {ColumnIdType} from "../../../types/ColumnIdType.ts";
+import {arrayMove} from "@dnd-kit/sortable";
 
 type ReleaseBoardProps = {
     release: releaseType
 }
 
-type ColumnIdType = "adjustments" | "todo" | "in_progress" | "review_pending" | "testing" | "accepted"
+
 type ColumnType = Record<ColumnIdType, TaskType[]>
 
 export const ReleaseBoard = ({release}: ReleaseBoardProps) => {
@@ -26,6 +28,7 @@ export const ReleaseBoard = ({release}: ReleaseBoardProps) => {
     })
 
     const [draggedTask, setDraggedTask] = useState<TaskType | null>(null)
+    const [placeholder, setPlaceholder] = useState<PlaceHolderType | null>(null)
 
     useEffect(() => {
         api.get("/tasks", {params: {release_id: release.id}}).then((res) => {
@@ -51,66 +54,111 @@ export const ReleaseBoard = ({release}: ReleaseBoardProps) => {
     }
 
     const handleDragEnd = (event: DragEndEvent) => {
-        const {active, over} = event
+        const {active, over} = event;
         if (!over) return;
 
-        const fromColumn = findColumnByTaskId(active.id as number)
-        const toColumn = findColumnByTaskId(over.id as number) ?? (over.id as ColumnIdType)
+        const activeId = active.id as number;
+
+        const fromColumn = findColumnByTaskId(activeId);
+
+        const toColumn =
+            typeof over.id === "number"
+                ? findColumnByTaskId(over.id as number)
+                : (over.id as ColumnIdType);
 
         if (!fromColumn || !toColumn) return;
 
-        if (fromColumn === toColumn) {
-            const oldIndex = columns[fromColumn].findIndex(t => t.id === active.id)
-            const newIndex = columns[toColumn].findIndex(t => t.id === over.id)
+        setColumns(prev => {
+            const fromTasks = [...prev[fromColumn]];
+            const toTasks = [...prev[toColumn]];
 
-            api.put(`tasks/${active.id}`, {task: {order: newIndex}})
+            const activeIndex = fromTasks.findIndex(t => t.id === activeId);
 
-            setColumns(prevState => ({
-                ...prevState,
-                [fromColumn]: arrayMove(prevState[fromColumn], oldIndex, newIndex)
-            }))
-        } else {
-            const fromTasks = [...columns[fromColumn]]
-            const toTasks = [...columns[toColumn]]
+            if (fromColumn === toColumn) {
+                const overIndex = toTasks.findIndex(t => t.id === over.id);
+                api.put(`tasks/${activeId}`, {
+                    task: {status: toColumn, order: overIndex}
+                });
+                return {
+                    ...prev,
+                    [fromColumn]: arrayMove(fromTasks, activeIndex, overIndex)
+                };
+            } else {
+                const [movedTask] = fromTasks.splice(activeIndex, 1);
 
-            const taskIndex = fromTasks.findIndex(t => t.id === active.id)
-            const [task] = fromTasks.splice(taskIndex, 1)
+                const newIndex =
+                    over.data.current?.sortable?.index ?? toTasks.length;
 
-            const updatedTask = {...task, status: toColumn}
-            toTasks.push(updatedTask);
+                toTasks.splice(newIndex, 0, {
+                    ...movedTask,
+                    status: toColumn
+                });
 
-            setColumns(prevState => ({
-                ...prevState,
-                [fromColumn]: fromTasks,
-                [toColumn]: toTasks
-            }))
+                api.put(`tasks/${activeId}`, {
+                    task: {status: toColumn, order: newIndex}
+                });
 
-            api.put(`tasks/${active.id}`, {task: {order: taskIndex, status: toColumn}})
-        }
-    }
+                return {
+                    ...prev,
+                    [fromColumn]: fromTasks,
+                    [toColumn]: toTasks
+                };
+            }
+        });
+        setPlaceholder(null);
+    };
+
+    const handleDragOver = (event: DragOverEvent) => {
+        const {active, over} = event;
+        if (!over) return;
+
+        const fromColumn = findColumnByTaskId(active.id as number);
+        const toColumn =
+            typeof over.id === "number"
+                ? findColumnByTaskId(over.id as number)
+                : (over.id as ColumnIdType);
+
+        if (!toColumn) return;
+        if (fromColumn === toColumn) return;
+
+        const index =
+            over.data.current?.sortable?.index ??
+            columns[toColumn].length;
+
+        setPlaceholder({column: toColumn, index, height: over.rect.height});
+    };
 
     return (
-        <DndContext collisionDetection={closestCorners}
+        <DndContext collisionDetection={pointerWithin}
                     onDragStart={event => {
                         const task = findTaskByID(parseInt(event.active.id as string))
                         if (!task) return
                         setDraggedTask(task)
                     }}
-                    onDragCancel={() => setDraggedTask(null)}
+                    onDragOver={handleDragOver}
+                    onDragCancel={() => {
+                        setDraggedTask(null)
+                        setPlaceholder(null)
+                    }}
                     onDragEnd={handleDragEnd}
         >
             <div className="release-board">
-                {(Object.keys(columns) as ColumnIdType[]).filter(column => !["review_pending", "testing", "accepted"].includes(column)).map(columnId => (
-                    <BoardColumn type={columnId} onTaskAdd={handleAddTask} tasks={columns[columnId]}/>
-                ))}
+                {(Object.keys(columns) as ColumnIdType[])
+                    .filter(column => !["review_pending", "testing", "accepted"].includes(column)).map(columnId => (
+                        <BoardColumn type={columnId} onTaskAdd={handleAddTask} tasks={columns[columnId]}
+                                     placeholder={placeholder}/>
+                    ))}
 
                 <div className="release-board__column-group">
-                    {(Object.keys(columns) as ColumnIdType[]).filter(column => ["review_pending", "testing"].includes(column)).map(columnId => (
-                        <BoardColumn type={columnId} onTaskAdd={handleAddTask} tasks={columns[columnId]}/>
-                    ))}
+                    {(Object.keys(columns) as ColumnIdType[])
+                        .filter(column => ["review_pending", "testing"].includes(column)).map(columnId => (
+                            <BoardColumn type={columnId} onTaskAdd={handleAddTask} tasks={columns[columnId]}
+                                         placeholder={placeholder}/>
+                        ))}
                 </div>
 
-                <BoardColumn type="accepted" onTaskAdd={handleAddTask} tasks={columns["accepted"]}/>
+                <BoardColumn type="accepted" onTaskAdd={handleAddTask} tasks={columns["accepted"]}
+                             placeholder={placeholder}/>
 
                 <DragOverlay>
                     {draggedTask && (

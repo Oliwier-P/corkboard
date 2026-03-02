@@ -5,17 +5,19 @@ import * as _ from 'lodash'
 import {useState} from "react";
 import {TaskForm} from "../TaskForm/TaskForm.tsx";
 import type {TaskType} from "../../../types/TaskType.ts";
-import {Task} from "../../ui/Task/Task.tsx";
 import {useDroppable} from "@dnd-kit/core";
 import {SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
+import type {PlaceHolderType} from "../../../types/PlaceholderType.ts";
+import {Task} from "../../ui/Task/Task.tsx";
 
 type BoardColumnProps = {
     type: string
     onTaskAdd: (name: string, status: string) => void;
     children?: React.ReactNode;
     tasks: TaskType[]
+    placeholder: PlaceHolderType | null
 }
-export const BoardColumn = ({type, onTaskAdd, tasks}: BoardColumnProps) => {
+export const BoardColumn = ({type, onTaskAdd, tasks, placeholder}: BoardColumnProps) => {
     const [showCreateTask, setShowCreateTask] = useState(false)
     const {setNodeRef} = useDroppable({id: type})
 
@@ -33,10 +35,20 @@ export const BoardColumn = ({type, onTaskAdd, tasks}: BoardColumnProps) => {
                 key={type} items={tasks.map(t => t.id)}
                 strategy={verticalListSortingStrategy}>
                 <div className="board-column__tasks">
-                    {tasks.map(task => (
-                        <Task id={task.id} name={task.name}/>
+                    {tasks.length === 0 && placeholder?.column === type && (
+                        <div className="board-column__placeholder"/>
+                    )}
+                    {tasks.map((task, index) => (
+                        <>
+                            {placeholder && placeholder.column === type && placeholder.index === index && (
+                                <div className="board-column__placeholder" style={{height: placeholder.height}}/>
+                            )}
+                            <Task id={task.id} name={task.name}/>
+                        </>
                     ))}
-
+                    {tasks.length > 0 && placeholder?.index === tasks.length && placeholder.column === type && (
+                        <div className="board-column__placeholder"/>
+                    )}
                     {showCreateTask && (
                         <TaskForm onSave={handleTaskAdd}/>
                     )}
