@@ -1,12 +1,8 @@
-.releases-list-item {
-  position: relative;
-  width: 95%;
-  display: flex;
-  justify-content: space-between;
+.releases-list-row {
   border-bottom: 1px solid #555555;
 
   &:hover {
-    .releases-list-item__menu {
+    .releases-list-row__menu {
       opacity: 1;
       visibility: visible;
     }
@@ -15,17 +11,35 @@
   &__input {
     all: unset; // remove all input styles
     box-sizing: border-box;
-    padding: 15px;
+    padding: 10px;
   }
 
   &__name {
-    padding: 15px;
+    padding: 10px;
   }
+
+  &__progress {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    height: 40%;
+
+    .bar {
+      width: 50%;
+      height: 100%;
+      background-color: rgba(#fff, 0.2);
+      border-radius: 20px;
+    }
+
+
+  }
+
 
   &__menu {
     position: relative;
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.2s ease-in-out;

@@ -65,18 +65,25 @@ export const ReleasesListItem = ({id, name, onEdit, onDelete}: ReleasesListItemP
         }
     }
 
-    return <div className="releases-list-item">
+    return <div className="releases-list-row">
         {isEditing ? <input
-            className="releases-list-item__input"
+            className="releases-list-row__input"
             ref={inputRef}
             value={value}
             disabled={loading}
             onChange={(e) => setValue(e.target.value)}
             onBlur={updateRelease}
             onKeyDown={handleKeyDown}
-        /> : <div className="releases-list-item__name">{name}</div>}
+        /> : <div className="releases-list-row__name">{name}</div>}
 
-        <div className="releases-list-item__menu">
+        <div className="releases-list-row__progress">
+            <div className="bar"></div>
+            <span>0/0</span>
+        </div>
+        <div className="releases-list-row__start">12 Jan</div>
+        <div className="releases-list-row__end">25 Jan</div>
+
+        <div className="releases-list-row__menu">
             <div className="edit" onClick={() => setIsEditing(true)}>
                 <Icon icon={"Edit"} />
             </div>

@@ -33,6 +33,12 @@ export const ReleasesList = ({ onClick}: ReleaseListProps) => {
     };
 
     return <div className="releases-list">
+        <div className="releases-list__header">
+            <div>Name</div>
+            <div>Progress</div>
+            <div>Start</div>
+            <div>End</div>
+        </div>
         {releases && releases.map(release => <ReleasesListItem key={release.id} id={release.id} name={release.name} onEdit={handleEdit} onDelete={handleDelete}/>)}
         <div className="releases-list--button" onClick={onClick}>+ New Release</div>
     </div>
