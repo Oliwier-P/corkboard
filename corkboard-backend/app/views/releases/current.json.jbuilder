@@ -1,1 +1,1 @@
-json.extract! @current_release, :name
+json.extract! @current_release, :id, :name

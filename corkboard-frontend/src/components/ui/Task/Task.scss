@@ -1,0 +1,23 @@
+.task {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+
+  padding: 4px;
+
+  min-height: 50px;
+  width: 100%;
+  background: #060606;
+
+  border: 1px solid #222222;
+  border-radius: 8px;
+
+  user-select: none;
+  font-size: 14px;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

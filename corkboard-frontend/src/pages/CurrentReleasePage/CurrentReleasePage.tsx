@@ -4,10 +4,7 @@ import {Button} from "../../components/ui/Button/Button.tsx";
 import {useEffect, useState} from "react";
 import {api} from "../../api/api.ts";
 import {ReleaseBoard} from "../../components/features/ReleaseBoard/ReleaseBoard.tsx";
-
-type releaseType = {
-    name: string
-}
+import type {releaseType} from "../../types/ReleaseType.ts";
 
 export const CurrentReleasePage = () => {
     const [release, setRelease] = useState<releaseType | null>(null)
@@ -34,7 +31,7 @@ export const CurrentReleasePage = () => {
                         {release && <Button color="primary" size="small">Complete Release</Button>}
                     </div>
                 </div>
-                <ReleaseBoard/>
+                {release && <ReleaseBoard release={release}/>}
             </div>
         </div>
     )
