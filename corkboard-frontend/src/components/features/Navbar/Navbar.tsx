@@ -12,9 +12,9 @@ export const Navbar = () => {
                 <Icon icon="AppLogo" className="navbar__logo" />
                 <div className="navbar__app-name">Corkboard</div>
             </div>
-            <NavbarItem icon="Box" label="Current Release" />
-            <NavbarItem icon="Rows" label="Backlog" />
-            <NavbarItem icon="Bookmarks" label="Releases" />
+            <NavbarItem icon="Box" label="Current Release" path="/home" />
+            <NavbarItem icon="Rows" label="Backlog" path="/backlog" />
+            <NavbarItem icon="Bookmarks" label="Releases" path="/releases" />
 
             {user && (
                 <div className="navbar__user">
