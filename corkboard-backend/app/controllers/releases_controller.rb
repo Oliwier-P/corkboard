@@ -1,8 +1,6 @@
 class ReleasesController < ApplicationController
   def index
     @releases = Workspace.find_by(owner_id: current_user.id)&.releases || []
-
-    render json: @releases
   end
 
   def create
