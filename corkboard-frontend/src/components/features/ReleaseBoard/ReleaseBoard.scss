@@ -1,7 +1,14 @@
 .release-board {
-  display: grid;
+  display: flex;
+  justify-content: space-between;
   grid-template-columns: repeat(5, auto);
-  gap: 25px;
+  gap: 32px;
 
-  padding: 16px;
+  padding: 16px 32px;
+
+  &__column-group{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
 }
