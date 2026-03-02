@@ -14,8 +14,8 @@ class TasksController < ApplicationController
     release = Release.find(tasks_params[:release_id])
 
     if release
-      Task.create!(tasks_params)
-      render json: {}, status: :created
+      task = Task.create!(tasks_params)
+      render json: {id: task.id}, status: :created
     end
   end
 

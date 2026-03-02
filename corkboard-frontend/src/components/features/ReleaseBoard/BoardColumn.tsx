@@ -12,7 +12,7 @@ import {Task} from "../../ui/Task/Task.tsx";
 
 type BoardColumnProps = {
     type: string
-    onTaskAdd: (name: string, status: string) => void;
+    onTaskAdd: (name: string, status: string, callback: () => void) => void;
     children?: React.ReactNode;
     tasks: TaskType[]
     placeholder: PlaceHolderType | null
@@ -22,7 +22,7 @@ export const BoardColumn = ({type, onTaskAdd, tasks, placeholder}: BoardColumnPr
     const {setNodeRef} = useDroppable({id: type})
 
     const handleTaskAdd = (name: string) => {
-        onTaskAdd(name, type)
+        onTaskAdd(name, type, () => setShowCreateTask(false))
     }
 
     return (

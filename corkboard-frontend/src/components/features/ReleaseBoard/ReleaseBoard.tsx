@@ -36,14 +36,27 @@ export const ReleaseBoard = ({release}: ReleaseBoardProps) => {
         })
     }, [release.id])
 
-    const handleAddTask = (name: string, status: string) => {
+    const handleAddTask = (name: string, status: string, callback: () => void) => {
         const task = {
             name,
             release_id: release.id,
             status
         }
-        api.post("/tasks", task)
+
+        api.post("/tasks", task).then((res) => {
+            setColumns(prevState => ({
+                ...prevState, [status]: [...prevState[status as ColumnIdType], {
+                    id: res.data.id,
+                    name,
+                    description: "",
+                    status: status
+                }]
+            }))
+            callback()
+        })
     }
+
+    console.log(columns)
 
     const findColumnByTaskId = (taskId: number): ColumnIdType | null => {
         return (Object.keys(columns) as ColumnIdType[]).find(col => columns[col].some(task => task.id === taskId)) ?? null
