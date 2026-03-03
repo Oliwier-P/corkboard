@@ -58,13 +58,13 @@ export const BoardColumn = ({type, onTaskAdd, tasks, placeholder}: BoardColumnPr
                     {tasks.map((task, index) => (
                         <>
                             {placeholder && placeholder.column === type && placeholder.index === index && (
-                                <div className="board-column__placeholder" style={{height: placeholder.height}}/>
+                                <div className="board-column__placeholder"/>
                             )}
                             <Task id={task.id} name={task.name}/>
                         </>
                     ))}
                     {tasks.length > 0 && placeholder?.index === tasks.length && placeholder.column === type && (
-                        <div className="board-column__placeholder"/>
+                        <div className="board-column__placeholder" />
                     )}
                     {showCreateTask && (
                         <TaskForm onSave={handleTaskAdd} ref={newTaskRef}/>
