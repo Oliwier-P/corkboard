@@ -8,6 +8,10 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-User.find_or_create_by(username: "admin") do |user|
+user = User.find_or_create_by!(username: "admin") do |user|
   user.password = "admin123"
 end
+
+workspace = Workspace.find_or_create_by!(name: "Default Workspace", owner_id: user.id)
+
+Release.find_or_create_by!(name: "Default Release", order: 1, current: true, workspace_id: workspace.id)
