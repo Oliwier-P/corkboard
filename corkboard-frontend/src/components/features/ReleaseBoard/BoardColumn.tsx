@@ -2,7 +2,7 @@ import {ClassNames} from "../../../global/utils.ts";
 import "./BoardColumn.scss"
 import {Button} from "../../ui/Button/Button.tsx";
 import * as _ from 'lodash'
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {TaskForm} from "../TaskForm/TaskForm.tsx";
 import type {TaskType} from "../../../types/TaskType.ts";
 import {useDroppable} from "@dnd-kit/core";
@@ -20,10 +20,27 @@ type BoardColumnProps = {
 export const BoardColumn = ({type, onTaskAdd, tasks, placeholder}: BoardColumnProps) => {
     const [showCreateTask, setShowCreateTask] = useState(false)
     const {setNodeRef} = useDroppable({id: type})
+    const newTaskRef = useRef<HTMLDivElement>(null);
 
     const handleTaskAdd = (name: string) => {
         onTaskAdd(name, type, () => setShowCreateTask(false))
     }
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (newTaskRef.current && !newTaskRef.current.contains(event.target as Node)) {
+                setShowCreateTask(false);
+            }
+        };
+
+        if (showCreateTask) {
+            document.addEventListener("mousedown", handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [showCreateTask]);
 
     return (
         <div className={ClassNames("board-column", [type])} ref={setNodeRef}>
@@ -50,7 +67,7 @@ export const BoardColumn = ({type, onTaskAdd, tasks, placeholder}: BoardColumnPr
                         <div className="board-column__placeholder"/>
                     )}
                     {showCreateTask && (
-                        <TaskForm onSave={handleTaskAdd}/>
+                        <TaskForm onSave={handleTaskAdd} ref={newTaskRef}/>
                     )}
                 </div>
             </SortableContext>
