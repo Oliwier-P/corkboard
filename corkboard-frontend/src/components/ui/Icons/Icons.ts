@@ -6,6 +6,7 @@ import Edit from "./svgs/edit.svg?react"
 import Trash from "./svgs/trash.svg?react"
 import UserCircle from "./svgs/user-circle.svg?react"
 import Dots from "./svgs/dots.svg?react"
+import xCircle from "./svgs/x-circle.svg?react"
 
 export const icons = {
     Box,
@@ -15,5 +16,6 @@ export const icons = {
     Edit,
     Trash,
     UserCircle,
-    Dots
+    Dots,
+    xCircle
 }
