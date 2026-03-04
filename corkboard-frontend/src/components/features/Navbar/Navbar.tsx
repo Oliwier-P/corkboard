@@ -7,7 +7,7 @@ import {WorkspaceMenu} from "../Workspace/WorkspaceMenu.tsx";
 import {useEffect, useRef, useState} from "react";
 import {Button} from "../../ui/Button/Button.tsx";
 import {api} from "../../../api/api.ts";
-import {Modal} from "../Modal/Modal.tsx";
+import  Modal  from "../../ui/Modal/Modal.tsx";
 
 type WorkspaceType = {
     id: number;
@@ -21,7 +21,8 @@ export const Navbar = () => {
     const [workspaces, setWorkspaces] = useState<WorkspaceType[]>([]);
     const [workspaceName, setWorkspaceName] = useState<string>("");
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-    const [showWorkspaceForm, setShowWorkspaceForm] = useState<boolean>(false)
+    const [showWorkspaceForm, setShowWorkspaceForm] = useState<boolean>(false);
+    const [showWorkspaceSettings, setShowWorkspacSettings] = useState<boolean>(false);
     const menuRef = useRef<HTMLDivElement>(null);
 
     const toggleMenu = () => {
@@ -38,6 +39,14 @@ export const Navbar = () => {
         } catch (error) {
             console.error(error)
         }
+    }
+
+    const handleRenameWorkspace = () => {
+
+    }
+
+    const handleDeleteWorkspace = () => {
+
     }
 
     useEffect(() => {
@@ -69,15 +78,23 @@ export const Navbar = () => {
                 <div className="navbar__app-name">Corkboard</div>
             </div>
 
-            {showWorkspaceForm && <Modal onClose={() => setShowWorkspaceForm(false)}>
-                <div className="modal__close" onClick={() => setShowWorkspaceForm(false)}>X</div>
-                <span className="modal__title">Create new workspace</span>
+            {showWorkspaceSettings && <Modal className="modal-settings" onClose={() => setShowWorkspacSettings(false)}>
+                <div className="modal-settings__title">Settings</div>
+                <div className="modal-settings__rename">
+                    <input placeholder="Name" onChange={(e) => setWorkspaceName(e.target.value)} />
+                    <Button color={"secondary"} onClick={handleRenameWorkspace}>Save</Button>
+                </div>
+                <Button color={"delete"} onClick={handleDeleteWorkspace}>Delete</Button>
+            </Modal>}
+
+            {showWorkspaceForm && <Modal className="modal-workspace" onClose={() => setShowWorkspaceForm(false)}>
+                <div className="modal-workspace__title">Create new workspace</div>
                 <input placeholder="Name" onChange={(e) => setWorkspaceName(e.target.value)} />
                 <Button color={"primary"} onClick={addNewWorkspace}>Create</Button>
             </Modal>}
 
             <Workspace name={workspaces.find(w => w.current)?.name} onClick={toggleMenu}/>
-            {isMenuOpen && <div ref={menuRef}><WorkspaceMenu workspaces={workspaces} onClick={() => setShowWorkspaceForm(true)}/></div>}
+            {isMenuOpen && <div ref={menuRef}><WorkspaceMenu workspaces={workspaces} onClickSettings={() => setShowWorkspacSettings(true)} onClickCreate={() => setShowWorkspaceForm(true)}/></div>}
 
             <NavbarItem icon="Box" label="Current Release" path="/home" />
             <NavbarItem icon="Rows" label="Backlog" path="/backlog" />

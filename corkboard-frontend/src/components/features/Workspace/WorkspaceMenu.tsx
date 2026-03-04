@@ -10,10 +10,11 @@ type WorkspaceType = {
 
 type WorkspaceMenuProps = {
     workspaces: WorkspaceType[];
-    onClick: () => void;
+    onClickSettings: () => void;
+    onClickCreate: () => void;
 }
 
-export const WorkspaceMenu = ({workspaces, onClick}: WorkspaceMenuProps) => {
+export const WorkspaceMenu = ({workspaces, onClickSettings, onClickCreate}: WorkspaceMenuProps) => {
     const currentWorkspace = workspaces.find(w => w.current)
 
     return(
@@ -27,6 +28,8 @@ export const WorkspaceMenu = ({workspaces, onClick}: WorkspaceMenuProps) => {
             </div>
         </div>
 
+        <button className="workspace-menu__settings" onClick={onClickSettings}>Settings</button>
+
         <div className="workspace-menu__section">
             <div className="workspace-menu__section-title">
                 Switch Workspaces
@@ -39,7 +42,7 @@ export const WorkspaceMenu = ({workspaces, onClick}: WorkspaceMenuProps) => {
             </div>
         </div>
 
-        <button className="workspace-menu__create" onClick={onClick}>+ Create Workspace</button>
+        <button className="workspace-menu__create" onClick={onClickCreate}>+ Create Workspace</button>
     </div>
     )
 }

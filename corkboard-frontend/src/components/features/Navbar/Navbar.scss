@@ -42,16 +42,30 @@
     user-select: none;
   }
 
-  .modal {
-    &__close {
-      position: absolute;
-      top: 5px;
-      right: 10px;
-      cursor: pointer;
-    }
+  .modal-workspace {
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 
     &__title {
       font-size: 30px;
+    }
+  }
+
+  .modal-settings {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    &__title {
+      font-size: 30px;
+    }
+
+    &__rename {
+      display: flex;
+      gap: 1rem;
     }
   }
 }
