@@ -1,6 +1,7 @@
 @use '../../../global/colors' as colors;
 
 .task {
+  position: relative;
   display: flex;
   justify-content: start;
   align-items: start;
@@ -9,7 +10,7 @@
   padding: 8px;
   min-height: 50px;
   width: 100%;
-  background: #060606;
+  background: #0c0c0c;
   border: 1px solid #222222;
   border-radius: 8px;
 
@@ -19,6 +20,31 @@
 
   gap: 4px;
 
+  &__options {
+    display: none;
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 0.5rem;
+    padding: 0.15rem 0.5rem;
+
+    .button {
+      color: rgba(255, 255, 255, 0.2);
+
+      &:hover {
+        color: rgba(255, 255, 255, 0.3);
+
+      }
+    }
+  }
+
+  &:hover &__options{
+    display: flex;
+  }
+
   &__header {
     display: flex;
     justify-content: space-between;
@@ -26,7 +52,7 @@
   }
 
   &__user {
-    width: 25px;
+    width: 1.75rem;
   }
 
   &__placeholder {
