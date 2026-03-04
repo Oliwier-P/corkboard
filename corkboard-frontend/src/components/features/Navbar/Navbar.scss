@@ -41,4 +41,17 @@
     border-radius: 4px;
     user-select: none;
   }
+
+  .modal {
+    &__close {
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      cursor: pointer;
+    }
+
+    &__title {
+      font-size: 30px;
+    }
+  }
 }

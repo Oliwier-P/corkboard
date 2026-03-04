@@ -5,14 +5,39 @@ import {useAuth} from "../../../context/auth/useAuth.ts";
 import {Workspace} from "../Workspace/Workspace.tsx";
 import {WorkspaceMenu} from "../Workspace/WorkspaceMenu.tsx";
 import {useEffect, useRef, useState} from "react";
+import {Button} from "../../ui/Button/Button.tsx";
+import {api} from "../../../api/api.ts";
+import {Modal} from "../Modal/Modal.tsx";
+
+type WorkspaceType = {
+    id: number;
+    name: string;
+    current: boolean;
+    logo: string;
+}
 
 export const Navbar = () => {
     const {user} = useAuth()
+    const [workspaces, setWorkspaces] = useState<WorkspaceType[]>([]);
+    const [workspaceName, setWorkspaceName] = useState<string>("");
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+    const [showWorkspaceForm, setShowWorkspaceForm] = useState<boolean>(false)
     const menuRef = useRef<HTMLDivElement>(null);
 
     const toggleMenu = () => {
         setIsMenuOpen(prev => !prev);
+    }
+
+    const addNewWorkspace = async () => {
+        if (!workspaceName.trim()) return;
+
+        try {
+            await api.post("/workspaces",  { name: workspaceName })
+            console.log("Added")
+            setShowWorkspaceForm(false);
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     useEffect(() => {
@@ -31,6 +56,12 @@ export const Navbar = () => {
         };
     }, [isMenuOpen]);
 
+    useEffect(() => {
+        api.get("/workspaces").then((res) => {
+            setWorkspaces(res.data);
+        })
+    }, []);
+
     return (
         <div className="navbar">
             <div className="navbar__app-info">
@@ -38,8 +69,15 @@ export const Navbar = () => {
                 <div className="navbar__app-name">Corkboard</div>
             </div>
 
-            <Workspace onClick={toggleMenu}/>
-            {isMenuOpen && <div ref={menuRef}><WorkspaceMenu /></div>}
+            {showWorkspaceForm && <Modal onClose={() => setShowWorkspaceForm(false)}>
+                <div className="modal__close" onClick={() => setShowWorkspaceForm(false)}>X</div>
+                <span className="modal__title">Create new workspace</span>
+                <input placeholder="Name" onChange={(e) => setWorkspaceName(e.target.value)} />
+                <Button color={"primary"} onClick={addNewWorkspace}>Create</Button>
+            </Modal>}
+
+            <Workspace name={workspaces.find(w => w.current)?.name} onClick={toggleMenu}/>
+            {isMenuOpen && <div ref={menuRef}><WorkspaceMenu workspaces={workspaces} onClick={() => setShowWorkspaceForm(true)}/></div>}
 
             <NavbarItem icon="Box" label="Current Release" path="/home" />
             <NavbarItem icon="Rows" label="Backlog" path="/backlog" />

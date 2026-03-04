@@ -22,4 +22,7 @@ Rails.application.routes.draw do
 
   resources :tasks
 
+  resources :workspaces do
+    post :switch, on: :collection
+  end
 end

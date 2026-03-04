@@ -12,6 +12,10 @@ user = User.find_or_create_by!(username: "admin") do |user|
   user.password = "admin123"
 end
 
-workspace = Workspace.find_or_create_by!(name: "Default Workspace", owner_id: user.id)
+Workspace.find_or_create_by!(name: "Default Workspace", owner_id: user.id)
 
-Release.find_or_create_by!(name: "Default Release", order: 1, current: true, workspace_id: workspace.id)
+current_workspace = Workspace.find_or_create_by!(name: "My Current Workspace", owner_id: user.id) do |w|
+  w.current = true
+end
+
+Release.find_or_create_by!(name: "Default Release", order: 1, current: true, workspace_id: current_workspace.id)
