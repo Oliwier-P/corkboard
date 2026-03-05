@@ -10,11 +10,10 @@ type WorkspaceType = {
 
 type WorkspaceMenuProps = {
     workspaces: WorkspaceType[];
-    onClickSettings: () => void;
     onClickCreate: () => void;
 }
 
-export const WorkspaceMenu = ({workspaces, onClickSettings, onClickCreate}: WorkspaceMenuProps) => {
+export const WorkspaceMenu = ({workspaces, onClickCreate}: WorkspaceMenuProps) => {
     const currentWorkspace = workspaces.find(w => w.current)
 
     return(
@@ -28,7 +27,7 @@ export const WorkspaceMenu = ({workspaces, onClickSettings, onClickCreate}: Work
             </div>
         </div>
 
-        <button className="workspace-menu__settings" onClick={onClickSettings}>Settings</button>
+        <button className="workspace-menu__settings">Settings</button>
 
         <div className="workspace-menu__section">
             <div className="workspace-menu__section-title">

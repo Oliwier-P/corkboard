@@ -22,7 +22,6 @@ export const Navbar = () => {
     const [workspaceName, setWorkspaceName] = useState<string>("");
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const [showWorkspaceForm, setShowWorkspaceForm] = useState<boolean>(false);
-    const [showWorkspaceSettings, setShowWorkspacSettings] = useState<boolean>(false);
     const menuRef = useRef<HTMLDivElement>(null);
 
     const toggleMenu = () => {
@@ -34,19 +33,10 @@ export const Navbar = () => {
 
         try {
             await api.post("/workspaces",  { name: workspaceName })
-            console.log("Added")
             setShowWorkspaceForm(false);
         } catch (error) {
             console.error(error)
         }
-    }
-
-    const handleRenameWorkspace = () => {
-
-    }
-
-    const handleDeleteWorkspace = () => {
-
     }
 
     useEffect(() => {
@@ -78,15 +68,6 @@ export const Navbar = () => {
                 <div className="navbar__app-name">Corkboard</div>
             </div>
 
-            {showWorkspaceSettings && <Modal className="modal-settings" onClose={() => setShowWorkspacSettings(false)}>
-                <div className="modal-settings__title">Settings</div>
-                <div className="modal-settings__rename">
-                    <input placeholder="Name" onChange={(e) => setWorkspaceName(e.target.value)} />
-                    <Button color={"secondary"} onClick={handleRenameWorkspace}>Save</Button>
-                </div>
-                <Button color={"delete"} onClick={handleDeleteWorkspace}>Delete</Button>
-            </Modal>}
-
             {showWorkspaceForm && <Modal className="modal-workspace" onClose={() => setShowWorkspaceForm(false)}>
                 <div className="modal-workspace__title">Create new workspace</div>
                 <input placeholder="Name" onChange={(e) => setWorkspaceName(e.target.value)} />
@@ -94,7 +75,7 @@ export const Navbar = () => {
             </Modal>}
 
             <Workspace name={workspaces.find(w => w.current)?.name} onClick={toggleMenu}/>
-            {isMenuOpen && <div ref={menuRef}><WorkspaceMenu workspaces={workspaces} onClickSettings={() => setShowWorkspacSettings(true)} onClickCreate={() => setShowWorkspaceForm(true)}/></div>}
+            {isMenuOpen && <div ref={menuRef}><WorkspaceMenu workspaces={workspaces} onClickCreate={() => setShowWorkspaceForm(true)}/></div>}
 
             <NavbarItem icon="Box" label="Current Release" path="/home" />
             <NavbarItem icon="Rows" label="Backlog" path="/backlog" />
