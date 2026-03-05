@@ -1,4 +1,4 @@
-import "./Workspace.scss"
+import './Workspace.scss';
 
 type WorkspaceProps = {
     name: string | undefined;
@@ -11,4 +11,5 @@ export const Workspace = ({name, onClick}: WorkspaceProps) => {
         <span className="workspace-current__name">{name}</span>
         <span className="workspace-current__arrow">v</span>
     </div>
-}
+  );
+};
