@@ -1,12 +1,6 @@
 import "./WorkspaceMenu.scss"
-import {WorkspaceMenuItem} from "./WorkspaceMenuItem.tsx";
-
-type WorkspaceType = {
-    id: number;
-    name: string;
-    current: boolean
-    logo: string;
-}
+import { WorkspaceMenuItem } from "./WorkspaceMenuItem.tsx";
+import type { WorkspaceType } from '../../../types/WorkspaceType.ts';
 
 type WorkspaceMenuProps = {
     workspaces: WorkspaceType[];

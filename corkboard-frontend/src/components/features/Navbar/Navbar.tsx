@@ -8,13 +8,7 @@ import {useEffect, useRef, useState} from "react";
 import {Button} from "../../ui/Button/Button.tsx";
 import {api} from "../../../api/api.ts";
 import  Modal  from "../../ui/Modal/Modal.tsx";
-
-type WorkspaceType = {
-    id: number;
-    name: string;
-    current: boolean;
-    logo: string;
-}
+import type { WorkspaceType} from '../../../types/WorkspaceType.ts';
 
 export const Navbar = () => {
     const {user} = useAuth()
