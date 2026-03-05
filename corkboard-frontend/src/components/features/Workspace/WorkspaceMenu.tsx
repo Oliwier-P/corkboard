@@ -1,17 +1,27 @@
 import "./WorkspaceMenu.scss"
-import {WorkspaceMenuItem} from "./WorkspaceMenuItem.tsx";
+import { WorkspaceMenuItem } from "./WorkspaceMenuItem.tsx";
+import type { WorkspaceType } from '../../../types/WorkspaceType.ts';
 
-export const WorkspaceMenu = () => {
+type WorkspaceMenuProps = {
+    workspaces: WorkspaceType[];
+    onClickCreate: () => void;
+}
+
+export const WorkspaceMenu = ({workspaces, onClickCreate}: WorkspaceMenuProps) => {
+    const currentWorkspace = workspaces.find(w => w.current)
+
     return(
     <div className="workspace-menu">
         <div className="workspace-menu__header">
-            <div className="workspace-menu__logo">P</div>
+            <div className="workspace-menu__logo">{!currentWorkspace || !currentWorkspace.logo ? currentWorkspace!.name[0].toUpperCase() : "Logo"}</div>
 
             <div className="workspace-menu__info">
-                <span className="workspace-menu__info-name">Part Games</span>
+                <span className="workspace-menu__info-name">{currentWorkspace!.name}</span>
                 <span className="workspace-menu__info-members">2 members</span>
             </div>
         </div>
+
+        <button className="workspace-menu__settings">Settings</button>
 
         <div className="workspace-menu__section">
             <div className="workspace-menu__section-title">
@@ -19,11 +29,13 @@ export const WorkspaceMenu = () => {
             </div>
 
             <div className="workspace-menu__workspaces">
-                <WorkspaceMenuItem id={1} name={"Studio Gier Gangplank"} />
+                {workspaces && workspaces.filter(w => !w.current).map((workspace) =>
+                    <WorkspaceMenuItem key={workspace.id} id={workspace.id} name={workspace.name} />
+                )}
             </div>
         </div>
 
-        <button className="workspace-menu__create">+ Create Workspace</button>
+        <button className="workspace-menu__create" onClick={onClickCreate}>+ Create Workspace</button>
     </div>
     )
 }

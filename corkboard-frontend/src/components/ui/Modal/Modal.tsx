@@ -14,8 +14,8 @@ const Modal = ({children, onClose, className}: ModalProps) => {
         <div className="modal">
             <div className="modal__backdrop" onClick={onClose}/>
             <div className={ClassNames('modal__content', className)}>
-                <Button variant="icon" className="modal__close-btn">
-                    <Icon icon="xCircle" />
+                <Button variant="icon" className="modal__close-btn" onClick={onClose}>
+                    <Icon icon="xCircle"/>
                 </Button>
                 {children}
             </div>

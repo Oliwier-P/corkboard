@@ -1,4 +1,5 @@
 import "./WorkspaceMenuItem.scss"
+import {api} from "../../../api/api.ts";
 
 type WorkspaceMenuItemProps = {
     id: number;
@@ -6,8 +7,12 @@ type WorkspaceMenuItemProps = {
 }
 
 export const WorkspaceMenuItem = ({id, name}: WorkspaceMenuItemProps) => {
-    return <button className="workspace-menu__workspace">
-        <div className="workspace-menu__workspace-logo">{id}</div>
+    const handleSwitchWorkspace = () => {
+        api.post('/workspaces/switch', { id: id })
+    }
+
+    return <button key={id} className="workspace-menu__workspace" onClick={handleSwitchWorkspace}>
+        <div className="workspace-menu__workspace-logo">{name[0].toUpperCase()}</div>
         <div className="workspace-menu__workspace-name">{name}</div>
     </button>
 }
