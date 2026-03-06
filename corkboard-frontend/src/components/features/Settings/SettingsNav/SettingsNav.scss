@@ -1,0 +1,19 @@
+.settings-nav {
+  width: 200px;
+  height: 100vh;
+
+  background-color: #121212;
+  border: 1px solid #555555;
+
+
+  &__settings {
+
+    &-item {
+
+      .active {
+        background-color: #122B4C;
+      }
+    }
+  }
+}
+
