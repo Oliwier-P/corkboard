@@ -1,0 +1,62 @@
+.workspace-general {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding-left: 100px;
+
+  &__title {
+    font-size: 2.5rem;
+    color: #fff;
+  }
+
+  &__section-title {
+    font-size: 1.5rem;
+    color: rgba(#fff, 0.8);
+  }
+
+  &__section {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  &__setting {
+    width: 80%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 0.5rem;
+  }
+
+  &__label {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.5rem;
+    color: rgba(#fff, 0.3);
+  }
+
+  &__logo {
+    width: 40px;
+    height: 40px;
+    background-color: #F59E0B;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    cursor: pointer;
+  }
+
+  &__input {
+    width: 60%;
+    height: 30px;
+    border: 2px solid #6C6C6C;
+    border-radius: 0.3rem;
+  }
+
+}
