@@ -30,7 +30,7 @@ export const LoginPage = () => {
         <div className="login-page">
             <div className="login-page__content">
                 <div className="login-page__header">
-                    <Icon icon="AppLogo" className="login-page__app-logo" />
+                    <Icon icon="appLogo" className="login-page__app-logo" />
                     <div className="login-page__app-name">
                         Corkboard
                     </div>

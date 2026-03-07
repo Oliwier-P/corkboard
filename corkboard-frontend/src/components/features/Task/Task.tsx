@@ -65,13 +65,13 @@ export const Task = memo(({taskId}: TaskProps) => {
             {!isEditing && (
                 <div className="task__options">
                     <Button variant="icon" onClick={() => setIsEditing(true)}>
-                        <Icon icon="Edit"/>
+                        <Icon icon="edit"/>
                     </Button>
                     <Button variant="icon">
                         <Icon icon="exclamationMark"/>
                     </Button>
                     <Button variant="icon">
-                        <Icon icon="Dots"/>
+                        <Icon icon="dots"/>
                     </Button>
                 </div>
             )}
