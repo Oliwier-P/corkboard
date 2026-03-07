@@ -34,11 +34,10 @@
   }
 
   &__placeholder{
-    min-height: 50px;
     width: 100%;
-    background: #060606;
-    border: 1px solid #222222;
-    border-radius: 8px;
+    height: 1px;
+    background: #6BC1FF;
+    border-radius: 16px;
   }
 
   &__add-task {

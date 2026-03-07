@@ -15,6 +15,9 @@ Rails.application.routes.draw do
   get "users/me", to: "users#me"
 
   resources :releases do
+    member do
+      get "board"
+    end
     collection do
       get "current"
     end

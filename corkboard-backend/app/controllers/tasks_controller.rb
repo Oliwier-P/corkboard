@@ -14,17 +14,30 @@ class TasksController < ApplicationController
     release = Release.find(tasks_params[:release_id])
 
     if release
-      task = Task.create!(tasks_params)
-      render json: {id: task.id}, status: :created
+      @task = Task.create!(tasks_params)
     end
+
+    @task
   end
 
   def update
     task = Task.find(params[:id])
-    order = tasks_params[:order]
-    task.release.tasks.where(status: task.status, order: tasks_params[:order]...).where.not(id: params[:id]).each do |t|
-      order = order + 1
-      t.update_column(:order, order)
+
+    if tasks_params[:order]
+      if tasks_params[:status]
+        if task.status != tasks_params[:status]
+          task.release.tasks.where(status: task.status, order: task.order...).where.not(id: params[:id]).each do |t|
+            order = t.order - 1
+            t.update_column(:order, order)
+          end
+        end
+      end
+
+      order = tasks_params[:order]
+      task.release.tasks.where(status: tasks_params[:status] || task.status, order: tasks_params[:order]...).where.not(id: params[:id]).each do |t|
+        order = order + 1
+        t.update_column(:order, order)
+      end
     end
 
     task.update!(tasks_params)

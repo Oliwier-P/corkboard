@@ -1,4 +1,4 @@
 class Release < ApplicationRecord
-  has_one :workspace
+  belongs_to :workspace
   has_many :tasks
 end

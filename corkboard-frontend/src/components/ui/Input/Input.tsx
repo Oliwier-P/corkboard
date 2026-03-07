@@ -10,9 +10,11 @@ type InputProps = {
     register?: UseFormRegisterReturn;
     isInvaild?: boolean
     variant?: "no-border"
+    defaultValue?: string | number
 };
 
-export const Input = ({className, type, id, placeholder, register, isInvaild, variant}: InputProps) => {
-    return <input className={ClassNames('input', className, {invalid: isInvaild}, [variant])} type={type} id={id}
-                  placeholder={placeholder}{...register} />;
+export const Input = ({className, type, id, placeholder, register, isInvaild, variant, defaultValue}: InputProps) => {
+    return <input className={ClassNames('input', className, {invalid: isInvaild}, [variant])}
+                  defaultValue={defaultValue} type={type} id={id}
+                  placeholder={placeholder} {...register} />;
 };
