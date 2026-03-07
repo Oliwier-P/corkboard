@@ -2,8 +2,13 @@ import './WorkspaceUsers.scss';
 import { WorkspaceUser } from './WorkspaceUser.tsx';
 import { useState } from 'react';
 
+type User = {
+  name: string;
+  role: string;
+};
+
 export const WorkspaceUsers = () => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<User[]>([]);
 
   return (
     <div className="workspace-users">
@@ -13,7 +18,6 @@ export const WorkspaceUsers = () => {
         <div className="workspace-users__list">
           <div className="workspace-users__list-header row">
             <div>Name</div>
-            <div>Email</div>
             <div>Role</div>
           </div>
 
@@ -22,7 +26,7 @@ export const WorkspaceUsers = () => {
             <div className="workspace-users__list-invite-text">Invite people</div>
           </div>
 
-          {users && users.map((user, index) => <WorkspaceUser key={index} name={user.name} email={user.email} role={user.role} />)}
+          {users && users.map((user, index) => <WorkspaceUser key={index} name={user.name} role={user.role} />)}
         </div>
       </div>
     </div>

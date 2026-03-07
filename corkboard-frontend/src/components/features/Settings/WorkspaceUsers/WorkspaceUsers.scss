@@ -15,8 +15,8 @@
   }
 
   &__list {
-    width: 60%;
-    min-width: 600px;
+    width: 50%;
+    min-width: 400px;
     padding: 5px;
     font-size: 1.2rem;
 
@@ -29,7 +29,6 @@
       display: grid;
       grid-template-columns:
               minmax(150px, 1fr)
-              minmax(200px, 2fr)
               minmax(120px, 1fr)
               80px;
       padding: 10px;
