@@ -140,6 +140,7 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
                 }
             }
         })
+        api.put(`tasks/${taskId}`, {task: {name}})
     },
     getColumn: (id) => {
         return get().columns.find((col) => col.id === id)
