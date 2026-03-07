@@ -7,6 +7,7 @@ import Trash from "./svgs/trash.svg?react"
 import UserCircle from "./svgs/user-circle.svg?react"
 import Dots from "./svgs/dots.svg?react"
 import xCircle from "./svgs/x-circle.svg?react"
+import exclamationMark from "./svgs/exclamationMark.svg?react"
 
 export const icons = {
     Box,
@@ -17,5 +18,6 @@ export const icons = {
     Trash,
     UserCircle,
     Dots,
-    xCircle
+    xCircle,
+    exclamationMark
 }

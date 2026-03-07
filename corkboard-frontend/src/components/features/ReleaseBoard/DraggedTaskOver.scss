@@ -1,0 +1,8 @@
+.dragged-task-over{
+  position: fixed;
+  transform: translate(-50%, -50%) rotate(-20deg);
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.6;
+  cursor: grabbing;
+}

@@ -1,0 +1,1 @@
+json.partial! @task, partial: 'tasks/task', as: :task
