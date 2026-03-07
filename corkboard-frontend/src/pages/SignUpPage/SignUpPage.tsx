@@ -39,7 +39,7 @@ export const SignUpPage = () => {
         <div className="signup-page">
             <div className="signup-page__content">
                 <div className="signup-page__header">
-                    <Icon icon="AppLogo" className="login-page__app-logo" />
+                    <Icon icon="appLogo" className="login-page__app-logo" />
                     <div className="signup-page__app-name">
                         Corkboard
                     </div>

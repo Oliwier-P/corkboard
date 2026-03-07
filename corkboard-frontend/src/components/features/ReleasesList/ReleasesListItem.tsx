@@ -85,10 +85,10 @@ export const ReleasesListItem = ({id, name, onEdit, onDelete}: ReleasesListItemP
 
         <div className="releases-list-row__menu">
             <div className="edit" onClick={() => setIsEditing(true)}>
-                <Icon icon={"Edit"} />
+                <Icon icon="edit" />
             </div>
             <div className="delete" onClick={handleDeleteRelease}>
-                <Icon icon={"Trash"} />
+                <Icon icon="trash" />
             </div>
         </div>
     </div>

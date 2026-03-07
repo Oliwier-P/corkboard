@@ -31,7 +31,9 @@ export const CurrentReleasePage = () => {
                         {release && <Button color="primary" size="small">Complete Release</Button>}
                     </div>
                 </div>
-                {release && <ReleaseBoard release={release}/>}
+                {release && (
+                    <ReleaseBoard releaseId={release.id}/>
+                )}
             </div>
         </div>
     )

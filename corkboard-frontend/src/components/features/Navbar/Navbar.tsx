@@ -58,7 +58,7 @@ export const Navbar = () => {
   return (
     <div className="navbar">
       <div className="navbar__app-info">
-        <Icon icon="AppLogo" className="navbar__logo" />
+        <Icon icon="appLogo" className="navbar__logo" />
         <div className="navbar__app-name">Corkboard</div>
       </div>
 
@@ -79,9 +79,9 @@ export const Navbar = () => {
         </div>
       )}
 
-      <NavbarItem icon="Box" label="Current Release" path="/home" />
-      <NavbarItem icon="Rows" label="Backlog" path="/backlog" />
-      <NavbarItem icon="Bookmarks" label="Releases" path="/releases" />
+      <NavbarItem icon="box" label="Current Release" path="/home" />
+      <NavbarItem icon="rows" label="Backlog" path="/backlog" />
+      <NavbarItem icon="bookmarks" label="Releases" path="/releases" />
 
       {user && (
         <div className="navbar__user">
