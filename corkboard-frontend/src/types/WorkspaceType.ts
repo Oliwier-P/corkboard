@@ -1,6 +1,5 @@
 export type WorkspaceType = {
-    id: number;
-    name: string;
-    current: boolean;
-    logo: string;
-}
+  id: number;
+  name: string;
+  logo: string;
+};

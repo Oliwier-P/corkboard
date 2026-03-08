@@ -9,7 +9,7 @@ type WorkspaceMenuProps = {
 };
 
 export const WorkspaceMenu = ({ workspaces, onClickCreate }: WorkspaceMenuProps) => {
-  const currentWorkspace = workspaces.find((w) => w.current);
+  const currentWorkspace = workspaces[0];
 
   return (
     <div className="workspace-menu">
@@ -30,8 +30,7 @@ export const WorkspaceMenu = ({ workspaces, onClickCreate }: WorkspaceMenuProps)
         <div className="workspace-menu__section-title">Switch Workspaces</div>
 
         <div className="workspace-menu__workspaces">
-          {workspaces &&
-            workspaces.filter((w) => !w.current).map((workspace) => <WorkspaceMenuItem key={workspace.id} id={workspace.id} name={workspace.name} />)}
+          {workspaces.length > 0 && workspaces.map((workspace) => <WorkspaceMenuItem key={workspace.id} id={workspace.id} name={workspace.name} />)}
         </div>
       </div>
 

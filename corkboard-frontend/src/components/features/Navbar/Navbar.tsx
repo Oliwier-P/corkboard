@@ -72,8 +72,8 @@ export const Navbar = () => {
         </Modal>
       )}
 
-      <Workspace name={workspaces.find((w) => w.current)?.name} onClick={toggleMenu} />
-      {isMenuOpen && (
+      {workspaces.length > 0 && <Workspace name={workspaces[0].name} onClick={toggleMenu} />}
+      {isMenuOpen && workspaces.length > 0 && (
         <div ref={menuRef}>
           <WorkspaceMenu workspaces={workspaces} onClickCreate={() => setShowWorkspaceForm(true)} />
         </div>
