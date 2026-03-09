@@ -5,7 +5,7 @@ type ButtonProps = {
     onClick?: () => void;
     children: React.ReactNode;
     className?: string;
-    color?: "primary" | "secondary" | "edit" | "delete" | "outlined";
+    color?: "primary" | "secondary" | "orange" | "green" | "red";
     variant?: "rounded" | "square" | "text" | "icon"
     type?: "button" | "submit" | "reset"
     size?: "medium" | "small"
@@ -15,7 +15,7 @@ export const Button = ({
                            onClick,
                            children,
                            className,
-                           color,
+                           color = "primary",
                            variant = "square",
                            type,
                            size = "medium"

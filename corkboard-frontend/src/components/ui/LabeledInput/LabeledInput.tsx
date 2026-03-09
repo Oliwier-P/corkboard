@@ -10,7 +10,7 @@ type LabeledInputProps = {
 
 export const LabeledInput = ({label, require = false, ...inputProps}: LabeledInputProps) => {
     return (
-        <div className={ClassNames("labeled-input", {required: require})}>
+        <div className={ClassNames("labeled-input", {required: require}, inputProps.className)} style={inputProps.style}>
             <span className="labeled-input__label">{label}</span>
             <Input {...inputProps}/>
         </div>

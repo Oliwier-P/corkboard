@@ -1,39 +1,72 @@
 import "./ReleasesPage.scss"
-import { Navbar } from "../../components/features/Navbar/Navbar.tsx";
-import { ReleasesList } from "../../components/features/ReleasesList/ReleasesList.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {CreateReleaseModal} from "./CreateReleaseModal.tsx";
+import {useReleasesStore} from "../../store/releasesStore.ts";
+import {Release} from "./Release.tsx";
 import {Button} from "../../components/ui/Button/Button.tsx";
-import {api} from "../../api/api.ts";
+import type {ReleaseType} from "../../types/ReleaseType.ts";
+import {DeleteReleaseModal} from "./DeleteReleaseModal.tsx";
+import {EditReleaseModal} from "./EditReleaseModal.tsx";
 
 export const ReleasesPage = () => {
-    const [showReleaseForm, setShowReleaseForm] = useState<boolean>(false)
-    const [releaseName, setReleaseName] = useState<string>('')
+    const [showCreateReleaseModal, setShowCreateReleaseModal] = useState<boolean>(false)
+    const [releaseToDelete, setReleaseToDelete] = useState<ReleaseType | null>(null)
+    const [releaseToEdit, setReleaseToEdit] = useState<ReleaseType | null>(null)
+    const releases = useReleasesStore(state => state.releases)
+    const addRelease = useReleasesStore(state => state.addRelease)
+    const deleteRelease = useReleasesStore(state => state.deleteRelease)
+    const updateRelease = useReleasesStore(state => state.updateRelease)
+    const fetchRelease = useReleasesStore(state => state.fetchReleases)
 
-    const addNewRelease = async () => {
-        if (releaseName === '') return;
-
-        try {
-            await api.post("/releases",  { name: releaseName })
-            console.log("Added")
-            setShowReleaseForm(false);
-        } catch (error) {
-            console.error(error)
-        }
+    const handleSave = (name: string) => {
+        addRelease(name)
+        setShowCreateReleaseModal(false)
     }
 
-    return <div className="releases">
-        {showReleaseForm && <div className="overlay-wrapper">
-            <div className="overlay-content">
-                <div className="overlay-content__close" onClick={() => setShowReleaseForm(false)}>X</div>
-                <span className="overlay-content__title">Create new release</span>
-                <input placeholder="Name" onChange={(e) => setReleaseName(e.target.value)} />
-                <Button color={"primary"} onClick={addNewRelease}>Create</Button>
-            </div>
-        </div>}
+    const handleDelete = (releaseId: number) => {
+        deleteRelease(releaseId)
+        setReleaseToDelete(null)
+    }
 
-        <Navbar/>
-        <div className="releases__content">
-            <ReleasesList onClick={() => setShowReleaseForm(true)}/>
+    const handleEdit = (releaseId: number, name: string) => {
+        updateRelease(releaseId, name)
+        setReleaseToDelete(null)
+    }
+
+    useEffect(() => {
+        fetchRelease()
+    }, [fetchRelease]);
+
+    return (
+        <div className="releases">
+            <div className="releases__top-bar">Releases</div>
+            <div className="releases__content">
+                <div className="releases__list">
+                    <div className="releases__header">
+                        <div>Name</div>
+                        <div>Progress</div>
+                    </div>
+                    {releases && releases.map(release => (
+                        <Release key={release.id} id={release.id} name={release.name}
+                                 onEditClick={() => setReleaseToEdit(release)}
+                                 onDeleteClick={() => setReleaseToDelete(release)}/>
+                    ))}
+                    <Button variant="text" className="releases__new-release-btn"
+                            onClick={() => setShowCreateReleaseModal(true)}>+ New Release</Button>
+                </div>
+            </div>
+            {showCreateReleaseModal &&
+                <CreateReleaseModal onSave={handleSave} onClose={() => setShowCreateReleaseModal(false)}/>}
+
+            {releaseToDelete && (
+                <DeleteReleaseModal onClose={() => setReleaseToDelete(null)} releaseName={releaseToDelete.name}
+                                    onDelete={() => handleDelete(releaseToDelete.id)}/>
+            )}
+
+            {releaseToEdit && (
+                <EditReleaseModal onClose={() => setReleaseToEdit(null)} releaseName={releaseToEdit.name}
+                                  onSave={(name: string) => handleEdit(releaseToEdit.id, name)}/>
+            )}
         </div>
-    </div>
+    )
 }

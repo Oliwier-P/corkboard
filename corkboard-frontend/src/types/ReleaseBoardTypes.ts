@@ -13,9 +13,3 @@ export type Column = {
     id: string
     taskIds: number[]
 }
-
-export type BoardState = {
-    id: number
-    tasks: Record<number, Task>
-    columns: Column[]
-}
