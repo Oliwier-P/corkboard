@@ -7,6 +7,6 @@ class Task < ApplicationRecord
     in_progress: "in_progress",
     review_pending: "review_pending",
     testing: "testing",
-    accepted: "accepted",
+    accepted: "accepted"
   }
 end

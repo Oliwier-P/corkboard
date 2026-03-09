@@ -47,7 +47,7 @@ export const ReleasesPage = () => {
                         <div>Progress</div>
                     </div>
                     {releases && releases.map(release => (
-                        <Release key={release.id} id={release.id} name={release.name}
+                        <Release key={release.id} release={release}
                                  onEditClick={() => setReleaseToEdit(release)}
                                  onDeleteClick={() => setReleaseToDelete(release)}/>
                     ))}

@@ -2,12 +2,12 @@
 
 .release {
   display: grid;
-  grid-template-columns: 4fr 3fr 1fr 1fr 2fr;
+  grid-template-columns: 2fr 1fr 1fr 3fr 1fr 1fr 2fr;
   align-items: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 
   &:hover {
-    .release__menu {
+    .release__options {
       opacity: 1;
       visibility: visible;
     }
@@ -27,7 +27,7 @@
 
     padding: 0 0.25rem;
     border-radius: 0.4rem;
-    min-width: 5rem;
+    width: 5rem;
 
     &--current {
       background: colors.$blue;
@@ -53,11 +53,13 @@
     }
   }
 
-  &__menu {
+  &__options {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    justify-self: center;
+
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.2s ease-in-out;
