@@ -79,6 +79,14 @@
     }
   }
 
+  &--outlined {
+    background: none;
+    border: 1px solid #383838;
+    color: #383838;
+    min-width: auto;
+    padding: 0;
+  }
+
   &--small {
     padding: 2px 8px;
     font-size: 12px;

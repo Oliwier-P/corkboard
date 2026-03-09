@@ -5,7 +5,7 @@ type ButtonProps = {
     onClick?: () => void;
     children: React.ReactNode;
     className?: string;
-    color?: "primary" | "secondary" | "orange" | "green" | "red";
+    color?: "primary" | "secondary" | "orange" | "green" | "red" | 'outlined';
     variant?: "rounded" | "square" | "text" | "icon"
     type?: "button" | "submit" | "reset"
     size?: "medium" | "small"
