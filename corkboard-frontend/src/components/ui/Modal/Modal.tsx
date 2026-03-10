@@ -23,19 +23,27 @@ const Modal = ({children, onClose, className}: ModalProps) => {
     )
 }
 
+type ModalHeaderProps = {
+    title?: string
+    children?: React.ReactNode;
+}
+
 type ModalComponentsProps = {
     children: React.ReactNode;
 }
 
-Modal.Header = ({children}: ModalComponentsProps) => {
-    return <div className="modal-header">{children}</div>
+Modal.Header = ({title, children}: ModalHeaderProps) => {
+    return <div className="modal-header">
+        <span className="modal-header__title">{title}</span>
+        {children}
+    </div>
 }
 
 Modal.Body = ({children}: ModalComponentsProps) => {
     return <div className="modal-body">{children}</div>
 }
 
-Modal.Footer =  ({children}: ModalComponentsProps) => {
+Modal.Footer = ({children}: ModalComponentsProps) => {
     return <div className="modal-footer">{children}</div>
 }
 

@@ -42,6 +42,8 @@ interface ReleaseBoardStore {
 
     addTask: (columnId: string, name: string) => void
     updateTask: (taskId: number, name: string) => void
+    deleteTask: (taskId: number) => void
+    moveTaskToNextRelease: (taskId: number) => void
 
     getColumn: (id: string) => Column | undefined
     getColumnByTaskId: (taskId: number) => Column | undefined
@@ -140,6 +142,37 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
                 }
             }
         })
+        api.put(`tasks/${taskId}`, {task: {name}})
+    },
+    deleteTask: (taskId: number) => {
+        set((state) => {
+            const tasks = {...state.tasks}
+            delete tasks[taskId]
+            return {
+                tasks: tasks,
+                columns: state.columns.map(col => ({
+                    ...col,
+                    taskIds: col.taskIds.filter(id => id !== taskId)
+                }))
+            }
+        })
+
+        api.delete(`tasks/${taskId}`)
+    },
+    moveTaskToNextRelease: (taskId: number) => {
+        set((state) => {
+            const tasks = {...state.tasks}
+            delete tasks[taskId]
+            return {
+                tasks: tasks,
+                columns: state.columns.map(col => ({
+                    ...col,
+                    taskIds: col.taskIds.filter(id => id !== taskId)
+                }))
+            }
+        })
+
+        api.put(`tasks/${taskId}/move_to_next_release`)
     },
     getColumn: (id) => {
         return get().columns.find((col) => col.id === id)

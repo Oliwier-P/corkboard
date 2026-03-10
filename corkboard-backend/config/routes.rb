@@ -23,7 +23,11 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :tasks
+  resources :tasks do
+    member do
+      put "move_to_next_release"
+    end
+  end
 
   resources :workspaces do
     post :switch, on: :collection

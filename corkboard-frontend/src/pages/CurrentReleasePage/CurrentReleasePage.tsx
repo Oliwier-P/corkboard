@@ -1,13 +1,12 @@
-import {Navbar} from "../../components/features/Navbar/Navbar.tsx";
 import "./CurrentReleasePage.scss"
 import {Button} from "../../components/ui/Button/Button.tsx";
 import {useEffect, useState} from "react";
 import {api} from "../../api/api.ts";
 import {ReleaseBoard} from "../../components/features/ReleaseBoard/ReleaseBoard.tsx";
-import type {releaseType} from "../../types/ReleaseType.ts";
+import type {ReleaseType} from "../../types/ReleaseType.ts";
 
 export const CurrentReleasePage = () => {
-    const [release, setRelease] = useState<releaseType | null>(null)
+    const [release, setRelease] = useState<ReleaseType | null>(null)
 
     useEffect(() => {
         api.get("/releases/current").then((res) => {
@@ -19,7 +18,6 @@ export const CurrentReleasePage = () => {
 
     return (
         <div className="current-release">
-            <Navbar/>
             <div className="current-release__content">
                 <div className="current-release__header">
                     <span>

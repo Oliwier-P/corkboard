@@ -4,21 +4,20 @@ import {BoardColumn} from "../BoardColumn/BoardColumn.tsx";
 import "./ReleaseBoard.scss"
 import {useEffect} from "react";
 import {useShallow} from "zustand/react/shallow";
-import {DraggedTaskOverlay} from "./DraggedTaskOverlay.tsx";
 
 type ReleaseBoardProps = {
     releaseId: number
 }
 export const ReleaseBoard = ({releaseId}: ReleaseBoardProps) => {
     const columnIds = useReleaseBoardStore(useShallow(state => state.columns.map(col => col.id)))
-    const {fetchBoard} = useReleaseBoardStore.getState()
+    const fetchBoard = useReleaseBoardStore(state => state.fetchBoard)
 
 
     useEffect(() => {
         if (releaseId) {
             fetchBoard(releaseId)
         }
-    }, [releaseId]);
+    }, [fetchBoard, releaseId]);
 
     return (
         <div className="release-board">
@@ -31,7 +30,6 @@ export const ReleaseBoard = ({releaseId}: ReleaseBoardProps) => {
                 ))}
             </div>
             <BoardColumn columnId={columnIds[columnIds.length - 1]} key="accepted"/>
-            <DraggedTaskOverlay/>
         </div>
     )
 }

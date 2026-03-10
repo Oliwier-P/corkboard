@@ -14,16 +14,17 @@
   min-width: 100px;
   padding: 4px 16px;
   width: auto;
+
   font-size: 0.9rem;
-  font-weight: 600;
   font-family: "Poppins", sans-serif;
+  color: #fff;
 
   background-color: rgba(255, 255, 255, 0.05);
-  cursor: pointer;
   border: none;
   transition: 0.1s ease;
 
-  color: rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  user-select: none;
 
   &:hover {
     scale: 1.02;
@@ -38,6 +39,42 @@
 
     &:active {
       background-color: color.adjust(colors.$primary-color, $lightness: -5%);
+      scale: 1;
+    }
+  }
+
+  &--secondary {
+    background-color: colors.$gray;
+
+    &:active {
+      background-color: color.adjust(colors.$gray, $lightness: -5%);
+      scale: 1;
+    }
+  }
+
+  &--orange {
+    background-color: colors.$orange;
+
+    &:active {
+      background-color: color.adjust(colors.$orange, $lightness: -5%);
+      scale: 1;
+    }
+  }
+
+  &--green {
+    background-color: colors.$green;
+
+    &:active {
+      background-color: color.adjust(colors.$green, $lightness: -5%);
+      scale: 1;
+    }
+  }
+
+  &--red {
+    background-color: colors.$red;
+
+    &:active {
+      background-color: color.adjust(colors.$red, $lightness: -5%);
       scale: 1;
     }
   }
@@ -67,6 +104,9 @@
   }
 
   &--text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-decoration: underline;
     background: none;
     color: #fff;
@@ -74,19 +114,27 @@
     height: auto;
     width: auto;
     padding: 0;
+
+    &:active{
+      background: none;
+    }
   }
 
   &--icon {
+    justify-content: center;
+    align-items: center;
     min-width: auto;
     background: none;
     width: 1.5rem;
     border-radius: 0.5rem;
     padding: 2px;
 
+    color: rgba(255, 255, 255, 0.2);
+
     &:hover {
       scale: 1;
       background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.3);
     }
-
   }
 }
