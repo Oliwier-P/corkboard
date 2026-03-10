@@ -1,60 +1,61 @@
+@use '../../../../global/colors' as colors;
+
 .workspace-users {
   width: 100%;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  padding-left: 100px;
-
-  &-wrapper {
-    overflow-x: auto;
-  }
 
   &__title {
-    font-size: 2.5rem;
+    font-size: 1.25rem;
     color: #fff;
   }
 
   &__list {
-    width: 50%;
+    width: 100%;
     min-width: 400px;
     padding: 5px;
     font-size: 1.2rem;
+    overflow-x: auto;
+  }
 
-    &-header {
-      border-bottom: 1px solid #383838;
-      color: #383838;
-    }
+  &__list-header {
+    display: grid;
+    grid-template-columns: minmax(150px, 1fr) minmax(120px, 1fr) 80px;
 
-    .row {
-      display: grid;
-      grid-template-columns:
-              minmax(150px, 1fr)
-              minmax(120px, 1fr)
-              80px;
-      padding: 10px;
-    }
+    border-bottom: 1px solid #383838;
+    color: #383838;
+    font-size: 0.9rem;
 
-    &-invite {
-      display: flex;
-      gap: 0.5rem;
-      width: max-content;
-      cursor: pointer;
-      padding: 10px;
+    padding: 1rem;
+  }
 
-      &-icon {
-        width: 20px;
-        height: 20px;
-        color: #6BC1FF;
-        background-color: #122B4C;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+  &__invite-btn {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
 
-      &-text {
-        color: #6BC1FF;
-      }
-    }
+    cursor: pointer;
+    padding: 1rem;
+    border-radius: 0;
+    border-bottom: 1px solid colors.$border-color;
+
+  }
+
+  &__invite-icon {
+    width: 20px;
+    height: 20px;
+    color: #6BC1FF;
+    background-color: #122B4C;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__invite-text {
+    color: #6BC1FF;
   }
 }

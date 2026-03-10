@@ -13,6 +13,8 @@ import users from "./svgs/users.svg?react"
 import circleArrowRight from "./svgs/circleArrowRight.svg?react"
 import boxArrowDown from "./svgs/box-arrow-down.svg?react"
 import boxArrowUp from "./svgs/box-arrow-up.svg?react"
+import workspaces from "./svgs/workspaces.svg?react"
+import plusCircle from "./svgs/plus-circle.svg?react"
 
 export const icons = {
     box,
@@ -29,5 +31,7 @@ export const icons = {
     users,
     circleArrowRight,
     boxArrowDown,
-    boxArrowUp
+    boxArrowUp,
+    workspaces,
+    plusCircle
 }

@@ -37,8 +37,7 @@ createRoot(document.getElementById('root')!).render(
             }
           />
           <Route
-            path="/settings"
-            element={
+            path="/settings" element={
               <ProtectedRoute>
                 <SettingsPage />
               </ProtectedRoute>
@@ -48,8 +47,9 @@ createRoot(document.getElementById('root')!).render(
 
             <Route path="workspace/users" element={<WorkspaceUsers />} />
             <Route path="workspace/general" element={<WorkspaceGeneral />} />
-
             <Route path="user/profile" element={<UserProfile />} />
+            <Route path="user/workspaces" element={<UserProfile />} />
+
           </Route>
           <Route path="*" element={<div>NO ROUTE</div>} />
         </Routes>

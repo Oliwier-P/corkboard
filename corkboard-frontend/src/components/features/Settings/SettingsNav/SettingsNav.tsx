@@ -1,25 +1,39 @@
 import './SettingsNav.scss';
-import { NavLink } from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
+import {Icon} from "../../../ui/Icons/Icon.tsx";
 
 export const SettingsNav = () => {
-  return (
-    <nav className="settings-nav">
-      <h2 className="settings-nav__title">All Settings</h2>
+    return (
+        <nav className="settings-nav">
+            <div className="settings-nav__title">All Settings</div>
 
-      <div className="settings-nav__section">
-        <h3 className="settings-nav__sub-title">Workspace</h3>
-        <ul className="settings-nav__settings">
-          <NavLink to="/settings/workspace/users">People</NavLink>
-          <NavLink to="/settings/workspace/general">Settings</NavLink>
-        </ul>
-      </div>
+            <div className="settings-nav__section">
+                <div className="settings-nav__sub-title">Workspace</div>
+                <div className="settings-nav__settings">
+                    <NavLink className="settings-nav__tab" to="/settings/workspace/general">
+                        <Icon icon="gear"/>
+                        General
+                    </NavLink>
+                    <NavLink className="settings-nav__tab" to="/settings/workspace/users">
+                        <Icon icon="users"/>
+                        Users
+                    </NavLink>
+                </div>
+            </div>
 
-      <div className="settings-nav__section">
-        <h3 className="settings-nav__sub-title">Nickname</h3>
-        <ul className="settings-nav__settings">
-          <NavLink to="/settings/user/profile">My settings</NavLink>
-        </ul>
-      </div>
-    </nav>
-  );
+            <div className="settings-nav__section">
+                <div className="settings-nav__sub-title">My Settings</div>
+                <div className="settings-nav__settings">
+                    <NavLink className="settings-nav__tab" to="/settings/user/profile">
+                        <Icon icon="userCircle"/>
+                        Preferences
+                    </NavLink>
+                    <NavLink className="settings-nav__tab" to="/settings/user/workspaces">
+                        <Icon icon="workspaces"/>
+                        Workspaces
+                    </NavLink>
+                </div>
+            </div>
+        </nav>
+    );
 };

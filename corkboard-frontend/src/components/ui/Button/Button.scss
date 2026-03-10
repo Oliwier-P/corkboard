@@ -26,13 +26,13 @@
   cursor: pointer;
   user-select: none;
 
-  &__content{
+  &__content {
     display: flex;
     align-items: center;
     gap: 0.5rem;
   }
 
-  &__icon{
+  &__icon {
     width: 2rem;
   }
 
@@ -44,6 +44,7 @@
     scale: 1;
   }
 
+  // == COLORS == //
   &--primary {
     background-color: colors.$primary-color;
 
@@ -103,16 +104,16 @@
     font-size: 12px;
     min-width: fit-content;
 
-    .icon{
+    .icon {
       width: 1.25rem;
     }
   }
 
-  &--medium{
+  &--medium {
     padding: 4px 16px;
   }
 
-  &--large{
+  &--large {
     padding: 8px;
   }
 
@@ -140,7 +141,7 @@
     width: auto;
     padding: 0;
 
-    &:active{
+    &:active {
       background: none;
     }
   }
@@ -152,7 +153,6 @@
     background: none;
     border-radius: 0.5rem;
     padding: 2px;
-
     color: #4a4a4a;
 
     &:hover {

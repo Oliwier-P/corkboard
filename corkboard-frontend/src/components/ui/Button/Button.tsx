@@ -7,7 +7,7 @@ type ButtonProps = {
     children?: React.ReactNode;
     className?: string;
     color?: "primary" | "secondary" | "orange" | "green" | "red" | 'outlined';
-    variant?: "rounded" | "square" | "text" | "icon"
+    variant?: "rounded" | "square" | "text" | "icon" | "tab"
     type?: "button" | "submit" | "reset"
     size?: "medium" | "small" | "large"
     icon?: IconNames

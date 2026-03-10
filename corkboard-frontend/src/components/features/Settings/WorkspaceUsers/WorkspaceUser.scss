@@ -1,15 +1,25 @@
-.workspace-users {
-  &__list-user {
-    border-top: 1px solid #383838;
+@use '../../../../global/colors' as colors;
 
-    .edit {
-      display: flex;
-      justify-content: end;
-      align-items: center;
-      letter-spacing: 2px;
-      color: #7B7B7B;
-      font-weight: bold;
-      cursor: pointer;
-    }
+.workspace-user {
+  display: grid;
+  align-items: center;
+  grid-template-columns: minmax(150px, 1fr) minmax(120px, 1fr) 80px;
+  font-size: 0.9rem;
+  border-bottom: 1px solid colors.$border-color;
+  padding: 1rem;
+
+  &:nth-child(odd) {
+    background-color: rgba(255, 255, 255, 0.01);
+  }
+
+  &:hover{
+    background-color: rgba(255, 255, 255, 0.02);
+  }
+
+  &__options {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 1rem;
   }
 }

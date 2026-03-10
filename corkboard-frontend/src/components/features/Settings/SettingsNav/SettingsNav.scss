@@ -1,24 +1,29 @@
-.settings-nav {
-  width: 220px;
-  height: 100vh;
+@use '../../../../global/colors' as colors;
 
-  background-color: #0A0A0A;
+.settings-nav {
+  width: 180px;
+  height: 100vh;
+  background-color: colors.$primary-bg;
   border-right: 1px solid rgba(#fff, 0.05);
+  padding: 0.8rem 0.4rem;
 
   &__title {
-    padding-left: 1rem;
     font-weight: normal;
     color: #fff;
   }
 
   &__section {
     width: 100%;
+    margin-top: 1rem;
   }
 
   &__sub-title {
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: normal;
-    padding-left: 1rem;
+
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+
     color: #646464;
   }
 
@@ -29,24 +34,41 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 0.2rem;
+  }
+
+  &__tab {
+    display: flex;
+    align-items: center;
     gap: 0.5rem;
 
-    a {
-      text-decoration: none;
-      width: 90%;
-      font-size: 1.3rem;
-      font-weight: 500;
-      box-sizing: border-box;
-      padding-left: 1rem;
-      color: #fff;
+    text-decoration: none;
+    width: 100%;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+    padding-left: 0.6rem;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+
+    color: rgba(255, 255, 255, 0.4);
+    border-radius: 0.4rem;
+
+    .icon {
+      width: 1.5rem;
     }
 
-    .active {
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    &.active {
       background-color: #122B4C;
       color: #6BC1FF;
-      border-radius: 0.6rem;
-    }
 
+      &:hover {
+        background-color: #173761;
+      }
+    }
   }
 }
 
