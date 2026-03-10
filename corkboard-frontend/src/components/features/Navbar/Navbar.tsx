@@ -9,6 +9,7 @@ import { Button } from '../../ui/Button/Button.tsx';
 import { api } from '../../../api/api.ts';
 import Modal from '../../ui/Modal/Modal.tsx';
 import type { WorkspaceType } from '../../../types/WorkspaceType.ts';
+import { useWorkspaceStore } from '../../../store/workspaceStore.ts';
 
 export const Navbar = () => {
   const { user } = useAuth();
@@ -17,6 +18,8 @@ export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [showWorkspaceForm, setShowWorkspaceForm] = useState<boolean>(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const workspace = useWorkspaceStore((state) => state.workspace);
+  const setWorkspace = useWorkspaceStore((state) => state.setWorkspace);
 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
@@ -52,6 +55,15 @@ export const Navbar = () => {
   useEffect(() => {
     api.get('/workspaces').then((res) => {
       setWorkspaces(res.data);
+
+      const storageId = localStorage.getItem('workspace_id');
+
+      if (!storageId) {
+        localStorage.setItem('workspace_id', workspaces[0].id.toString());
+        setWorkspace(res.data[0]);
+      } else {
+        setWorkspace(res.data.find((w: WorkspaceType) => w.id.toString() == storageId) ?? workspaces[0]);
+      }
     });
   }, []);
 
@@ -72,7 +84,7 @@ export const Navbar = () => {
         </Modal>
       )}
 
-      {workspaces.length > 0 && <Workspace name={workspaces[0].name} onClick={toggleMenu} />}
+      {workspace && workspaces.length > 0 && <Workspace name={workspace.name} onClick={toggleMenu} />}
       {isMenuOpen && workspaces.length > 0 && (
         <div ref={menuRef}>
           <WorkspaceMenu workspaces={workspaces} onClickCreate={() => setShowWorkspaceForm(true)} />

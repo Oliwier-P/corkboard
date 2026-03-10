@@ -2,6 +2,7 @@ import './WorkspaceMenu.scss';
 import { WorkspaceMenuItem } from './WorkspaceMenuItem.tsx';
 import type { WorkspaceType } from '../../../types/WorkspaceType.ts';
 import { Link } from 'react-router-dom';
+import { useWorkspaceStore } from '../../../store/workspaceStore.ts';
 
 type WorkspaceMenuProps = {
   workspaces: WorkspaceType[];
@@ -9,15 +10,15 @@ type WorkspaceMenuProps = {
 };
 
 export const WorkspaceMenu = ({ workspaces, onClickCreate }: WorkspaceMenuProps) => {
-  const currentWorkspace = workspaces[0];
+  const workspace = useWorkspaceStore((state) => state.workspace);
 
   return (
     <div className="workspace-menu">
       <div className="workspace-menu__header">
-        <div className="workspace-menu__logo">{!currentWorkspace || !currentWorkspace.logo ? currentWorkspace!.name[0].toUpperCase() : 'Logo'}</div>
+        <div className="workspace-menu__logo">{workspace && (!workspace || !workspace.logo) ? workspace!.name[0].toUpperCase() : 'Logo'}</div>
 
         <div className="workspace-menu__info">
-          <span className="workspace-menu__info-name">{currentWorkspace!.name}</span>
+          <span className="workspace-menu__info-name">{workspace && workspace.name}</span>
           <span className="workspace-menu__info-members">2 members</span>
         </div>
       </div>
