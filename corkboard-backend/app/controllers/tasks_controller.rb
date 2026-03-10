@@ -44,6 +44,20 @@ class TasksController < ApplicationController
     render json: {}, status: :created
   end
 
+  def destroy
+    task = Task.find(params[:id])
+    task.destroy!
+    render json: {}, status: :ok
+  end
+
+  def move_to_next_release
+    task = Task.find(params[:id])
+    next_release = task.release.next_release
+    if next_release
+      task.update!(release_id: next_release.id)
+    end
+  end
+
   def tasks_params
     params.require(:task).permit(:name, :description, :release_id, :status, :order)
   end

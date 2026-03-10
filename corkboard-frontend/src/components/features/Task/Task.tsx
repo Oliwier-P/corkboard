@@ -27,6 +27,8 @@ export const Task = memo(({taskId}: TaskProps) => {
 
     const task = useReleaseBoardStore(state => state.tasks[taskId])
     const updateTask = useReleaseBoardStore(state => state.updateTask)
+    const deleteTask = useReleaseBoardStore(state => state.deleteTask)
+    const moveToNextRelease = useReleaseBoardStore(state => state.moveTaskToNextRelease)
 
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
@@ -81,7 +83,7 @@ export const Task = memo(({taskId}: TaskProps) => {
             type: "button",
             label: "Move To Next Release",
             icon: "boxArrowUp",
-            onClick: () => console.log("move to backlog")
+            onClick: () => moveToNextRelease(taskId)
         },
         {
             type: "button",
@@ -97,9 +99,9 @@ export const Task = memo(({taskId}: TaskProps) => {
             label: "Delete",
             color: "red",
             icon: "trash",
-            onClick: () => console.log("test")
+            onClick: () => deleteTask(taskId)
         }
-    ]), [])
+    ]), [deleteTask, moveToNextRelease, taskId])
 
     return (
         <ContextMenu items={contextMenuOptions()}>
