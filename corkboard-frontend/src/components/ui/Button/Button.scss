@@ -26,6 +26,16 @@
   cursor: pointer;
   user-select: none;
 
+  &__content{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__icon{
+    width: 2rem;
+  }
+
   &:hover {
     scale: 1.02;
   }
@@ -82,16 +92,31 @@
   &--outlined {
     background: none;
     border: 1px solid #383838;
-    color: #383838;
+    color: #4a4a4a;
     min-width: auto;
     padding: 0;
   }
 
+  // == SIZES == //
   &--small {
     padding: 2px 8px;
     font-size: 12px;
     min-width: fit-content;
+
+    .icon{
+      width: 1.25rem;
+    }
   }
+
+  &--medium{
+    padding: 4px 16px;
+  }
+
+  &--large{
+    padding: 8px;
+  }
+
+  // == variant == //
 
   &--square {
     border-radius: 8px;
@@ -125,16 +150,15 @@
     align-items: center;
     min-width: auto;
     background: none;
-    width: 1.5rem;
     border-radius: 0.5rem;
     padding: 2px;
 
-    color: rgba(255, 255, 255, 0.2);
+    color: #4a4a4a;
 
     &:hover {
       scale: 1;
       background: rgba(255, 255, 255, 0.1);
-      color: rgba(255, 255, 255, 0.3);
+      color: #5a5a5a;
     }
   }
 }

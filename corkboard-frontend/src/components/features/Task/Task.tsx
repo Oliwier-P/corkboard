@@ -1,7 +1,6 @@
 import "./Task.scss"
 import {UserSelect} from "../../ui/UserSelect/UserSelect.tsx";
 import {Button} from "../../ui/Button/Button.tsx";
-import {Icon} from "../../ui/Icons/Icon.tsx";
 import {EditableText} from "../../ui/EditableText/EditableText.tsx";
 import {useReleaseBoardStore} from "../../../store/releaseBoardStore.ts";
 import {memo, useCallback, useEffect, useRef, useState} from "react";
@@ -108,15 +107,9 @@ export const Task = memo(({taskId}: TaskProps) => {
             <div className={ClassNames("task", {ghost: isDragging})} ref={ref}>
                 {!isEditing && (
                     <div className="task__options">
-                        <Button variant="icon" onClick={() => setIsEditing(true)}>
-                            <Icon icon="edit"/>
-                        </Button>
-                        <Button variant="icon">
-                            <Icon icon="exclamationMark"/>
-                        </Button>
-                        <Button variant="icon">
-                            <Icon icon="dots"/>
-                        </Button>
+                        <Button variant="icon" size="small" icon="edit" onClick={() => setIsEditing(true)}/>
+                    <Button variant="icon" size="small" icon="exclamationMark"/>
+                    <Button variant="icon" size="small" icon="dots"/>
                     </div>
                 )}
                 <form className="task__header" ref={headerRef} onSubmit={handleSubmit(onSubmit)}>

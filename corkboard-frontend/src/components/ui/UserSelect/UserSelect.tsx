@@ -3,7 +3,7 @@ import {Button} from "../Button/Button.tsx";
 
 export const UserSelect = () => {
     return (
-        <Button color="outlined">
+        <Button color="outlined" variant="icon">
             <Icon icon="userCircle" className="task__user"/>
         </Button>
     )

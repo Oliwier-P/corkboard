@@ -32,6 +32,10 @@
 
     min-width: 20rem;
     max-width: 40rem;
+
+    .labeled-input {
+      width: 100%;
+    }
   }
 
   &__backdrop {
