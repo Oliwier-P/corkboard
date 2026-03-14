@@ -49,7 +49,7 @@ export const Navbar = () => {
         localStorage.setItem('workspace_id', res.data[0].id.toString());
         setWorkspace(res.data[0]);
       } else {
-        setWorkspace(res.data.find((w: WorkspaceType) => w.id.toString() == storageId) ?? workspaces[0]);
+        setWorkspace(res.data.find((w: WorkspaceType) => w.id.toString() == storageId) ?? res.data[0]);
       }
     });
   }, []);
