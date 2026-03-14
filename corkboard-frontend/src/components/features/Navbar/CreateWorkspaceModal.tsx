@@ -30,7 +30,7 @@ export const CreateWorkspaceModal = ({onClose}: CreateWorkspaceModalProps) => {
                               register={register("name", {required: "You have to enter a workspace name!"})}/>
             </Modal.Body>
             <Modal.Footer>
-                <Button color="primary" onClick={() => handleSubmit(onSubmit)}>Create</Button>
+                <Button color="primary" onClick={handleSubmit(onSubmit)}>Create</Button>
                 <Button color="secondary" onClick={onClose}>Cancel</Button>
             </Modal.Footer>
         </Modal>

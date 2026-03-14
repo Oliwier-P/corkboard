@@ -52,7 +52,7 @@ export const Navbar = () => {
                 setWorkspace(res.data.find((w: WorkspaceType) => w.id.toString() == storageId) ?? workspaces[0]);
             }
         });
-    }, [setWorkspace, workspaces]);
+    }, []);
 
     return (
         <div className="navbar">
