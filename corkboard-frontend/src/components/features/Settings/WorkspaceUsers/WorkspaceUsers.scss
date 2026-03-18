@@ -23,7 +23,7 @@
     display: grid;
     grid-template-columns: minmax(150px, 1fr) minmax(120px, 1fr) 80px;
 
-    border-bottom: 1px solid #383838;
+    border-bottom: 1px solid colors.$border-color;
     color: #383838;
     font-size: 0.9rem;
 

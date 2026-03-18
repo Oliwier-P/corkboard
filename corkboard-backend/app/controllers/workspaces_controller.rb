@@ -20,4 +20,8 @@ class WorkspacesController < ApplicationController
   def create
     Workspace.create(name: params[:name], owner_id: current_user.id)
   end
+
+  def collaborators
+    @users = Workspace.find(params[:id]).users
+  end
 end

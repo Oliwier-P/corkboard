@@ -1,0 +1,15 @@
+@use '../../../global/colors' as colors;
+
+.user-avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: colors.$primary-color;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.2rem;
+
+  font-size: 1rem;
+  text-align: center;
+}

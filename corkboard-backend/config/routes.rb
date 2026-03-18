@@ -25,11 +25,14 @@ Rails.application.routes.draw do
 
   resources :tasks do
     member do
-      put "move_to_next_release"
+      put :move_to_next_release
     end
   end
 
   resources :workspaces do
+    member do
+      get :collaborators
+    end
     post :switch, on: :collection
 
     resources :releases

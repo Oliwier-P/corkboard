@@ -1,5 +1,4 @@
 import "./Release.scss"
-import {Icon} from "../../components/ui/Icons/Icon.tsx";
 import {Button} from "../../components/ui/Button/Button.tsx";
 import {useReleasesStore} from "../../store/releasesStore.ts";
 import {ClassNames} from "../../global/utils.ts";
@@ -22,21 +21,20 @@ export const Release = ({release, onDeleteClick, onEditClick}: ReleasesListItemP
                 {release.name}
             </div>
 
-            <div className={ClassNames("release__badge", {current: currentReleaseId === release.id, next: nextReleaseId === release.id})}>
+            <div className={ClassNames("release__badge", {
+                current: currentReleaseId === release.id,
+                next: nextReleaseId === release.id
+            })}>
                 {currentReleaseId === release.id && "Current"}
                 {nextReleaseId === release.id && "Next"}
             </div>
 
             <div className="release__options">
-                <Button variant="icon" onClick={onEditClick}>
-                    <Icon icon="edit"/>
-                </Button>
-                <Button variant="icon" onClick={onDeleteClick}>
-                    <Icon icon="trash"/>
-                </Button>
+                <Button variant="icon" icon="edit" size="small" onClick={onEditClick}/>
+                <Button variant="icon" icon="trash" size="small" onClick={onDeleteClick}/>
             </div>
 
-            <Progress maxValue={release.progress.tasks} value={release.progress.accepted_tasks} />
+            <Progress maxValue={release.progress.tasks} value={release.progress.accepted_tasks}/>
         </div>
     )
 }

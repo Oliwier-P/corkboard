@@ -10,6 +10,7 @@ import type { WorkspaceType } from '../../../types/WorkspaceType.ts';
 import { useWorkspaceStore } from '../../../store/workspaceStore.ts';
 import { CreateWorkspaceModal } from './CreateWorkspaceModal.tsx';
 import { useWorkspaceMenuStore } from '../../../store/workspaceMenuStore.ts';
+import {UserAvatar} from "../../ui/UserAvatar/UserAvatar.tsx";
 
 export const Navbar = () => {
   const { user } = useAuth();
@@ -80,7 +81,8 @@ export const Navbar = () => {
 
       {user && (
         <div className="navbar__user">
-          <span>{user.username}</span>
+          <UserAvatar username={user.username}/>
+                    <span>{user.username}</span>
         </div>
       )}
     </div>
