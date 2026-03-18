@@ -3,18 +3,29 @@ import { WorkspaceMenuItem } from './WorkspaceMenuItem.tsx';
 import type { WorkspaceType } from '../../../types/WorkspaceType.ts';
 import { useNavigate } from 'react-router-dom';
 import { useWorkspaceStore } from '../../../store/workspaceStore.ts';
-import * as React from 'react';
 import { Button } from '../../ui/Button/Button.tsx';
+import { forwardRef } from 'react';
+import { useWorkspaceMenuStore } from '../../../store/workspaceMenuStore.ts';
 
 type WorkspaceMenuProps = {
   workspaces: WorkspaceType[];
-  onClickCreate: () => void;
-  ref: React.Ref<HTMLDivElement>;
+  handleWorkspaceCreate: () => void;
 };
 
-export const WorkspaceMenu = ({ workspaces, onClickCreate, ref }: WorkspaceMenuProps) => {
+export const WorkspaceMenu = forwardRef<HTMLDivElement, WorkspaceMenuProps>(({ workspaces, handleWorkspaceCreate }, ref) => {
   const workspace = useWorkspaceStore((state) => state.workspace);
+  const setMenuOpen = useWorkspaceMenuStore((state) => state.setOpen);
   const navigate = useNavigate();
+
+  const handleSettings = () => {
+    setMenuOpen(false);
+    navigate(`/settings/workspace/${workspace?.id}/general`);
+  };
+
+  const handleUsers = () => {
+    setMenuOpen(false);
+    navigate(`/settings/workspace/${workspace?.id}/users`);
+  };
 
   return (
     <div className="workspace-menu" ref={ref}>
@@ -28,10 +39,10 @@ export const WorkspaceMenu = ({ workspaces, onClickCreate, ref }: WorkspaceMenuP
       </div>
 
       <div className="workspace-menu__buttons">
-        <Button color="outlined" size="medium" icon="gear" onClick={() => navigate(`/settings/workspace/${workspace?.id}/general`)}>
+        <Button color="outlined" size="medium" icon="gear" onClick={handleSettings}>
           Settings
         </Button>
-        <Button color="outlined" size="medium" icon="users" onClick={() => navigate(`/settings/workspace/${workspace?.id}/users`)}>
+        <Button color="outlined" size="medium" icon="users" onClick={handleUsers}>
           People
         </Button>
       </div>
@@ -50,9 +61,9 @@ export const WorkspaceMenu = ({ workspaces, onClickCreate, ref }: WorkspaceMenuP
         )}
       </div>
 
-      <Button color="outlined" size="large" onClick={onClickCreate}>
+      <Button color="outlined" size="large" onClick={handleWorkspaceCreate}>
         + Create Workspace
       </Button>
     </div>
   );
-};
+});

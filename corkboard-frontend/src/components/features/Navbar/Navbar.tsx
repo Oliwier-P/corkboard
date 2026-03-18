@@ -9,24 +9,30 @@ import { api } from '../../../api/api.ts';
 import type { WorkspaceType } from '../../../types/WorkspaceType.ts';
 import { useWorkspaceStore } from '../../../store/workspaceStore.ts';
 import { CreateWorkspaceModal } from './CreateWorkspaceModal.tsx';
+import { useWorkspaceMenuStore } from '../../../store/workspaceMenuStore.ts';
 
 export const Navbar = () => {
   const { user } = useAuth();
   const [workspaces, setWorkspaces] = useState<WorkspaceType[]>([]);
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [showWorkspaceForm, setShowWorkspaceForm] = useState<boolean>(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const workspaceRef = useRef<HTMLDivElement>(null);
   const workspace = useWorkspaceStore((state) => state.workspace);
   const setWorkspace = useWorkspaceStore((state) => state.setWorkspace);
+  const isMenuOpen = useWorkspaceMenuStore((store) => store.isOpen);
+  const setMenuOpen = useWorkspaceMenuStore((store) => store.setOpen);
 
-  const toggleMenu = () => {
-    setIsMenuOpen((prev) => !prev);
+  const handleWorkspaceCreate = () => {
+    setMenuOpen(false);
+    setShowWorkspaceForm(true);
   };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsMenuOpen(false);
+      const target = event.target as Node;
+
+      if (menuRef.current && workspaceRef.current && !menuRef.current.contains(target) && !workspaceRef.current.contains(target)) {
+        setMenuOpen(false);
       }
     };
 
@@ -37,7 +43,7 @@ export const Navbar = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isMenuOpen]);
+  }, [isMenuOpen, setMenuOpen]);
 
   useEffect(() => {
     api.get('/workspaces').then((res) => {
@@ -63,9 +69,9 @@ export const Navbar = () => {
 
       {showWorkspaceForm && <CreateWorkspaceModal onClose={() => setShowWorkspaceForm(false)} />}
 
-      {workspace && workspaces.length > 0 && <Workspace name={workspace.name} onClick={toggleMenu} />}
+      {workspace && workspaces.length > 0 && <Workspace ref={workspaceRef} name={workspace.name} />}
       {isMenuOpen && workspaces.length > 0 && (
-        <WorkspaceMenu ref={menuRef} workspaces={workspaces.filter((w) => w.id !== workspace?.id)} onClickCreate={() => setShowWorkspaceForm(true)} />
+        <WorkspaceMenu ref={menuRef} workspaces={workspaces.filter((w) => w.id !== workspace?.id)} handleWorkspaceCreate={handleWorkspaceCreate} />
       )}
 
       <NavbarItem icon="box" label="Current Release" path="/home" />
