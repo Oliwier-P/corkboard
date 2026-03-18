@@ -11,7 +11,7 @@ export const WorkspaceMenuItem = ({ id, name }: WorkspaceMenuItemProps) => {
 
   const handleSwitchWorkspace = () => {
     localStorage.setItem('workspace_id', id.toString());
-    setWorkspace({ id, name, logo: '' });
+    setWorkspace({ id, name, logo: '', owner_id: 1 });
   };
 
   return (

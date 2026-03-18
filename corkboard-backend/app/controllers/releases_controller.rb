@@ -2,8 +2,8 @@ class ReleasesController < ApplicationController
   before_action :set_release, only: [:board]
 
   def index
-    workspace = Workspace.find_by(owner_id: current_user.id)
-    @releases = workspace&.releases&.order("releases.order ASC") || []
+    workspace = Workspace.find(params[:workspace_id])
+    @releases = workspace.releases&.order("releases.order ASC") || []
     @current_release = @releases.find_by(current: true)
   end
 

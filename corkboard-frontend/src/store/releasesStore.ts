@@ -7,7 +7,7 @@ interface ReleasesStore {
     currentReleaseId: number | null
     nextReleaseId: number | null
 
-    fetchReleases: () => void
+    fetchReleases: (workspace_id: number) => void
     addRelease: (name: string) => void
     updateRelease: (id: number, name: string, callback?: () => void) => void
     deleteRelease: (id: number, callback?: () => void) => void
@@ -18,8 +18,8 @@ export const useReleasesStore = create<ReleasesStore>((set) => ({
     currentReleaseId: null,
     nextReleaseId: null,
 
-    fetchReleases: () => {
-        api.get("/releases").then((res) => {
+    fetchReleases: (workspace_id: number) => {
+        api.get(`/workspaces/${workspace_id}/releases`).then((res) => {
             set({
                 releases: res.data.releases,
                 currentReleaseId: res.data.current_release_id,

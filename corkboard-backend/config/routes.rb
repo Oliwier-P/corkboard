@@ -31,5 +31,7 @@ Rails.application.routes.draw do
 
   resources :workspaces do
     post :switch, on: :collection
+
+    resources :releases
   end
 end

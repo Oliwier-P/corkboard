@@ -7,6 +7,7 @@ import {Button} from "../../components/ui/Button/Button.tsx";
 import type {ReleaseType} from "../../types/ReleaseType.ts";
 import {DeleteReleaseModal} from "./DeleteReleaseModal.tsx";
 import {EditReleaseModal} from "./EditReleaseModal.tsx";
+import {useWorkspaceStore} from "../../store/workspaceStore.ts";
 
 export const ReleasesPage = () => {
     const [showCreateReleaseModal, setShowCreateReleaseModal] = useState<boolean>(false)
@@ -16,7 +17,8 @@ export const ReleasesPage = () => {
     const addRelease = useReleasesStore(state => state.addRelease)
     const deleteRelease = useReleasesStore(state => state.deleteRelease)
     const updateRelease = useReleasesStore(state => state.updateRelease)
-    const fetchRelease = useReleasesStore(state => state.fetchReleases)
+    const fetchReleases = useReleasesStore(state => state.fetchReleases)
+    const workspaceId = useWorkspaceStore(state => state.workspace?.id);
 
     const handleSave = (name: string) => {
         addRelease(name)
@@ -34,8 +36,10 @@ export const ReleasesPage = () => {
     }
 
     useEffect(() => {
-        fetchRelease()
-    }, [fetchRelease]);
+      if (!workspaceId) return;
+
+      fetchReleases(workspaceId);
+    }, [fetchReleases, workspaceId]);
 
     return (
         <div className="releases">
