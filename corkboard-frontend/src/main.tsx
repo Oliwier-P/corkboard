@@ -22,7 +22,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route
-            path="/home"
+            path="/workspaces/:workspaceId/current_release"
             element={
               <ProtectedRoute>
                 <CurrentReleasePage />
@@ -30,7 +30,7 @@ createRoot(document.getElementById('root')!).render(
             }
           />
           <Route
-            path="/releases"
+            path="/workspaces/:workspaceId/releases"
             element={
               <ProtectedRoute>
                 <ReleasesPage />

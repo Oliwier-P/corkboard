@@ -17,7 +17,7 @@ export const WorkspaceMenuItem = ({ id, name }: WorkspaceMenuItemProps) => {
     localStorage.setItem('workspace_id', id.toString());
     setWorkspace({ id, name, logo: '', owner_id: 1 });
     setMenuOpen(false);
-    navigate('/home');
+    navigate(`/workspaces/${id}/current_release`);
   };
 
   return (

@@ -18,7 +18,7 @@ export const WorkspaceGeneral = () => {
 
   const handleDeleteWorkspace = () => {
     api.delete(`/workspaces/${workspace?.id}`);
-    navigate('/home');
+    navigate(`/workspaces/${workspace?.id}/current_release`);
   };
 
   return (

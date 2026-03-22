@@ -10,7 +10,7 @@ import type { WorkspaceType } from '../../../types/WorkspaceType.ts';
 import { useWorkspaceStore } from '../../../store/workspaceStore.ts';
 import { CreateWorkspaceModal } from './CreateWorkspaceModal.tsx';
 import { useWorkspaceMenuStore } from '../../../store/workspaceMenuStore.ts';
-import {UserAvatar} from "../../ui/UserAvatar/UserAvatar.tsx";
+import { UserAvatar } from '../../ui/UserAvatar/UserAvatar.tsx';
 
 export const Navbar = () => {
   const { user } = useAuth();
@@ -75,14 +75,14 @@ export const Navbar = () => {
         <WorkspaceMenu ref={menuRef} workspaces={workspaces.filter((w) => w.id !== workspace?.id)} handleWorkspaceCreate={handleWorkspaceCreate} />
       )}
 
-      <NavbarItem icon="box" label="Current Release" path="/home" />
-      <NavbarItem icon="rows" label="Backlog" path="/backlog" />
-      <NavbarItem icon="bookmarks" label="Releases" path="/releases" />
+      <NavbarItem icon="box" label="Current Release" path={`/workspaces/${workspace?.id}/current_release`} />
+      <NavbarItem icon="rows" label="Backlog" path={`/workspaces/${workspace?.id}/backlog`} />
+      <NavbarItem icon="bookmarks" label="Releases" path={`/workspaces/${workspace?.id}/releases`} />
 
       {user && (
         <div className="navbar__user">
-          <UserAvatar username={user.username}/>
-                    <span>{user.username}</span>
+          <UserAvatar username={user.username} />
+          <span>{user.username}</span>
         </div>
       )}
     </div>

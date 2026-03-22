@@ -18,9 +18,6 @@ Rails.application.routes.draw do
     member do
       get "board"
     end
-    collection do
-      get "current"
-    end
   end
 
   resources :tasks do
@@ -32,9 +29,9 @@ Rails.application.routes.draw do
   resources :workspaces do
     member do
       get :collaborators
+      get :current_release
+      get :releases
     end
     post :switch, on: :collection
-
-    resources :releases
   end
 end
