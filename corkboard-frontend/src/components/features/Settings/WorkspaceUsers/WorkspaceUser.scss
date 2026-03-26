@@ -3,7 +3,8 @@
 .workspace-user {
   display: grid;
   align-items: center;
-  grid-template-columns: minmax(150px, 1fr) minmax(120px, 1fr) 80px;
+  grid-template-columns: auto minmax(150px, 1fr) minmax(120px, 1fr) auto 80px;
+  gap: 1rem;
   font-size: 0.9rem;
   border-bottom: 1px solid colors.$border-color;
   padding: 1rem;
@@ -12,14 +13,28 @@
     background-color: rgba(255, 255, 255, 0.01);
   }
 
-  &:hover{
+  &:hover {
     background-color: rgba(255, 255, 255, 0.02);
+  }
+
+  &__invited-badge {
+    background-color: colors.$primary-color;
+    padding: 0 8px;
+    border-radius: 4px;
+
+    font-weight: bold;
+    user-select: none;
   }
 
   &__options {
     display: flex;
     justify-content: start;
+    flex-direction: row;
     align-items: center;
     gap: 1rem;
+  }
+
+  &--invited {
+    opacity: 0.4;
   }
 }

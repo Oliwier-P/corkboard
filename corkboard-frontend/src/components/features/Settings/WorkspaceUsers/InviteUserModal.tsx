@@ -5,9 +5,11 @@ import * as yup from "yup"
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {ErrorsDisplay} from "../../../ui/ErrorsDisplay/ErrorsDisplay.tsx";
+import {api} from "../../../../api/api.ts";
 
 type InviteUserModalProps = {
     onClose: () => void;
+    workspaceId: number
 }
 
 const schema = yup.object({
@@ -16,13 +18,12 @@ const schema = yup.object({
 
 type FormData = yup.InferType<typeof schema>
 
-export const InviteUserModal = ({onClose}: InviteUserModalProps) => {
+export const InviteUserModal = ({onClose, workspaceId}: InviteUserModalProps) => {
 
     const {register, handleSubmit, formState: {errors}} = useForm({resolver: yupResolver(schema)})
 
     const onSubmit = (data: FormData) => {
-        console.log(data)
-        console.log(data.username)
+        api.post(`workspaces/${workspaceId}/invite_user`, {username: data.username})
     }
 
     return (

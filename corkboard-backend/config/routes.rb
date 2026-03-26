@@ -31,6 +31,7 @@ Rails.application.routes.draw do
       get :collaborators
       get :current_release
       get :releases
+      post :invite_user
     end
     post :switch, on: :collection
   end

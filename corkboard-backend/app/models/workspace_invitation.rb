@@ -1,0 +1,2 @@
+class WorkspaceInvitation < ApplicationRecord
+end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_15_135550) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_24_000937) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -51,6 +51,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_15_135550) do
     t.bigint "workspace_id", null: false
     t.index ["user_id", "workspace_id"], name: "index_users_workspaces_on_user_id_and_workspace_id"
     t.index ["workspace_id", "user_id"], name: "index_users_workspaces_on_workspace_id_and_user_id"
+  end
+
+  create_table "workspace_invitations", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "invited_by_user_id"
+    t.integer "invited_user_id"
+    t.string "status"
+    t.datetime "updated_at", null: false
+    t.integer "workspace_id"
   end
 
   create_table "workspaces", force: :cascade do |t|

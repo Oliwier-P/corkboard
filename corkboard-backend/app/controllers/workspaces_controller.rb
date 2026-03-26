@@ -23,6 +23,16 @@ class WorkspacesController < ApplicationController
 
   def collaborators
     @users = Workspace.find(params[:id]).users
+    invited_user_ids = WorkspaceInvitation.where(workspace_id: params[:id]).pluck(:invited_user_id)
+    @invited_users = User.where(id: invited_user_ids)
+  end
+
+  def invite_user
+    @user = User.find_by(username: params[:username])
+
+    return render json: {error: "Username not found!"} if @user.nil?
+
+    WorkspaceInvitation.create!(invited_user_id: @user&.id, workspace_id: params[:id], invited_by_user_id: current_user.id)
   end
 
   def current_release
