@@ -35,6 +35,10 @@ class WorkspacesController < ApplicationController
     WorkspaceInvitation.create!(invited_user_id: @user&.id, workspace_id: params[:id], invited_by_user_id: current_user.id)
   end
 
+  def invitation
+    @invitation = WorkspaceInvitation.where(invited_user_id: current_user.id)
+  end
+
   def current_release
     @current_release = Workspace.find(params[:id]).releases.find_by(current: true)
   end

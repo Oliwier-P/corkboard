@@ -11,6 +11,7 @@ type ButtonProps = {
     type?: "button" | "submit" | "reset"
     size?: "medium" | "small" | "large"
     icon?: IconNames
+    ref?: React.Ref<HTMLButtonElement>
 }
 
 export const Button = ({
@@ -21,10 +22,11 @@ export const Button = ({
                            variant = "square",
                            type,
                            size = "medium",
-                           icon
+                           icon,
+                           ref
                        }: ButtonProps) => {
     return (
-        <button className={ClassNames("button", className, [color, variant, size])} onClick={onClick && onClick}
+        <button ref={ref} className={ClassNames("button", className, [color, variant, size])} onClick={onClick && onClick}
                 type={type}>
             <span className="button__content">
                 {icon && <Icon icon={icon} className="button__icon"/>}
