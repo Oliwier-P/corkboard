@@ -1,4 +1,7 @@
 json.array! @invitation do |invitation|
   json.invited_by invitation.user.username
-  json.workspace invitation.workspace.name
+  json.workspace do
+    workspace = invitation.workspace
+    json.extract! workspace, :id, :name
+  end
 end

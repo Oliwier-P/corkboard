@@ -32,6 +32,7 @@ Rails.application.routes.draw do
       get :current_release
       get :releases
       post :invite_user
+      post :accept_invitation
     end
 
     collection do

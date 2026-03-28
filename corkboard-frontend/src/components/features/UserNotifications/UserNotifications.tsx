@@ -6,7 +6,10 @@ import {api} from "../../../api/api.ts";
 
 type invitationType = {
     invited_by: string
-    workspace: string
+    workspace: {
+        id: number
+        name: string
+    }
 }
 
 export const UserNotifications = () => {
@@ -38,6 +41,10 @@ export const UserNotifications = () => {
         };
     }, [showNotifications, setShowNotifications]);
 
+    const acceptInvitation = (invitationId: number) => {
+        api.post(`workspaces/${invitationId}/accept_invitation`)
+    }
+
     return (
         <>
             {showNotifications && (
@@ -49,11 +56,12 @@ export const UserNotifications = () => {
                     {invitations.map(invitation => (
                         <div className="user-notifications__notification">
                             <div className="user-notifications__message">
-                                {invitation.invited_by} invited you to {invitation.workspace}
+                                {invitation.invited_by} invited you to {invitation.workspace.name}
                             </div>
                             <div className='user-notifications__buttons'>
-                                <Button color="green" size="small">Accept</Button>
-                                <Button color="red" size="small">Decline</Button>
+                                <Button color="outlined" size="small"
+                                        onClick={() => acceptInvitation(invitation.workspace.id)}>Accept</Button>
+                                <Button color="outlined" size="small">Decline</Button>
                             </div>
                         </div>
                     ))}

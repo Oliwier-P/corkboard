@@ -1,6 +1,6 @@
 class WorkspacesController < ApplicationController
   def index
-    @workspaces = Workspace.all
+    @workspaces = current_user.workspaces
   end
 
   def show
@@ -30,13 +30,19 @@ class WorkspacesController < ApplicationController
   def invite_user
     @user = User.find_by(username: params[:username])
 
-    return render json: {error: "Username not found!"} if @user.nil?
+    return render json: { error: "Username not found!" } if @user.nil?
 
     WorkspaceInvitation.create!(invited_user_id: @user&.id, workspace_id: params[:id], invited_by_user_id: current_user.id)
   end
 
   def invitation
     @invitation = WorkspaceInvitation.where(invited_user_id: current_user.id)
+  end
+
+  def accept_invitation
+    invitation = WorkspaceInvitation.find_by(invited_user_id: current_user.id, workspace_id: params[:id])
+    invitation.destroy! if invitation
+    UsersWorkspaces.create!(workspace_id: params[:id], user_id: current_user.id)
   end
 
   def current_release
