@@ -34,7 +34,7 @@ export const Release = ({release, onDeleteClick, onEditClick}: ReleasesListItemP
                 <Button variant="icon" icon="trash" size="small" onClick={onDeleteClick}/>
             </div>
 
-            <Progress maxValue={release.progress.tasks} value={release.progress.accepted_tasks}/>
+            <Progress maxValue={release.progress?.tasks} value={release.progress?.accepted_tasks}/>
         </div>
     )
 }

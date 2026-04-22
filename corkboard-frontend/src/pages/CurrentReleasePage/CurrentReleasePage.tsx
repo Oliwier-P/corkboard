@@ -5,20 +5,27 @@ import {api} from '../../api/api.ts';
 import {ReleaseBoard} from '../../components/features/ReleaseBoard/ReleaseBoard.tsx';
 import type {ReleaseType} from '../../types/ReleaseType.ts';
 import {useWorkspaceStore} from '../../store/workspaceStore.ts';
+import {CreateReleaseModal} from "../ReleasesPage/CreateReleaseModal.tsx";
+import {useReleasesStore} from "../../store/releasesStore.ts";
 
 export const CurrentReleasePage = () => {
     const [release, setRelease] = useState<ReleaseType | null>(null);
     const workspaceId = useWorkspaceStore((state) => state.workspace?.id);
+    const [showCreateReleaseModal, setShowCreateReleaseModal] = useState(false)
+    const addRelease = useReleasesStore(state => state.addRelease)
 
     useEffect(() => {
         if (workspaceId) {
             api.get(`/workspaces/${workspaceId}/current_release`).then((res) => {
-                setRelease({
-                    ...res.data,
-                });
+                setRelease(res.data);
             });
         }
     }, [workspaceId]);
+
+    const handleCreateRelease = (name: string) => {
+        addRelease(name, workspaceId!, (release: ReleaseType) => setRelease(release))
+        setShowCreateReleaseModal(false)
+    }
 
     return (
         <div className="current-release">
@@ -42,7 +49,15 @@ export const CurrentReleasePage = () => {
                     </div>
                 </div>
                 {release && <ReleaseBoard releaseId={release.id}/>}
+                {!release && (
+                    <div className="current-release__no-active">
+                        <span>There is no active release</span>
+                        <Button onClick={() => setShowCreateReleaseModal(true)}>Create Release</Button>
+                    </div>
+                )}
             </div>
+
+            {showCreateReleaseModal && <CreateReleaseModal onSave={handleCreateRelease} onClose={() => setShowCreateReleaseModal(false)} />}
         </div>
     );
 };

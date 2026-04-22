@@ -21,7 +21,7 @@ export const ReleasesPage = () => {
     const workspaceId = useWorkspaceStore(state => state.workspace?.id);
 
     const handleSave = (name: string) => {
-        addRelease(name)
+        addRelease(name, workspaceId!)
         setShowCreateReleaseModal(false)
     }
 
@@ -60,8 +60,8 @@ export const ReleasesPage = () => {
                 </div>
             </div>
             {showCreateReleaseModal &&
-                <CreateReleaseModal onSave={handleSave} onClose={() => setShowCreateReleaseModal(false)}/>}
 
+                <CreateReleaseModal onSave={handleSave} onClose={() => setShowCreateReleaseModal(false)}/>}
             {releaseToDelete && (
                 <DeleteReleaseModal onClose={() => setReleaseToDelete(null)} releaseName={releaseToDelete.name}
                                     onDelete={() => handleDelete(releaseToDelete.id)}/>

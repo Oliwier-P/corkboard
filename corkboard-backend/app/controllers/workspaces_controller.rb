@@ -47,6 +47,8 @@ class WorkspacesController < ApplicationController
 
   def current_release
     @current_release = Workspace.find(params[:id]).releases.find_by(current: true)
+
+    render json: nil if @current_release.nil?
   end
 
   def releases

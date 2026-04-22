@@ -1,7 +1,8 @@
 @use '../../../global/colors' as colors;
 
 .user-notifications {
-  position: relative;
+  position: absolute;
+  right: 0.25rem;
 
   &__header {
     display: flex;
