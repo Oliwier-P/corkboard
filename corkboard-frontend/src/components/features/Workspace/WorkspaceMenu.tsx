@@ -33,10 +33,6 @@ export const WorkspaceMenu = forwardRef<HTMLDivElement, WorkspaceMenuProps>(({
 
     const groupedWorkspaces = _.groupBy(workspaces, 'owner.username')
 
-    console.log(workspaces)
-    console.log(groupedWorkspaces)
-    console.log(Object.keys(groupedWorkspaces).map(w => groupedWorkspaces[w]))
-
     return (
         <div className="workspace-menu" ref={ref}>
             <div className="workspace-menu__header">

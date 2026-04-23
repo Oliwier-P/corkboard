@@ -28,7 +28,7 @@ export const WorkspaceGeneral = () => {
         }
     })
 
-    const workspaceOwner = getValues('owner').id === user?.id;
+    const workspaceOwner = getValues('owner')?.id === user?.id;
 
     const handleDeleteWorkspace = () => {
         const workspaceId = getValues("id")

@@ -56,6 +56,10 @@ class WorkspacesController < ApplicationController
     render json: nil if @current_release.nil?
   end
 
+  def complete_release
+
+  end
+
   def releases
     workspace = Workspace.find(params[:id])
     @releases = workspace.releases&.order("releases.order ASC") || []

@@ -7,11 +7,13 @@ import type {ReleaseType} from '../../types/ReleaseType.ts';
 import {useWorkspaceStore} from '../../store/workspaceStore.ts';
 import {CreateReleaseModal} from "../ReleasesPage/CreateReleaseModal.tsx";
 import {useReleasesStore} from "../../store/releasesStore.ts";
+import {CompleteReleaseModal} from "./CompleteReleaseModal.tsx";
 
 export const CurrentReleasePage = () => {
     const [release, setRelease] = useState<ReleaseType | null>(null);
     const workspaceId = useWorkspaceStore((state) => state.workspace?.id);
     const [showCreateReleaseModal, setShowCreateReleaseModal] = useState(false)
+    const [showCompleteReleaseModal, setShowCompleteReleaseModal] = useState(false)
     const addRelease = useReleasesStore(state => state.addRelease)
 
     useEffect(() => {
@@ -25,6 +27,12 @@ export const CurrentReleasePage = () => {
     const handleCreateRelease = (name: string) => {
         addRelease(name, workspaceId!, (release: ReleaseType) => setRelease(release))
         setShowCreateReleaseModal(false)
+    }
+
+    const handleCompleteRelease = () => {
+        api.post(`/workspaces/${workspaceId}/complete_release`).then((res) => {
+            setRelease(res.data || null)
+        })
     }
 
     return (
@@ -42,7 +50,7 @@ export const CurrentReleasePage = () => {
                             </Button>
                         )}
                         {release && (
-                            <Button color="primary" size="small">
+                            <Button color="primary" size="small" onClick={() => setShowCompleteReleaseModal(true)}>
                                 Complete Release
                             </Button>
                         )}
@@ -58,6 +66,7 @@ export const CurrentReleasePage = () => {
             </div>
 
             {showCreateReleaseModal && <CreateReleaseModal onSave={handleCreateRelease} onClose={() => setShowCreateReleaseModal(false)} />}
+            {showCompleteReleaseModal && <CompleteReleaseModal onClose={() => setShowCompleteReleaseModal(false)} />}
         </div>
     );
 };

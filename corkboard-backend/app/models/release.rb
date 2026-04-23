@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: releases
+#
+#  id           :integer          not null, primary key
+#  name         :string           not null
+#  order        :integer          not null
+#  workspace_id :integer          not null
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  current      :boolean
+#
+
 class Release < ApplicationRecord
   belongs_to :workspace
   has_many :tasks
