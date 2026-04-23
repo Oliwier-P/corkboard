@@ -3,9 +3,10 @@ import {Button} from "../../components/ui/Button/Button.tsx";
 
 type CompleteReleaseModal = {
     onClose: () => void
+    onComplete: () => void
 }
 
-export const CompleteReleaseModal = ({onClose}: CompleteReleaseModal) => {
+export const CompleteReleaseModal = ({onComplete, onClose}: CompleteReleaseModal) => {
     return (
         <Modal onClose={onClose}>
             <Modal.Header>Complete Release</Modal.Header>
@@ -13,7 +14,7 @@ export const CompleteReleaseModal = ({onClose}: CompleteReleaseModal) => {
                 <span>Are you sure you want to complete Current Release?</span>
             </Modal.Body>
             <Modal.Footer>
-                <Button>Complete Release</Button>
+                <Button onClick={onComplete}>Complete Release</Button>
                 <Button color="red" onClick={onClose}>Cancel</Button>
             </Modal.Footer>
         </Modal>

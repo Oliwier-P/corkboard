@@ -2,13 +2,13 @@ class ReleasesController < ApplicationController
   before_action :set_release, only: [:board]
 
   def create
-    workspace = Workspace.find_by(owner_id: current_user.id, id: params[:workspace_id])
+    workspace = current_user.workspaces.find_by(id: params[:workspace_id])
     if workspace
       releases_count = workspace.releases.count
       current_release = workspace.releases.find_by(current: true)
 
-      @release = workspace.releases.create!(
-        release_params.merge(order: releases_count + 1, current: !current_release)
+      @release = Release.create!(
+        release_params.merge(order: releases_count + 1, current: !current_release, workspace_id: workspace.id)
       )
     end
   end

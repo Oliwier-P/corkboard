@@ -9,11 +9,14 @@
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  current      :boolean
+#  completed    :boolean
 #
 
 class Release < ApplicationRecord
   belongs_to :workspace
   has_many :tasks
+
+  before_save :defaults
 
   def next_release
     Release.find_by(workspace_id: self.workspace_id, order: self.order + 1)
@@ -28,5 +31,9 @@ class Release < ApplicationRecord
     else
       nil
     end
+  end
+
+  def defaults
+    self.completed ||= false
   end
 end

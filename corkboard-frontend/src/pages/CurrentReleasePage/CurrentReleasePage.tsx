@@ -32,6 +32,7 @@ export const CurrentReleasePage = () => {
     const handleCompleteRelease = () => {
         api.post(`/workspaces/${workspaceId}/complete_release`).then((res) => {
             setRelease(res.data || null)
+            setShowCompleteReleaseModal(false)
         })
     }
 
@@ -66,7 +67,7 @@ export const CurrentReleasePage = () => {
             </div>
 
             {showCreateReleaseModal && <CreateReleaseModal onSave={handleCreateRelease} onClose={() => setShowCreateReleaseModal(false)} />}
-            {showCompleteReleaseModal && <CompleteReleaseModal onClose={() => setShowCompleteReleaseModal(false)} />}
+            {showCompleteReleaseModal && <CompleteReleaseModal onComplete={handleCompleteRelease} onClose={() => setShowCompleteReleaseModal(false)} />}
         </div>
     );
 };

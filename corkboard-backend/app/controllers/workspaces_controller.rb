@@ -57,7 +57,11 @@ class WorkspacesController < ApplicationController
   end
 
   def complete_release
+    current_release = Workspace.find(params[:id]).current_release
+    current_release&.update!(completed: true, current: false)
 
+    @release = Release.where(workspace_id: params[:id]).where('"order" > ?', @release&.order).order(:order).first
+    @release.update!(current: true)
   end
 
   def releases

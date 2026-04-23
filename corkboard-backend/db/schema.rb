@@ -10,11 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_28_142410) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_23_213513) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   create_table "releases", force: :cascade do |t|
+    t.boolean "completed"
     t.datetime "created_at", null: false
     t.boolean "current"
     t.string "name", null: false
