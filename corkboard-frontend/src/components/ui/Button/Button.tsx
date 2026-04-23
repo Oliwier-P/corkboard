@@ -12,6 +12,7 @@ type ButtonProps = {
     size?: "medium" | "small" | "large"
     icon?: IconNames
     ref?: React.Ref<HTMLButtonElement>
+    disabled?: boolean
 }
 
 export const Button = ({
@@ -23,10 +24,12 @@ export const Button = ({
                            type,
                            size = "medium",
                            icon,
-                           ref
+                           ref,
+                           disabled
                        }: ButtonProps) => {
     return (
-        <button ref={ref} className={ClassNames("button", className, [color, variant, size])} onClick={onClick && onClick}
+        <button ref={ref} className={ClassNames("button", className, [color, variant, size])}
+                onClick={onClick && onClick} disabled={disabled}
                 type={type}>
             <span className="button__content">
                 {icon && <Icon icon={icon} className="button__icon"/>}

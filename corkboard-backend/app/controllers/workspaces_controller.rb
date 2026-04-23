@@ -21,6 +21,11 @@ class WorkspacesController < ApplicationController
     Workspace.create(name: params[:name], owner_id: current_user.id)
   end
 
+  def update
+    @workspace = Workspace.find_by(id: params[:id], owner_id: current_user.id)
+    @workspace&.update!(workspace_params)
+  end
+
   def collaborators
     @users = Workspace.find(params[:id]).users
     invited_user_ids = WorkspaceInvitation.where(workspace_id: params[:id]).pluck(:invited_user_id)
@@ -55,5 +60,11 @@ class WorkspacesController < ApplicationController
     workspace = Workspace.find(params[:id])
     @releases = workspace.releases&.order("releases.order ASC") || []
     @current_release = @releases.find_by(current: true)
+  end
+
+  private
+
+  def workspace_params
+    params.require(:workspace).permit(:name)
   end
 end

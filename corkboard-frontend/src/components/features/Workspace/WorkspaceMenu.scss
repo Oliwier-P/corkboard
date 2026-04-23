@@ -1,4 +1,5 @@
 @use '../../../global/colors' as colors;
+
 .workspace-menu {
   width: 300px;
   max-height: 28rem;
@@ -63,13 +64,13 @@
     }
   }
 
-  &__buttons{
+  &__buttons {
     display: flex;
     justify-content: center;
     gap: 1rem;
     align-items: center;
 
-    .button{
+    .button {
       width: 100%;
     }
   }
@@ -78,8 +79,13 @@
     display: flex;
     flex-direction: column;
     padding: 5px;
-    gap: 10px;
+    gap: 4px;
     overflow: auto;
   }
 
+  &__owner {
+    font-weight: normal;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
+  }
 }

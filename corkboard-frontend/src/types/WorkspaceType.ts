@@ -1,6 +1,8 @@
+import type {User} from "../context/auth/types.ts";
+
 export type WorkspaceType = {
-  id: number;
-  name: string;
-  logo: string;
-  owner_id: number;
+    id: number;
+    name: string;
+    logo: string;
+    owner: User
 };

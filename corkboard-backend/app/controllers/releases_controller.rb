@@ -38,6 +38,6 @@ class ReleasesController < ApplicationController
   end
 
   def set_release
-    @release = Release.joins(:workspace).where(workspaces: { owner_id: current_user.id }).find_by(id: params[:id])
+    @release = Release.joins(:workspace).where(workspace_id: current_user.workspaces.map{|w| w.id}).find_by(id: params[:id])
   end
 end
