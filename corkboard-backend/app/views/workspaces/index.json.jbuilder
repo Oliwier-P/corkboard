@@ -1,3 +1,1 @@
-json.array!(@workspaces) do |workspace|
-  json.extract! workspace, :id, :name, :current
-end
+json.array! @workspaces, partial: "workspaces/workspace", as: :workspace

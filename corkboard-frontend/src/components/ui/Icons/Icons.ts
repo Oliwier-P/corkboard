@@ -8,9 +8,14 @@ import userCircle from "./svgs/user-circle.svg?react"
 import dots from "./svgs/dots.svg?react"
 import xCircle from "./svgs/x-circle.svg?react"
 import exclamationMark from "./svgs/exclamationMark.svg?react"
+import gear from "./svgs/gear.svg?react"
+import users from "./svgs/users.svg?react"
 import circleArrowRight from "./svgs/circleArrowRight.svg?react"
 import boxArrowDown from "./svgs/box-arrow-down.svg?react"
 import boxArrowUp from "./svgs/box-arrow-up.svg?react"
+import workspaces from "./svgs/workspaces.svg?react"
+import plusCircle from "./svgs/plus-circle.svg?react"
+import bell from "./svgs/bell.svg?react"
 
 export const icons = {
     box,
@@ -23,7 +28,12 @@ export const icons = {
     dots,
     xCircle,
     exclamationMark,
+    gear,
+    users,
     circleArrowRight,
     boxArrowDown,
-    boxArrowUp
+    boxArrowUp,
+    workspaces,
+    plusCircle,
+    bell
 }

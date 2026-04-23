@@ -1,3 +1,4 @@
+@use '../../global/colors' as colors;
 .releases {
   display: flex;
   flex-direction: column;
@@ -26,8 +27,8 @@
   }
 
   &__list{
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 10px;
+    border: 1px solid colors.$border-color;
+    border-radius: 0.5rem;
     width: 100%;
     min-width: 0;
     padding: 1rem;

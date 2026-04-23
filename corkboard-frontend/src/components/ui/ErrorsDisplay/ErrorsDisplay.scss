@@ -1,0 +1,19 @@
+@use '../../../global/colors' as colors;
+
+.errors-display {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+
+  padding: 0.2rem 0;
+
+
+  &__error {
+    gap: 0.4rem;
+    color: colors.$red;
+    font-size: 12px;
+
+    width: 100%;
+  }
+}

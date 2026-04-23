@@ -1,0 +1,13 @@
+.settings {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: flex;
+
+  &-content {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+    flex: 1;
+  }
+}

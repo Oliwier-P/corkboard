@@ -1,4 +1,9 @@
 @use '../../global/colors' as colors;
+
+body {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgb(12, 12, 12) 50%, rgba(0, 0, 0, 1) 100%);
+}
+
 .signup-page {
   display: flex;
   height: 100vh;

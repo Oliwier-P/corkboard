@@ -1,8 +1,13 @@
+@use '../../../global/colors' as colors;
+
 .workspace-menu__workspace {
+  position: relative;
   display: flex;
   cursor: pointer;
   background: none;
   border: none;
+  padding: 5px;
+  border-radius: 5px;
 
   &:hover {
     background-color: #222222;
@@ -11,7 +16,7 @@
   &-logo {
     width: 30px;
     height: 30px;
-    background-color: #14B8A6;
+    background-color: colors.$orange;
     border-radius: 5px;
     display: flex;
     justify-content: center;

@@ -18,18 +18,28 @@ Rails.application.routes.draw do
     member do
       get "board"
     end
-    collection do
-      get "current"
-    end
   end
 
   resources :tasks do
     member do
-      put "move_to_next_release"
+      put :move_to_next_release
     end
   end
 
   resources :workspaces do
+    member do
+      get :collaborators
+      get :current_release
+      get :releases
+      post :invite_user
+      post :accept_invitation
+    end
+
+    collection do
+      get :invitation
+    end
+
+
     post :switch, on: :collection
   end
 end

@@ -1,0 +1,44 @@
+@use '../../../../global/colors' as colors;
+
+.workspace-item {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+
+  border-bottom: 1px solid colors.$border-color;
+
+  &:last-child {
+    border: none;
+  }
+
+  &__info {
+    display: flex;
+    gap: 1rem;
+  }
+
+  &__avatar {
+    width: 30px;
+    height: 30px;
+    background-color: #3B82F6;
+    border-radius: 0.3rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+
+  &__name {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 1rem;
+  }
+}
