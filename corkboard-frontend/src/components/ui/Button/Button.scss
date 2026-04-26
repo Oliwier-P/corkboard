@@ -46,8 +46,14 @@
 
   &:disabled{
     scale: 1;
-    opacity: 0.7;
+    opacity: 0.4;
     cursor: not-allowed;
+  }
+
+  &:hover {
+    &:disabled{
+      background: none;
+    }
   }
 
   // == COLORS == //

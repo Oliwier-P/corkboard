@@ -78,7 +78,7 @@ export const Navbar = () => {
             )}
 
             <NavbarItem icon="box" label="Current Release" path={`/workspaces/${workspace?.id}/current_release`}/>
-            <NavbarItem icon="rows" label="Backlog" path={`/workspaces/${workspace?.id}/backlog`}/>
+            <NavbarItem icon="rows" label="Backlog" path="/backlog"/>
             <NavbarItem icon="bookmarks" label="Releases" path={`/workspaces/${workspace?.id}/releases`}/>
 
             {user && (

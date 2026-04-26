@@ -22,7 +22,7 @@ class WorkspacesController < ApplicationController
   end
 
   def update
-    @workspace = Workspace.find_by(id: params[:id], owner_id: current_user.id)
+    @workspace = current_user.workspaces.find(params[:id])
     @workspace&.update!(workspace_params)
   end
 

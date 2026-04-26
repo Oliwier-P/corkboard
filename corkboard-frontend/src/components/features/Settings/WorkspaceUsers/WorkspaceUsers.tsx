@@ -5,8 +5,11 @@ import {Button} from '../../../ui/Button/Button.tsx';
 import {api} from "../../../../api/api.ts";
 import {InviteUserModal} from "./InviteUserModal.tsx";
 import {useParams} from "react-router-dom";
+import {Table} from "../../../ui/Table/Table.tsx";
+import {UserDisplay} from "../../../ui/UserDisplay/UserDisplay.tsx";
 
 type User = {
+    id: number;
     username: string;
     role: string;
 };
@@ -29,22 +32,39 @@ export const WorkspaceUsers = () => {
             <span className="workspace-users__title">Manage people</span>
 
             <div className="workspace-users__list">
-                <div className="workspace-users__list-header">
-                    <div>Name</div>
-                    <div>Role</div>
-                    <div>Options</div>
-                </div>
-
-                <Button variant="icon" className="workspace-users__invite-btn" onClick={() => setShowInviteModal(true)}>
-                    <div className="workspace-users__invite-icon">+</div>
-                    <div className="workspace-users__invite-text">Invite User</div>
-                </Button>
-
                 {invitedUsers && invitedUsers.map((user, index) => (
                     <WorkspaceUser key={index} username={user.username} role={user.role} isInvited/>
                 ))}
-                {users && users.map((user, index) => <WorkspaceUser key={index} username={user.username}
-                                                                    role={user.role}/>)}
+
+                <Table data={users} columns={[
+                    {
+                        key: "username",
+                        header: "Username",
+                        render: (_, row) => (
+                            <UserDisplay user={row}/>
+                        )
+                    },
+                    {
+                        key: "role",
+                        header: "Role"
+                    },
+                    {
+                        key: "id",
+                        header: "Options",
+                        render: () => (
+                            <>
+                                <Button icon="trash" variant="icon" size="small" color="outlined"/>
+                                <Button icon="edit" variant="icon" size="small" color="outlined"/>
+                            </>
+                        )
+                    }
+                ]}>
+                    <Button variant="icon" className="workspace-users__invite-btn"
+                            onClick={() => setShowInviteModal(true)}>
+                        <div className="workspace-users__invite-icon">+</div>
+                        <div className="workspace-users__invite-text">Invite User</div>
+                    </Button>
+                </Table>
             </div>
             {showInviteModal && workspaceId &&
                 <InviteUserModal onClose={() => setShowInviteModal(false)} workspaceId={parseInt(workspaceId)}/>}

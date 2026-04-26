@@ -1,0 +1,39 @@
+@use '../../../global/colors' as colors;
+
+.table {
+  font-size: 0.9rem;
+  width: 100%;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+
+    th {
+      color: #383838;
+      font-weight: 400;
+      text-align: left;
+    }
+
+    td, th {
+      border-bottom: 1px solid colors.$border-color;
+      padding: 1rem;
+    }
+
+    .options{
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+    }
+
+    tr {
+      &:nth-child(odd) {
+        background-color: rgba(255, 255, 255, 0.01);
+      }
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.02);
+      }
+    }
+  }
+}

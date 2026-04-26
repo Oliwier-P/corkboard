@@ -7,6 +7,7 @@ import * as yup from 'yup'
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {useAuth} from "../../../../context/auth/useAuth.ts";
+import {useWorkspaceStore} from "../../../../store/workspaceStore.ts";
 
 const schema = yup.object({
     id: yup.number(),
@@ -19,6 +20,7 @@ export const WorkspaceGeneral = () => {
     const {workspaceId} = useParams();
     const {user} = useAuth()
     const navigate = useNavigate();
+    const setWorkspace = useWorkspaceStore(state => state.setWorkspace)
 
     const {register, handleSubmit, formState: {isDirty, isLoading}, getValues, reset} = useForm({
         resolver: yupResolver(schema),
@@ -37,7 +39,10 @@ export const WorkspaceGeneral = () => {
     };
 
     const onSubmit = (workspace: FormData) => {
-        api.put(`/workspaces/${workspace.id}`, {workspace}).then((res) => reset(res.data))
+        api.put(`/workspaces/${workspace.id}`, {workspace}).then((res) => {
+            reset(res.data)
+            setWorkspace(res.data)
+        })
     }
 
     return (
@@ -53,7 +58,7 @@ export const WorkspaceGeneral = () => {
             <div className="workspace-general__section">
                 <div className="workspace-general__setting">
                     <span className="workspace-general__label">Avatar</span>
-                    <div className="workspace-general__logo">{!isLoading && getValues("name")[0].toUpperCase()}</div>
+                    <div className="workspace-general__logo">{!isLoading && getValues("name")[0]?.toUpperCase()}</div>
                 </div>
 
                 <div className="workspace-general__setting">

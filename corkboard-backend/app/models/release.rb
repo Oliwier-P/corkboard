@@ -18,6 +18,8 @@ class Release < ApplicationRecord
 
   before_save :defaults
 
+  default_scope { where(completed: false) }
+
   def next_release
     Release.find_by(workspace_id: self.workspace_id, order: self.order + 1)
   end

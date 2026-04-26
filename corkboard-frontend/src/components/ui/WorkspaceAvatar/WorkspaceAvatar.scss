@@ -1,0 +1,15 @@
+@use '../../../global/colors' as colors;
+
+.workspace-avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: colors.$orange;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.2rem;
+
+  font-size: 1rem;
+  text-align: center;
+}
