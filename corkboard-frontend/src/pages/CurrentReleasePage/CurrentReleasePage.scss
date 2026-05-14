@@ -1,9 +1,16 @@
 .current-release {
   width: 100%;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: auto;
 
   &__content {
-    width: 100%;
-    height: 100vh;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
     box-sizing: border-box;
   }
 
@@ -18,15 +25,18 @@
   }
 
   &__header {
+    width: 100vw;
+    min-width: 1500px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
+
     border-bottom: 1px solid rgba(#fff, 0.1);
     padding: 8px;
     font-size: 14px;
     color: rgba(#fff, 0.6);
     background: #030303;
+
   }
 
   &__label {
