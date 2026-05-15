@@ -18,23 +18,25 @@ export const Release = ({release, onDeleteClick, onEditClick}: ReleasesListItemP
     return (
         <div className="release">
             <div className="release__name">
+                <div className="release__number">1</div>
                 {release.name}
+                <div className={ClassNames("release__badge", {
+                    current: currentReleaseId === release.id,
+                    next: nextReleaseId === release.id
+                })}>
+                    {currentReleaseId === release.id && "Current"}
+                    {nextReleaseId === release.id && "Next"}
+                </div>
             </div>
 
-            <div className={ClassNames("release__badge", {
-                current: currentReleaseId === release.id,
-                next: nextReleaseId === release.id
-            })}>
-                {currentReleaseId === release.id && "Current"}
-                {nextReleaseId === release.id && "Next"}
-            </div>
+
 
             <div className="release__options">
                 <Button variant="icon" icon="edit" size="small" onClick={onEditClick}/>
                 <Button variant="icon" icon="trash" size="small" onClick={onDeleteClick}/>
             </div>
 
-            <Progress maxValue={release.progress?.tasks} value={release.progress?.accepted_tasks}/>
+            <Progress className="release__progress" maxValue={release.progress?.tasks} value={release.progress?.accepted_tasks}/>
         </div>
     )
 }

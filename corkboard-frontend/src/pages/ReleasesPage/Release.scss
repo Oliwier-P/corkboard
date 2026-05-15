@@ -1,10 +1,16 @@
 @use '../../global/colors' as colors;
 
 .release {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 3fr 1fr 1fr 2fr;
-  align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  border: 1px solid colors.$border-color;
+  border-radius: 0.25rem;
+
+  padding: 0.5rem 1.25rem;
+  background: rgba(0, 0, 0, 0.1);
 
   &:hover {
     .release__options {
@@ -15,9 +21,21 @@
 
   &__name {
     display: flex;
-    justify-content: space-between;
+    gap: 1rem;
     align-items: center;
     padding: 10px 10px 10px 0;
+  }
+
+  &__number{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.25rem;
+    font-size: 1.5rem;
+    background-color: colors.$blue;
   }
 
   &__badge {
@@ -25,36 +43,30 @@
     justify-content: center;
     align-items: center;
 
+    font-size: 0.8rem;
+
     padding: 0 0.25rem;
     border-radius: 0.4rem;
-    width: 5rem;
+    width: 4rem;
 
     &--current {
       background: colors.$blue;
     }
 
-    &--next{
+    &--next {
       background: colors.$green;
     }
   }
 
   &__progress {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    height: 0.5rem;
-
-    .bar {
-      width: 50%;
-      height: 100%;
-      background-color: rgba(#fff, 0.2);
-      border-radius: 20px;
-    }
+    width: 50% !important;
   }
 
   &__options {
-    position: relative;
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
     display: flex;
     align-items: center;
     justify-content: flex-end;

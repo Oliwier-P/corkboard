@@ -8,6 +8,8 @@ import type {ReleaseType} from "../../types/ReleaseType.ts";
 import {DeleteReleaseModal} from "./DeleteReleaseModal.tsx";
 import {EditReleaseModal} from "./EditReleaseModal.tsx";
 import {useWorkspaceStore} from "../../store/workspaceStore.ts";
+import {Row} from "../../components/layout/Row/Row.tsx";
+import {Page} from "../../components/layout/Page/Page.tsx";
 
 export const ReleasesPage = () => {
     const [showCreateReleaseModal, setShowCreateReleaseModal] = useState<boolean>(false)
@@ -36,27 +38,52 @@ export const ReleasesPage = () => {
     }
 
     useEffect(() => {
-      if (!workspaceId) return;
+        if (!workspaceId) return;
 
-      fetchReleases(workspaceId);
+        fetchReleases(workspaceId);
     }, [fetchReleases, workspaceId]);
 
     return (
-        <div className="releases">
-            <div className="releases__top-bar">Releases</div>
+        <Page title="Releases" className="releases">
             <div className="releases__content">
                 <div className="releases__list">
-                    <div className="releases__header">
-                        <div>Name</div>
-                        <div>Progress</div>
-                    </div>
+                    <Row>
+                        Releases
+                        <Button variant="square" color="outlined" size="large"
+                                onClick={() => setShowCreateReleaseModal(true)}>Create a new Release</Button>
+
+                        <div className="releases__tabs">
+                            <Button variant="square" color="outlined" size="large">
+                                Not Queued
+                            </Button>
+
+                            <Button variant="square" color="outlined" size="large">
+                                Completed
+                            </Button>
+
+                        </div>
+                    </Row>
+
                     {releases && releases.map(release => (
                         <Release key={release.id} release={release}
                                  onEditClick={() => setReleaseToEdit(release)}
                                  onDeleteClick={() => setReleaseToDelete(release)}/>
                     ))}
-                    <Button variant="text" className="releases__new-release-btn"
-                            onClick={() => setShowCreateReleaseModal(true)}>+ New Release</Button>
+                    <div className="releases__dropzone">
+                        Drop Release Here to remove it from queue
+                    </div>
+                </div>
+
+                <div className="releases__list">
+                    Queue
+                    {releases && releases.map(release => (
+                        <Release key={release.id} release={release}
+                                 onEditClick={() => setReleaseToEdit(release)}
+                                 onDeleteClick={() => setReleaseToDelete(release)}/>
+                    ))}
+                    <div className="releases__dropzone">
+                        Drop Release Here to add it to queue
+                    </div>
                 </div>
             </div>
             {showCreateReleaseModal &&
@@ -71,6 +98,6 @@ export const ReleasesPage = () => {
                 <EditReleaseModal onClose={() => setReleaseToEdit(null)} releaseName={releaseToEdit.name}
                                   onSave={(name: string) => handleEdit(releaseToEdit.id, name)}/>
             )}
-        </div>
+        </Page>
     )
 }

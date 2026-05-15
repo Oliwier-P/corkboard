@@ -1,0 +1,19 @@
+.page {
+  width: 100%;
+
+  &__title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border-bottom: 1px solid rgba(#fff, 0.1);
+    padding: 8px;
+    font-size: 14px;
+    color: rgba(#fff, 0.6);
+    background: #030303;
+  }
+
+  &__content {
+    width: 100%;
+  }
+}
