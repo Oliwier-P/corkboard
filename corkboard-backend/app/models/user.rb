@@ -14,6 +14,7 @@ class User < ApplicationRecord
             }
   validates :password, presence: true, length: { minimum: 6 }
   has_and_belongs_to_many :workspaces
+  after_create :create_workspace
 
   def email_required?
     false
@@ -25,5 +26,11 @@ class User < ApplicationRecord
 
   def email
     self.username
+  end
+
+  private
+
+  def create_workspace
+    workspaces.create(name: "#{username}'s Workspace", owner: self)
   end
 end
