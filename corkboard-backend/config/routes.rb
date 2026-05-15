@@ -33,6 +33,7 @@ Rails.application.routes.draw do
       get :releases
       post :invite_user
       post :accept_invitation
+      delete :decline_invitation
       post :complete_release
     end
 
