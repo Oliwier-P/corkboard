@@ -7,11 +7,17 @@ class Users::SessionsController < Devise::SessionsController
     if user&.valid_password?(params[:user][:password])
       sign_in(user)
       token = request.env['warden-jwt_auth.token']
+      workspace_id = user.last_workspace_id
+
+      if workspace_id.nil?
+        workspace_id = Workspace.find_by(owner_id: user.id)&.id
+      end
 
       render json: {
         status: 200,
         message: 'Logged in successfully',
         token: token,
+        workspace_id: workspace_id,
         data: UserSerializer.new(user).serializable_hash[:data][:attributes]
       }
     else

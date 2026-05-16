@@ -60,7 +60,11 @@ class WorkspacesController < ApplicationController
   end
 
   def current_release
-    @current_release = Workspace.find(params[:id]).releases.find_by(current: true)
+    workspace = Workspace.find(params[:id])
+    @current_release = workspace.releases.find_by(current: true)
+
+    # We use update_column here because ActiveRecord triggers full model validations
+    current_user.update_column(:last_workspace_id, workspace.id)
 
     render json: nil if @current_release.nil?
   end
