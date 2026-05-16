@@ -79,10 +79,10 @@ export const ReleaseList = ({columnId, releases, onEdit, onDelete}: ReleaseListP
     })
 
     return (
-        <div className="release-list" ref={ref}>
+        <motion.div layout key={columnId} className="release-list" ref={ref}>
             <LayoutGroup>
                 {releases && releases.map((release, index) => (
-                    <motion.div layout key={release.id} transition={{type: "spring", stiffness: 500, damping: 40, mass: 0.8}}>
+                    <motion.div layout layoutId={release.id.toString()} key={release.id} transition={{type: "spring", stiffness: 500, damping: 40, mass: 0.8}}>
                         {dragOverIndex === index && (
                             <div className="release-list__placeholder"/>
                         )}
@@ -95,6 +95,6 @@ export const ReleaseList = ({columnId, releases, onEdit, onDelete}: ReleaseListP
             <div className={ClassNames("release-list__dropzone", {"active": dragOverIndex === releases.length})}>
                 Drop Release Here to remove it from queue
             </div>
-        </div>
+        </motion.div>
     )
 }
