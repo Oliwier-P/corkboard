@@ -2,7 +2,6 @@ import "./ReleasesPage.scss"
 import {useEffect, useState} from "react";
 import {CreateReleaseModal} from "./CreateReleaseModal.tsx";
 import {useReleasesStore} from "../../store/releasesStore.ts";
-import {Release} from "./Release.tsx";
 import {Button} from "../../components/ui/Button/Button.tsx";
 import type {ReleaseType} from "../../types/ReleaseType.ts";
 import {DeleteReleaseModal} from "./DeleteReleaseModal.tsx";
@@ -10,12 +9,14 @@ import {EditReleaseModal} from "./EditReleaseModal.tsx";
 import {useWorkspaceStore} from "../../store/workspaceStore.ts";
 import {Row} from "../../components/layout/Row/Row.tsx";
 import {Page} from "../../components/layout/Page/Page.tsx";
+import {ReleaseList} from "./ReleaseList/ReleaseList.tsx";
 
 export const ReleasesPage = () => {
     const [showCreateReleaseModal, setShowCreateReleaseModal] = useState<boolean>(false)
     const [releaseToDelete, setReleaseToDelete] = useState<ReleaseType | null>(null)
     const [releaseToEdit, setReleaseToEdit] = useState<ReleaseType | null>(null)
     const releases = useReleasesStore(state => state.releases)
+    const notQueuedReleases = useReleasesStore(state => state.notQueuedReleases)
     const addRelease = useReleasesStore(state => state.addRelease)
     const deleteRelease = useReleasesStore(state => state.deleteRelease)
     const updateRelease = useReleasesStore(state => state.updateRelease)
@@ -63,27 +64,14 @@ export const ReleasesPage = () => {
 
                         </div>
                     </Row>
-
-                    {releases && releases.map(release => (
-                        <Release key={release.id} release={release}
-                                 onEditClick={() => setReleaseToEdit(release)}
-                                 onDeleteClick={() => setReleaseToDelete(release)}/>
-                    ))}
-                    <div className="releases__dropzone">
-                        Drop Release Here to remove it from queue
-                    </div>
+                    <ReleaseList columnId="not_queued" releases={notQueuedReleases} onEdit={setReleaseToEdit}
+                                 onDelete={setReleaseToDelete}/>
                 </div>
 
                 <div className="releases__list">
                     Queue
-                    {releases && releases.map(release => (
-                        <Release key={release.id} release={release}
-                                 onEditClick={() => setReleaseToEdit(release)}
-                                 onDeleteClick={() => setReleaseToDelete(release)}/>
-                    ))}
-                    <div className="releases__dropzone">
-                        Drop Release Here to add it to queue
-                    </div>
+                    <ReleaseList columnId="queued" releases={releases} onEdit={setReleaseToEdit}
+                                 onDelete={setReleaseToDelete}/>
                 </div>
             </div>
             {showCreateReleaseModal &&

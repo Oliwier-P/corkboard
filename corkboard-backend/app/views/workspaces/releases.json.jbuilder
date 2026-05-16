@@ -1,6 +1,6 @@
 json.releases do
   json.array!(@releases) do |release|
-    json.extract! release, :id, :name, :progress
+    json.extract! release, :id, :name, :progress, :order
   end
 end
 
