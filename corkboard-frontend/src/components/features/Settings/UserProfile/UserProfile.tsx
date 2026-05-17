@@ -1,8 +1,18 @@
-import './UserProfile.scss';
-import {Button} from '../../../ui/Button/Button.tsx';
-import {LabeledInput} from '../../../ui/LabeledInput/LabeledInput.tsx';
+import "./UserProfile.scss";
+import { Button } from "../../../ui/Button/Button.tsx";
+import { LabeledInput } from "../../../ui/LabeledInput/LabeledInput.tsx";
+import { api } from "../../../../api/api.ts";
+import { useNavigate } from "react-router-dom";
 
 export const UserProfile = () => {
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        api.delete("/logout");
+        localStorage.setItem("token", "");
+        navigate("/");
+    };
+
     return (
         <div className="user-profile">
             <span className="user-profile__title">My settings</span>
@@ -15,7 +25,7 @@ export const UserProfile = () => {
                 <div className="user-profile__section-content">
                     <div className="avatar-text">Avatar</div>
                     <div className="avatar">A</div>
-                    <LabeledInput label="Full Name"/>
+                    <LabeledInput label="Full Name" />
                 </div>
             </div>
 
@@ -25,7 +35,9 @@ export const UserProfile = () => {
                     <div className="description">Proceed with caution.</div>
                 </div>
                 <div className="user-profile__section-content">
-                    <Button color="secondary">Log out</Button>
+                    <Button color="secondary" onClick={handleLogout}>
+                        Log out
+                    </Button>
                     <Button color="red">Delete account</Button>
                 </div>
             </div>
