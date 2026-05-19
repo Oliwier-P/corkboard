@@ -21,7 +21,7 @@ class TasksController < ApplicationController
   end
 
   def update
-    task = Task.find(params[:id])
+    task = Task.includes(:user).find(params[:id])
 
     if tasks_params[:order]
       if tasks_params[:status]
@@ -40,8 +40,14 @@ class TasksController < ApplicationController
       end
     end
 
-    task.update!(tasks_params)
-    render json: {}, status: :created
+    attrs = tasks_params.to_h
+
+    if attrs[:user_id].present?
+      attrs[:user_id] = nil if attrs[:user_id].to_i == task.user_id
+    end
+
+    task.update!(attrs)
+    render json: {task: task, user: task.user}, status: :created
   end
 
   def destroy
@@ -59,6 +65,6 @@ class TasksController < ApplicationController
   end
 
   def tasks_params
-    params.require(:task).permit(:name, :description, :release_id, :status, :order)
+    params.require(:task).permit(:name, :description, :release_id, :status, :order, :user_id)
   end
 end

@@ -1,0 +1,35 @@
+.user-select {
+  position: relative;
+
+  &__modal {
+    width: 200px;
+    max-height: 250px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    box-sizing: border-box;
+    position: absolute;
+    top: 40px;
+    padding: 10px;
+    border-radius: 5px;
+
+    background-color: #000;
+
+    overflow: auto;
+
+    z-index: 100;
+
+    .item {
+      display: flex;
+      gap: 10px;
+
+      padding: 5px;
+
+      &:hover {
+        background-color: #1b1b1b;
+      }
+    }
+  }
+}
