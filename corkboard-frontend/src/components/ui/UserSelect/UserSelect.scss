@@ -1,3 +1,4 @@
+@use '../../../global/colors' as colors;
 .user-select {
   position: relative;
 
@@ -12,10 +13,11 @@
     box-sizing: border-box;
     position: absolute;
     top: 40px;
-    padding: 10px;
+    padding: 0.5rem 0.25rem;
     border-radius: 5px;
 
-    background-color: #000;
+    background-color: colors.$dark-bg;
+    border: 1px solid colors.$border-color;
 
     overflow: auto;
 
@@ -23,9 +25,20 @@
 
     .item {
       display: flex;
-      gap: 10px;
+      justify-content: left;
+      gap: 0.5rem;
+      align-items: center;
 
-      padding: 5px;
+      font-size: 0.9rem;
+
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.5rem;
+      width: 100%;
+
+      .user-avatar{
+        width: 1.5rem;
+        height: 1.5rem;
+      }
 
       &:hover {
         background-color: #1b1b1b;
