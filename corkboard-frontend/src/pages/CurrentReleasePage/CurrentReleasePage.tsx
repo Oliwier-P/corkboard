@@ -8,6 +8,7 @@ import {useWorkspaceStore} from '../../store/workspaceStore.ts';
 import {CreateReleaseModal} from "../ReleasesPage/CreateReleaseModal.tsx";
 import {useReleasesStore} from "../../store/releasesStore.ts";
 import {CompleteReleaseModal} from "./CompleteReleaseModal.tsx";
+import {Page} from "../../components/layout/Page/Page.tsx";
 
 export const CurrentReleasePage = () => {
     const [release, setRelease] = useState<ReleaseType | null>(null);
@@ -36,38 +37,38 @@ export const CurrentReleasePage = () => {
         })
     }
 
-    return (
-        <div className="current-release">
-            <div className="current-release__content">
-                <div className="current-release__header">
-          <span>
-            <span className="current-release__label">Current Release:</span> {release?.name || 'No Release'}
-          </span>
-
-                    <div className="current-release__buttons">
-                        {!release && (
-                            <Button color="primary" size="small">
-                                Create Release
-                            </Button>
-                        )}
-                        {release && (
-                            <Button color="primary" size="small" onClick={() => setShowCompleteReleaseModal(true)}>
-                                Complete Release
-                            </Button>
-                        )}
-                    </div>
-                </div>
-                {release && <ReleaseBoard releaseId={release.id}/>}
+    const renderOptionsButtons = () => {
+        return (
+            <>
                 {!release && (
-                    <div className="current-release__no-active">
-                        <span>There is no active release</span>
-                        <Button onClick={() => setShowCreateReleaseModal(true)}>Create Release</Button>
-                    </div>
+                    <Button color="primary" size="small">
+                        Create Release
+                    </Button>
                 )}
-            </div>
+                {release && (
+                    <Button color="primary" size="small" onClick={() => setShowCompleteReleaseModal(true)}>
+                        Complete Release
+                    </Button>
+                )}
+            </>
+        )
+    }
 
-            {showCreateReleaseModal && <CreateReleaseModal onSave={handleCreateRelease} onClose={() => setShowCreateReleaseModal(false)} />}
-            {showCompleteReleaseModal && <CompleteReleaseModal onComplete={handleCompleteRelease} onClose={() => setShowCompleteReleaseModal(false)} />}
-        </div>
+    return (
+        <Page title="Current Release" subTitle={release?.name} className="current-release"
+              buttons={renderOptionsButtons()}>
+            {release && <ReleaseBoard releaseId={release.id}/>}
+            {!release && (
+                <div className="current-release__no-active">
+                    <span>There is no active release</span>
+                    <Button onClick={() => setShowCreateReleaseModal(true)}>Create Release</Button>
+                </div>
+            )}
+
+            {showCreateReleaseModal &&
+                <CreateReleaseModal onSave={handleCreateRelease} onClose={() => setShowCreateReleaseModal(false)}/>}
+            {showCompleteReleaseModal && <CompleteReleaseModal onComplete={handleCompleteRelease}
+                                                               onClose={() => setShowCompleteReleaseModal(false)}/>}
+        </Page>
     );
 };

@@ -3,16 +3,28 @@
   height: 100vh;
   box-sizing: border-box;
 
-  &__title {
+  &__header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    text-wrap: nowrap;
+    gap: 0.4rem;
+
     width: 100%;
     border-bottom: 1px solid rgba(#fff, 0.1);
     padding: 8px;
     font-size: 14px;
-    color: rgba(#fff, 0.6);
+    color: rgba(#fff, 0.25);
     background: #030303;
+  }
+
+  &__sub-title {
+    color: rgba(#fff, 0.6);
+  }
+
+  &__buttons {
+    margin-left: auto;
+    width: fit-content !important;
   }
 
   &__content {
