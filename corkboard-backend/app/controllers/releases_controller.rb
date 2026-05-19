@@ -4,26 +4,26 @@ class ReleasesController < ApplicationController
   def create
     workspace = current_user.workspaces.find_by(id: params[:workspace_id])
     if workspace
-      releases_count = workspace.releases.count
+      releases_count = workspace.releases.where(completed: false).count
       current_release = workspace.releases.find_by(current: true)
 
       @release = Release.create!(
-        release_params.merge(order: releases_count + 1, current: !current_release, workspace_id: workspace.id)
+        release_params.merge(order: releases_count, current: !current_release, workspace_id: workspace.id)
       )
     end
   end
 
   def update
-    workspace = Workspace.find_by(owner_id: current_user.id)
-    release = workspace&.releases&.find(params[:id])
+    release = Release.find(params[:id])
 
-    release&.update(release_params)
+    Releases::UpdateRelease.new(
+      release: release,
+      params: release_params,
+    ).call
   end
 
   def destroy
-    workspace = Workspace.find_by(owner_id: current_user.id)
-    release = workspace&.releases&.find_by(id: params[:id])
-
+    release = Release&.find_by(id: params[:id])
     release&.destroy!
   end
 
@@ -34,7 +34,7 @@ class ReleasesController < ApplicationController
   private
 
   def release_params
-    params.permit(:name, :workspace_id)
+    params.permit(:name, :workspace_id, :status, :order)
   end
 
   def set_release

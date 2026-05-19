@@ -20,6 +20,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_19_185610) do
     t.boolean "current"
     t.string "name", null: false
     t.integer "order", null: false
+    t.string "status"
     t.datetime "updated_at", null: false
     t.integer "workspace_id", null: false
   end

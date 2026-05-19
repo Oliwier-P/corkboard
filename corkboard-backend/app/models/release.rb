@@ -3,15 +3,15 @@
 # Table name: releases
 #
 #  id           :integer          not null, primary key
-#  completed    :boolean
-#  created_at   :datetime         not null
-#  current      :boolean
 #  name         :string           not null
 #  order        :integer          not null
-#  updated_at   :datetime         not null
 #  workspace_id :integer          not null
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  current      :boolean
+#  completed    :boolean
+#  status       :string
 #
-
 
 class Release < ApplicationRecord
   belongs_to :workspace
@@ -20,6 +20,9 @@ class Release < ApplicationRecord
   before_save :defaults
 
   default_scope { where(completed: false) }
+
+  NOT_QUEUED = "NOT_QUEUED"
+  QUEUED = "QUEUED"
 
   def next_release
     Release.find_by(workspace_id: self.workspace_id, order: self.order + 1)
@@ -38,5 +41,6 @@ class Release < ApplicationRecord
 
   def defaults
     self.completed ||= false
+    self.status ||= NOT_QUEUED
   end
 end
