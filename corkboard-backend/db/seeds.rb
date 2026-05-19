@@ -14,8 +14,6 @@ end
 
 Workspace.find_or_create_by!(name: "Default Workspace", owner_id: user.id)
 
-current_workspace = Workspace.find_or_create_by!(name: "My Current Workspace", owner_id: user.id) do |w|
-  w.current = true
-end
+current_workspace = Workspace.find_or_create_by!(name: "My Current Workspace", owner_id: user.id)
 
 Release.find_or_create_by!(name: "Default Release", order: 1, current: true, workspace_id: current_workspace.id)
