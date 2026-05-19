@@ -23,6 +23,11 @@ export const UserSelect = ({ taskId, taskUser }: UserSelectProps) => {
         setShowUserSelection(true);
     };
 
+    const handleAssignUserToTask = (userId: number) => {
+        updateTaskUser(taskId, userId);
+        setShowUserSelection(false);
+    };
+
     useEffect(() => {
         if (!showUserSelection) return;
 
@@ -57,7 +62,7 @@ export const UserSelect = ({ taskId, taskUser }: UserSelectProps) => {
             {showUserSelection && (
                 <div className="user-select__modal" ref={userSelectModalRef}>
                     {users.map((user) => (
-                        <div key={user.id} className="item" onClick={() => updateTaskUser(taskId, user.id)}>
+                        <div key={user.id} className="item" onClick={() => handleAssignUserToTask(user.id)}>
                             <UserAvatar username={user.username} />
                             <span>{user.username}</span>
                         </div>

@@ -3,15 +3,16 @@
 # Table name: releases
 #
 #  id           :integer          not null, primary key
+#  completed    :boolean
+#  created_at   :datetime         not null
+#  current      :boolean
 #  name         :string           not null
 #  order        :integer          not null
-#  workspace_id :integer          not null
-#  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  current      :boolean
-#  completed    :boolean
+#  workspace_id :integer          not null
 #  status       :string
 #
+
 
 class Release < ApplicationRecord
   belongs_to :workspace
