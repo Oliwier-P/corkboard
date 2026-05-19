@@ -14,7 +14,7 @@ interface UserSelectProps {
 
 export const UserSelect = ({ taskId, taskUser }: UserSelectProps) => {
     const [showUserSelection, setShowUserSelection] = useState<boolean>(false);
-    const userSelectModalRef = useRef(null);
+    const userSelectModalRef = useRef<HTMLDivElement>(null);
     const [users, setUsers] = useState<{ id: number; username: string }[]>([]);
     const workspace = useWorkspaceStore((state) => state.workspace);
     const updateTaskUser = useReleaseBoardStore((state) => state.updateTaskUser);
