@@ -3,14 +3,15 @@
 # Table name: tasks
 #
 #  id          :integer          not null, primary key
-#  name        :string
-#  description :string
 #  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  description :string
+#  name        :string
+#  order       :integer
 #  release_id  :integer
 #  status      :string
-#  order       :integer
+#  updated_at  :datetime         not null
 #
+
 
 require "test_helper"
 

@@ -1,38 +1,41 @@
 import Modal from "../../ui/Modal/Modal.tsx";
-import {Button} from "../../ui/Button/Button.tsx";
-import {type SubmitHandler, useForm} from "react-hook-form";
-import {api} from "../../../api/api.ts";
-import {LabeledInput} from "../../ui/LabeledInput/LabeledInput.tsx";
+import { Button } from "../../ui/Button/Button.tsx";
+import { type SubmitHandler, useForm } from "react-hook-form";
+import { api } from "../../../api/api.ts";
+import { LabeledInput } from "../../ui/LabeledInput/LabeledInput.tsx";
 
 type CreateWorkspaceModalProps = {
-    onClose: () => void
-}
+    onClose: () => void;
+};
 
 type Inputs = {
-    name: string
-}
+    name: string;
+};
 
-export const CreateWorkspaceModal = ({onClose}: CreateWorkspaceModalProps) => {
-
-    const {register, handleSubmit} = useForm<Inputs>()
+export const CreateWorkspaceModal = ({ onClose }: CreateWorkspaceModalProps) => {
+    const { register, handleSubmit } = useForm<Inputs>();
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        api.post('/workspaces', {name: data.name}).then(() => {
-            onClose()
-        })
-    }
+        api.post("/workspaces", { name: data.name }).then((response) => {
+            console.log(response.data);
+            onClose();
+        });
+    };
 
     return (
         <Modal onClose={onClose}>
-            <Modal.Header title="Create new workspace"/>
+            <Modal.Header title="Create new workspace" />
             <Modal.Body>
-                <LabeledInput label="Workspace Name"
-                              register={register("name", {required: "You have to enter a workspace name!"})}/>
+                <LabeledInput label="Workspace Name" register={register("name", { required: "You have to enter a workspace name!" })} />
             </Modal.Body>
             <Modal.Footer>
-                <Button color="primary" onClick={handleSubmit(onSubmit)}>Create</Button>
-                <Button color="secondary" onClick={onClose}>Cancel</Button>
+                <Button color="primary" onClick={handleSubmit(onSubmit)}>
+                    Create
+                </Button>
+                <Button color="secondary" onClick={onClose}>
+                    Cancel
+                </Button>
             </Modal.Footer>
         </Modal>
-    )
-}
+    );
+};

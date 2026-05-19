@@ -1,25 +1,25 @@
-import {Navigate} from "react-router-dom";
-import {useAuth} from "../../context/auth/useAuth.ts";
-import {Navbar} from "./Navbar/Navbar.tsx";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../../context/auth/useAuth.ts";
+import { Navbar } from "./Navbar/Navbar.tsx";
 
 type ProtectedRouteProps = {
     children: React.ReactNode;
-}
+};
 
-export const ProtectedRoute = ({children}: ProtectedRouteProps) => {
-    const {loading} = useAuth();
+export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+    const { loading } = useAuth();
     const token = localStorage.getItem("token");
 
     if (!token) {
-        return <Navigate to="/login" replace/>
+        return <Navigate to="/" replace />;
     }
 
-    if (loading) return null
+    if (loading) return null;
 
     return (
         <>
-            <Navbar/>
+            <Navbar />
             {children}
         </>
-    )
-}
+    );
+};
