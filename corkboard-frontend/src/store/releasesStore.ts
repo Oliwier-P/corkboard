@@ -36,8 +36,8 @@ export const useReleasesStore = create<ReleasesStore>((set) => ({
     fetchReleases: (workspace_id: number) => {
         api.get(`/workspaces/${workspace_id}/releases`).then((res) => {
             set({
-                releases: res.data.releases.filter((release: ReleaseType) => release.order),
-                notQueuedReleases: res.data.releases.filter((release: ReleaseType) => !release.order),
+                releases: res.data.releases.filter((release: ReleaseType) =>  release.status === "QUEUED"),
+                notQueuedReleases: res.data.releases.filter((release: ReleaseType) => release.status === "NOT_QUEUED"),
                 currentReleaseId: res.data.current_release_id,
                 nextReleaseId: res.data.next_release_id
             })
@@ -47,7 +47,7 @@ export const useReleasesStore = create<ReleasesStore>((set) => ({
         api.post("/releases", {name, workspace_id: workspaceId})
             .then((res) => {
                 set((state) => ({
-                    releases: [...state.releases, res.data]
+                    notQueuedReleases: [...state.notQueuedReleases, res.data]
                 }))
                 if (callback) {
                     callback(res.data)
@@ -62,20 +62,21 @@ export const useReleasesStore = create<ReleasesStore>((set) => ({
     },
     deleteRelease: (id: number, callback?: () => void) => {
         set((state) => ({
-            releases: state.releases.filter((r) => r.id !== id)
+            releases: state.releases.filter((r) => r.id !== id),
+            notQueuedReleases: state.notQueuedReleases.filter((r) => r.id !== id)
         }))
         api.delete(`/releases/${id}`).then(() => callback && callback())
     },
     moveReleaseBetweenColumns: (activeId, fromColumnId, toColumnId, insertAt) => {
         set((state) => {
-            const releases = toColumnId === "queue" ? state.releases.map(release => release.id) : state.notQueuedReleases.map(release => release.id)
+            const releases = toColumnId === "QUEUED" ? state.releases.map(release => release.id) : state.notQueuedReleases.map(release => release.id)
 
-            const activeRelease = fromColumnId === "queued" ? state.releases.find(r => r.id === activeId) :
+            const activeRelease = fromColumnId === "QUEUED" ? state.releases.find(r => r.id === activeId) :
                 state.notQueuedReleases.find(r => r.id === activeId)
 
             if (!activeRelease) return state
 
-            if (toColumnId === "queued") {
+            if (toColumnId === "QUEUED") {
                 const newReleases = [...state.releases]
                 newReleases.splice(typeof insertAt === "number" ? insertAt : releases.length, 0, activeRelease)
 
@@ -92,19 +93,19 @@ export const useReleasesStore = create<ReleasesStore>((set) => ({
                 }
             }
         })
+        api.put(`/releases/${activeId}`, {order: insertAt, status: toColumnId})
     },
 
     reorderReleaseInColumn: (columnId, activeId, insertAt) => {
         set((state) => {
-            const activeRelease = columnId === "queued" ? state.releases.find(r => r.id === activeId) :
+            const activeRelease = columnId === "QUEUED" ? state.releases.find(r => r.id === activeId) :
                 state.notQueuedReleases.find(r => r.id === activeId)
 
             if (!activeRelease) return state
 
-            if (columnId === "queued") {
+            if (columnId === "QUEUED") {
                 const newReleases = [...state.releases].filter((release: ReleaseType) => release.id !== activeId)
-                newReleases.splice(insertAt, 0, activeRelease)
-
+                newReleases.splice(insertAt, 0, {...activeRelease})
                 return {
                     releases: newReleases
                 }
@@ -116,5 +117,6 @@ export const useReleasesStore = create<ReleasesStore>((set) => ({
                 }
             }
         })
+        api.put(`/releases/${activeId}`, {order: insertAt, status: columnId})
     },
 }))

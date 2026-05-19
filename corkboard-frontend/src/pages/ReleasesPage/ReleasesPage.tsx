@@ -64,13 +64,13 @@ export const ReleasesPage = () => {
 
                         </div>
                     </Row>
-                    <ReleaseList columnId="not_queued" releases={notQueuedReleases} onEdit={setReleaseToEdit}
+                    <ReleaseList columnId="NOT_QUEUED" releases={notQueuedReleases} onEdit={setReleaseToEdit}
                                  onDelete={setReleaseToDelete}/>
                 </div>
 
                 <div className="releases__list">
                     Queue
-                    <ReleaseList columnId="queued" releases={releases} onEdit={setReleaseToEdit}
+                    <ReleaseList columnId="QUEUED" releases={releases} onEdit={setReleaseToEdit}
                                  onDelete={setReleaseToDelete}/>
                 </div>
             </div>
