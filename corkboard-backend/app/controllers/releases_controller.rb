@@ -28,7 +28,7 @@ class ReleasesController < ApplicationController
   end
 
   def board
-    @tasks = @release.tasks
+    @tasks = @release.tasks.includes(:user)
   end
 
   private

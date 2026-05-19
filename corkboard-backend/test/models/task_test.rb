@@ -10,6 +10,11 @@
 #  release_id  :integer
 #  status      :string
 #  updated_at  :datetime         not null
+#  user_id     :integer
+#
+# Indexes
+#
+#  index_tasks_on_user_id  (user_id)
 #
 
 
