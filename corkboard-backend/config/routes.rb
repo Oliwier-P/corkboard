@@ -17,8 +17,11 @@ Rails.application.routes.draw do
   resources :releases do
     member do
       get "board"
+      get "all_tasks"
     end
   end
+
+  resources :backlog
 
   resources :tasks do
     member do

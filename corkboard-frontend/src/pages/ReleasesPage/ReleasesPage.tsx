@@ -24,7 +24,7 @@ export const ReleasesPage = () => {
     const workspaceId = useWorkspaceStore(state => state.workspace?.id);
 
     const handleSave = (name: string) => {
-        addRelease(name, workspaceId!)
+        addRelease(name, workspaceId!, "NOT_QUEUED")
         setShowCreateReleaseModal(false)
     }
 

@@ -36,10 +36,10 @@ class WorkspacesController < ApplicationController
     @user = User.find_by(username: params[:username])
     return render json: { error: "Username not found!" } if @user.nil?
 
-    already_in_workspace = UsersWorkspaces.find_by(workspace_id: params[:id], user_id: @user.id)
+    already_in_workspace = UsersWorkspaces.find_by(workspace_id: params[:id], user_id: @user&.id)
     return render json: { message: "Username already in workspace!" } if already_in_workspace
 
-    already_invited = WorkspaceInvitation.find_by(invited_user_id: @user.id, workspace_id: params[:id])
+    already_invited = WorkspaceInvitation.find_by(invited_user_id: @user&.id, workspace_id: params[:id])
     return render json: { message: "Username already invited!" } if already_invited
 
     WorkspaceInvitation.create!(invited_user_id: @user&.id, workspace_id: params[:id], invited_by_user_id: current_user.id)
@@ -70,11 +70,12 @@ class WorkspacesController < ApplicationController
   end
 
   def complete_release
-    current_release = Workspace.find(params[:id]).current_release
-    current_release&.update!(completed: true, current: false)
+    workspace = Workspace.find(params[:id])
+    current_release = workspace.current_release
+    @next_release = workspace.next_release
 
-    @release = Release.where(workspace_id: params[:id]).where('"order" > ?', @release&.order).order(:order).first
-    @release.update!(current: true)
+    current_release&.update!(completed: true, current: false)
+    @next_release.update!(current: true) if @next_release
   end
 
   def releases

@@ -15,7 +15,7 @@ json.tasks do
 end
 
 json.columns do
-  json.array!(Task.statuses.keys) do |status|
+  json.array!(Task.statuses.keys.select{|key| key != Task.statuses[:backlog]}) do |status|
     json.id status
     json.taskIds @tasks.order("tasks.order ASC").select { |task| task.status == status }.map { |task| task.id }
   end

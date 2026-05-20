@@ -26,7 +26,7 @@ export const CurrentReleasePage = () => {
     }, [workspaceId]);
 
     const handleCreateRelease = (name: string) => {
-        addRelease(name, workspaceId!, (release: ReleaseType) => setRelease(release))
+        addRelease(name, workspaceId!, "QUEUED", (release: ReleaseType) => setRelease(release))
         setShowCreateReleaseModal(false)
     }
 

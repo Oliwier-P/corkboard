@@ -1,1 +1,1 @@
-json.extract! @release, :id, :name
+json.extract! @next_release, :id, :name

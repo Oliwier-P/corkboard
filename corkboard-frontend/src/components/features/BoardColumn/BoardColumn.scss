@@ -72,7 +72,7 @@
     }
   }
 
-  &--todo {
+  &--todo, &--backlog {
     background: rgba(colors.$gray, 0.2);
 
     & > .board-column__header {

@@ -13,12 +13,12 @@
 #  status       :string
 #
 
-
 class Release < ApplicationRecord
   belongs_to :workspace
   has_many :tasks
 
   before_save :defaults
+  before_save :set_current
 
   default_scope { where(completed: false) }
 
@@ -27,6 +27,14 @@ class Release < ApplicationRecord
 
   def next_release
     Release.find_by(workspace_id: self.workspace_id, order: self.order + 1)
+  end
+
+  def set_current
+    if !self.current && self.status_changed? && self.status === Release::QUEUED
+      current_release = Release.where(workspace_id: self.workspace_id, current: true).first
+
+      self.current = true if current_release.nil?
+    end
   end
 
   def progress
@@ -42,6 +50,7 @@ class Release < ApplicationRecord
 
   def defaults
     self.completed ||= false
+    self.current ||= false
     self.status ||= NOT_QUEUED
   end
 end

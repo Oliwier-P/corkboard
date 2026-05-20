@@ -2,11 +2,11 @@ import type { User } from "../context/auth/types.ts";
 
 export type Priority = "low" | "medium" | "high" | "urgent";
 
-export type Task = {
+export type TaskType = {
     id: number;
     name: string;
     description: string;
-    release_id: number;
+    release_id: number | null;
     status: string;
     order: number;
     user: User | null;

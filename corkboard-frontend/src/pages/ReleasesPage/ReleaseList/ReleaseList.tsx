@@ -86,7 +86,7 @@ export const ReleaseList = ({columnId, releases, onEdit, onDelete}: ReleaseListP
                              onEditClick={() => onEdit(releases[0])}
                              onDeleteClick={() => onDelete(releases[0])} isNotDraggable/>
                 )}
-                {releases && releases.slice(1, releases.length).map((release, index) => (
+                {releases && releases.slice(columnId === "QUEUED" ? 1 : 0, releases.length).map((release, index) => (
                     <motion.div layout layoutId={release.id.toString()} key={release.id} transition={{type: "spring", stiffness: 500, damping: 40, mass: 0.8}}>
                         {dragOverIndex === index && (
                             <div className="release-list__placeholder"/>

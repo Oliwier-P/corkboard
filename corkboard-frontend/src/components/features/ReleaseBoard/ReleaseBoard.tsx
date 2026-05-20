@@ -23,7 +23,7 @@ export const ReleaseBoard = ({ releaseId }: ReleaseBoardProps) => {
     return (
         <div className="release-board">
             {columnIds
-                .filter((col) => !["review_pending", "testing", "accepted"].includes(col as string))
+                .filter((col) => !["backlog", "review_pending", "testing", "accepted"].includes(col as string))
                 .map((col) => (
                     <BoardColumn columnId={col} key={col} isCreateTaskOpen={isCreateTaskOpen} setIsCreateTaskOpen={setIsCreateTaskOpen} />
                 ))}

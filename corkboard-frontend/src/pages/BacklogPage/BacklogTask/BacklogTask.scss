@@ -1,0 +1,40 @@
+@use '../../../global/colors' as colors;
+.backlog-task {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  border: 1px solid colors.$border-color;
+  border-radius: 0.25rem;
+
+
+  padding: 0.5rem 1.25rem;
+  background: #0c0c0c;
+  cursor: pointer;
+
+  min-height: 75px;
+
+  &__name {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  &__status{
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.4rem;
+
+    &--accepted{
+      background-color: colors.$green;
+    }
+
+    &--in_progress{
+      background-color: colors.$blue;
+    }
+  }
+}

@@ -11,10 +11,15 @@ class TasksController < ApplicationController
   end
 
   def create
-    release = Release.find(tasks_params[:release_id])
+    if tasks_params[:release_id]
+      release = Release.find(tasks_params[:release_id])
+    else
+      tasks_params[:status] = Task.statuses[:backlog]
+    end
+
 
     if release
-      @task = Task.create!(tasks_params)
+      @task = Task.create!(tasks_params.merge(workspace_id: release.workspace_id))
     end
 
     @task
@@ -26,7 +31,7 @@ class TasksController < ApplicationController
     if tasks_params[:order]
       if tasks_params[:status]
         if task.status != tasks_params[:status]
-          task.release.tasks.where(status: task.status, order: task.order...).where.not(id: params[:id]).each do |t|
+          task.workspace.tasks.where(status: task.status, order: task.order..., release_id: task.release_id).where.not(id: params[:id]).each do |t|
             order = t.order - 1
             t.update_column(:order, order)
           end
@@ -34,7 +39,7 @@ class TasksController < ApplicationController
       end
 
       order = tasks_params[:order]
-      task.release.tasks.where(status: tasks_params[:status] || task.status, order: tasks_params[:order]...).where.not(id: params[:id]).each do |t|
+      task.workspace.tasks.where(status: tasks_params[:status] || task.status, order: tasks_params[:order]..., release_id: task.release_id).where.not(id: params[:id]).each do |t|
         order = order + 1
         t.update_column(:order, order)
       end

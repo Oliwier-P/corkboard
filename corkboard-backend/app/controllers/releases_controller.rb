@@ -1,14 +1,13 @@
 class ReleasesController < ApplicationController
-  before_action :set_release, only: [:board]
+  before_action :set_release, only: [:board, :all_tasks]
 
   def create
     workspace = current_user.workspaces.find_by(id: params[:workspace_id])
     if workspace
       releases_count = workspace.releases.where(completed: false).count
-      current_release = workspace.releases.find_by(current: true)
 
       @release = Release.create!(
-        release_params.merge(order: releases_count, current: !current_release, workspace_id: workspace.id)
+        release_params.merge(order: releases_count, workspace_id: workspace.id)
       )
     end
   end
@@ -29,6 +28,11 @@ class ReleasesController < ApplicationController
 
   def board
     @tasks = @release.tasks.includes(:user)
+    @backlog_tasks = Task.where(workspace_id: @release.workspace_id, status: Task.statuses[:backlog], release_id: nil)
+  end
+
+  def all_tasks
+    @tasks = @release.tasks
   end
 
   private
