@@ -17,10 +17,10 @@ class TasksController < ApplicationController
       tasks_params[:status] = Task.statuses[:backlog]
     end
 
+    workspace_id = release.present? ? release.workspace_id : tasks_params[:workspace_id]
 
-    if release
-      @task = Task.create!(tasks_params.merge(workspace_id: release.workspace_id))
-    end
+
+    @task = Task.create!(tasks_params.merge(workspace_id: workspace_id))
 
     @task
   end
@@ -70,6 +70,6 @@ class TasksController < ApplicationController
   end
 
   def tasks_params
-    params.require(:task).permit(:name, :description, :release_id, :status, :order, :user_id)
+    params.require(:task).permit(:name, :description, :release_id, :status, :order, :user_id, :workspace_id)
   end
 end

@@ -1,6 +1,7 @@
 import type {Column, TaskType} from "../types/ReleaseBoardTypes.ts";
 import {create} from "zustand";
 import {api} from "../api/api.ts";
+import {useWorkspaceStore} from "./workspaceStore.ts";
 
 const INITIAL_STATE = {
     id: 0,
@@ -30,12 +31,13 @@ interface ReleaseBoardStore {
     moveTaskBetweenColumns: (activeId: number, fromColumnId: string, toColumnId: string, insertAt?: number) => void;
     reorderTaskInColumn: (columnId: string, activeId: number, insertAt: number) => void;
 
-    fetchBoard: (releaseId: number) => void;
+    fetchBoard: (releaseId: number, callback?: () => void) => void;
     fetchBacklog: (workspaceId: number) => void;
 
     addTask: (columnId: string, name: string) => void;
-    updateTask: (taskId: number, name: string) => void;
+    updateTask: (taskId: number, task: Partial<TaskType>) => void;
     updateTaskUser: (taskId: number, userId: number) => void;
+    moveToBacklog: (taskId: number) => void;
     deleteTask: (taskId: number) => void;
     moveTaskToNextRelease: (taskId: number) => void;
 
@@ -50,14 +52,14 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
     setActiveTask: (task) => set({activeTask: task}),
     setOverColumnId: (id) => set({overColumnId: id}),
 
-    fetchBoard: (releaseId: number) => {
+    fetchBoard: (releaseId: number, callback?: () => void) => {
         api.get(`/releases/${releaseId}/board`).then((res) => {
             set({
                 id: releaseId,
                 tasks: res.data.tasks,
                 columns: res.data.columns,
             });
-        });
+        }).then(() => callback && callback())
     },
 
     fetchBacklog: (workspaceId: number) => {
@@ -97,7 +99,7 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
             };
         });
 
-        api.put(`/tasks/${activeId}`, {task: {status: toColumnId, order: insertAt}});
+        api.put(`/tasks/${activeId}`, {task: {status: toColumnId, order: insertAt, release_id: get().id}});
     },
 
     reorderTaskInColumn: (columnId, activeId, insertAt) => {
@@ -115,12 +117,14 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
     addTask: (columnId, name) => {
         const temporaryId = Date.now() as number;
         const order = get().columns.find((col) => col.id === columnId)?.taskIds.length ?? 0;
+        const workspaceId = useWorkspaceStore.getState().workspace?.id
         const newTask: TaskType = {
             id: temporaryId,
             name,
             order,
             description: "",
             release_id: columnId === "backlog" ? null : get().id,
+            workspace_id: workspaceId || null,
             status: columnId,
             user: null
         };
@@ -155,16 +159,39 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
             });
         });
     },
-    updateTask: (taskId, name) => {
+    updateTask: (taskId, task) => {
         set((state) => {
             return {
                 tasks: {
                     ...state.tasks,
-                    [taskId]: {...state.tasks[taskId], name},
-                },
+                    [taskId]: {...state.tasks[taskId], ...task},
+                }
             };
         });
-        api.put(`tasks/${taskId}`, {task: {name}});
+        api.put(`tasks/${taskId}`, {task: task});
+    },
+    moveToBacklog: (taskId: number) => {
+        set((state) => {
+            const task = state.tasks[taskId]
+            return {
+                columns: state.columns.map(col => {
+                    if (col.id === task.status) {
+                        return {
+                            ...col,
+                            taskIds: col.taskIds.filter(id => id !== taskId)
+                        }
+                    }else if(col.id === "backlog"){
+                        return {
+                            ...col,
+                            taskIds: [...col.taskIds, taskId],
+                        }
+                    } else {
+                        return col
+                    }
+                })
+            }
+        })
+        api.put(`tasks/${taskId}`, {task: {status: "backlog"}});
     },
     updateTaskUser: (taskId, userId) => {
         api.patch(`tasks/${taskId}`, {task: {user_id: userId}}).then((response) => {

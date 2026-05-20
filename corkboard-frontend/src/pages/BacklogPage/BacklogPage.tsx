@@ -26,8 +26,7 @@ export const BacklogPage = () => {
             api.get(`/workspaces/${workspaceId}/current_release`).then((res) => {
                 const release = res.data
                 setRelease(release)
-                fetchBoard(release.id);
-                fetchBacklog(workspaceId);
+                fetchBoard(release.id, () => fetchBacklog(workspaceId));
             });
         }
     }, [workspaceId, fetchBoard, fetchBacklog]);

@@ -28,9 +28,10 @@ export const Task = memo(({ taskId }: TaskProps) => {
     const updateTask = useReleaseBoardStore((state) => state.updateTask);
     const deleteTask = useReleaseBoardStore((state) => state.deleteTask);
     const moveToNextRelease = useReleaseBoardStore((state) => state.moveTaskToNextRelease);
+    const moveToBacklog = useReleaseBoardStore((state) => state.moveToBacklog);
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        updateTask(taskId, data.name);
+        updateTask(taskId, {name: data.name});
         setIsEditing(false);
     };
 
@@ -88,7 +89,7 @@ export const Task = memo(({ taskId }: TaskProps) => {
                 type: "button",
                 label: "Move To Backlog",
                 icon: "boxArrowDown",
-                onClick: () => console.log("move to backlog"),
+                onClick: () => moveToBacklog(taskId),
             },
             {
                 type: "hr",
@@ -101,7 +102,7 @@ export const Task = memo(({ taskId }: TaskProps) => {
                 onClick: () => deleteTask(taskId),
             },
         ],
-        [deleteTask, moveToNextRelease, taskId],
+        [deleteTask, moveToBacklog, moveToNextRelease, taskId],
     );
 
     return (
