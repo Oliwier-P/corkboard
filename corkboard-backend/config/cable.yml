@@ -9,6 +9,5 @@ test:
   adapter: test
 
 production:
-  adapter: redis
-  url: <%= ENV.fetch("REDIS_URL") %>
-  channel_prefix: "corkboard"
+  adapter: postgresql
+  url: <%= ENV.fetch("DATABASE_URL") %>
