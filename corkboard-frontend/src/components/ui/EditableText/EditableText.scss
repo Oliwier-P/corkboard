@@ -1,7 +1,11 @@
 .editable-text {
-  display: flex;
   align-items: center;
-  height: 30px;
+  height: auto;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 
   &__name {
     padding: 0.25rem;

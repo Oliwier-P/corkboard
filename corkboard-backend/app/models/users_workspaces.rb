@@ -12,5 +12,6 @@
 #
 
 
+
 class UsersWorkspaces < ApplicationRecord
 end
