@@ -1,0 +1,42 @@
+.document-page {
+  width: 100%;
+  height: 100%;
+
+  padding: 75px;
+
+  &__title {
+    font-size: 42px;
+  }
+
+  &__owner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__menu {
+    display: flex;
+    gap: 2px;
+  }
+
+  .ProseMirror {
+    width: 100%;
+
+    margin-top: 40px;
+    outline: none;
+
+    p {
+      line-height: 1.75;
+      margin: 0;
+    }
+
+    // Editor placeholder
+    p.is-editor-empty:first-child::before {
+      content: attr(data-placeholder);
+      color: #adb5bd;
+      pointer-events: none;
+      float: left;
+      height: 0;
+    }
+  }
+}
