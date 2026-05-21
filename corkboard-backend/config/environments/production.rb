@@ -20,6 +20,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
   config.active_record.attributes_for_inspect = [ :id ]
 
+  config.action_cable.url = ENV.fetch("WS_URL", "ws://localhost:3000/cable")
   allowed_origins = ENV.fetch("ALLOWED_ORIGINS", "").split(",").map(&:strip).reject(&:empty?)
   config.action_cable.allowed_request_origins = allowed_origins.compact
   config.action_cable.disable_request_forgery_protection = true
