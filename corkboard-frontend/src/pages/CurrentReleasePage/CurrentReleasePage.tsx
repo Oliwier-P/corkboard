@@ -9,6 +9,8 @@ import {CreateReleaseModal} from "../ReleasesPage/CreateReleaseModal.tsx";
 import {useReleasesStore} from "../../store/releasesStore.ts";
 import {CompleteReleaseModal} from "./CompleteReleaseModal.tsx";
 import {Page} from "../../components/layout/Page/Page.tsx";
+import {useReleaseSubscription} from "../../store/useReleaseSubscription.ts";
+import {useAuth} from "../../context/auth/useAuth.ts";
 
 export const CurrentReleasePage = () => {
     const [release, setRelease] = useState<ReleaseType | null>(null);
@@ -16,6 +18,9 @@ export const CurrentReleasePage = () => {
     const [showCreateReleaseModal, setShowCreateReleaseModal] = useState(false)
     const [showCompleteReleaseModal, setShowCompleteReleaseModal] = useState(false)
     const addRelease = useReleasesStore(state => state.addRelease)
+    const {user} = useAuth()
+
+    useReleaseSubscription(release? release.id : null, user ? user.id : null)
 
     useEffect(() => {
         if (workspaceId) {

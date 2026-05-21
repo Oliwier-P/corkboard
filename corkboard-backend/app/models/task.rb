@@ -40,4 +40,23 @@ class Task < ApplicationRecord
       self.release_id = nil
     end
   end
+
+  def broadcast_to_release(type, current_user)
+    ActionCable.server.broadcast "release_#{self.release_id}", {
+      type: type,
+      task: {
+        id: self.id,
+        name: self.name,
+        status: self.status,
+        order: self.order,
+        release_id: self.release_id,
+        workspace_id: self.workspace_id,
+        actor_id: current_user.id,
+        user: self.user ? {
+          id: self.user.id,
+          username: self.user.username,
+        } : nil
+      }
+    }
+  end
 end

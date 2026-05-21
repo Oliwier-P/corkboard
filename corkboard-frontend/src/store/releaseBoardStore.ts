@@ -2,6 +2,7 @@ import type {Column, TaskType} from "../types/ReleaseBoardTypes.ts";
 import {create} from "zustand";
 import {api} from "../api/api.ts";
 import {useWorkspaceStore} from "./workspaceStore.ts";
+import {insertTaskIntoColumn} from "./releaseBoardHelpers.ts";
 
 const INITIAL_STATE = {
     id: 0,
@@ -43,6 +44,10 @@ interface ReleaseBoardStore {
 
     getColumn: (id: string) => Column | undefined;
     getColumnByTaskId: (taskId: number) => Column | undefined;
+
+    applyTaskCreated: (task: TaskType) => void;
+    applyTaskDestroyed: (taskId: number) => void;
+    applyTaskUpdated: (task: TaskType) => void;
 }
 
 export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
@@ -180,7 +185,7 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
                             ...col,
                             taskIds: col.taskIds.filter(id => id !== taskId)
                         }
-                    }else if(col.id === "backlog"){
+                    } else if (col.id === "backlog") {
                         return {
                             ...col,
                             taskIds: [...col.taskIds, taskId],
@@ -243,4 +248,47 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
     getColumnByTaskId: (taskId) => {
         return get().columns.find((col) => col.taskIds.includes(taskId));
     },
+
+    applyTaskCreated: (task: TaskType) => {
+        set((state) => {
+            const exists = Boolean(state.tasks[task.id]);
+
+            return {
+                tasks: {
+                    ...state.tasks,
+                    [task.id]: task
+                },
+                columns: exists ? state.columns : insertTaskIntoColumn(state.columns, task.id, task.status, task.order)
+            }
+        })
+    },
+
+    applyTaskDestroyed: (taskId: number) => {
+        set(state => {
+            const tasks = {...state.tasks}
+            delete tasks[taskId]
+
+            return {
+                tasks,
+                columns: state.columns.map((col) => ({
+                    ...col,
+                    taskIds: col.taskIds.filter(id => id !== taskId)
+                }))
+            }
+        })
+    },
+    applyTaskUpdated : (task: TaskType) => {
+        set((state) => {
+            return {
+                tasks: {
+                    ...state.tasks,
+                    [task.id]: {
+                        ...state.tasks[task.id],
+                        ...task
+                    }
+                },
+                columns: insertTaskIntoColumn(state.columns, task.id, task.status, task.order)
+            }
+        })
+    }
 }));

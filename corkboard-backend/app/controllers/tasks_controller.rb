@@ -19,8 +19,9 @@ class TasksController < ApplicationController
 
     workspace_id = release.present? ? release.workspace_id : tasks_params[:workspace_id]
 
-
     @task = Task.create!(tasks_params.merge(workspace_id: workspace_id))
+
+    @task.broadcast_to_release("task_created", current_user)
 
     @task
   end
@@ -52,12 +53,15 @@ class TasksController < ApplicationController
     end
 
     task.update!(attrs)
-    render json: {task: task, user: task.user}, status: :created
+    task.broadcast_to_release("task_updated", current_user)
+    render json: { task: task, user: task.user }, status: :created
   end
 
   def destroy
     task = Task.find(params[:id])
+    task.broadcast_to_release("task_destroyed", current_user)
     task.destroy!
+
     render json: {}, status: :ok
   end
 

@@ -11,6 +11,7 @@ export type TaskType = {
     status: string;
     order: number;
     user: User | null;
+    actor_id?: number;
 };
 
 export type Column = {
