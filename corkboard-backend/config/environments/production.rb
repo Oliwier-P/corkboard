@@ -20,6 +20,8 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
   config.active_record.attributes_for_inspect = [ :id ]
 
-  config.action_cable.allowed_request_origins = [ENV.fetch("APP_URL", "localhost:3000")]
+  allowed_origins = ENV.fetch("ALLOWED_ORIGINS", "").split(",").map(&:strip).reject(&:empty?)
+  config.action_cable.allowed_request_origins = allowed_origins.compact
+
   config.action_cable.mount_path = "/cable"
 end
