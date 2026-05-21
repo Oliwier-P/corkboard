@@ -9,5 +9,4 @@ test:
   adapter: test
 
 production:
-  adapter: postgresql
-  url: <%= ENV.fetch("DATABASE_URL") %>
+  adapter: async
