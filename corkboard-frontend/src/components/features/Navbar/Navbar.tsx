@@ -1,20 +1,20 @@
-import './Navbar.scss';
-import {NavbarItem} from './NavbarItem.tsx';
-import {Icon} from '../../ui/Icons/Icon.tsx';
-import {useAuth} from '../../../context/auth/useAuth.ts';
-import {Workspace} from '../Workspace/Workspace.tsx';
-import {WorkspaceMenu} from '../Workspace/WorkspaceMenu.tsx';
-import {useEffect, useRef, useState} from 'react';
-import {api} from '../../../api/api.ts';
-import type {WorkspaceType} from '../../../types/WorkspaceType.ts';
-import {useWorkspaceStore} from '../../../store/workspaceStore.ts';
-import {CreateWorkspaceModal} from './CreateWorkspaceModal.tsx';
-import {useWorkspaceMenuStore} from '../../../store/workspaceMenuStore.ts';
-import {UserAvatar} from '../../ui/UserAvatar/UserAvatar.tsx';
-import {UserNotifications} from "../UserNotifications/UserNotifications.tsx";
+import "./Navbar.scss";
+import { NavbarItem } from "./NavbarItem.tsx";
+import { Icon } from "../../ui/Icons/Icon.tsx";
+import { useAuth } from "../../../context/auth/useAuth.ts";
+import { Workspace } from "../Workspace/Workspace.tsx";
+import { WorkspaceMenu } from "../Workspace/WorkspaceMenu.tsx";
+import { useEffect, useRef, useState } from "react";
+import { api } from "../../../api/api.ts";
+import type { WorkspaceType } from "../../../types/WorkspaceType.ts";
+import { useWorkspaceStore } from "../../../store/workspaceStore.ts";
+import { CreateWorkspaceModal } from "./CreateWorkspaceModal.tsx";
+import { useWorkspaceMenuStore } from "../../../store/workspaceMenuStore.ts";
+import { UserAvatar } from "../../ui/UserAvatar/UserAvatar.tsx";
+import { UserNotifications } from "../UserNotifications/UserNotifications.tsx";
 
 export const Navbar = () => {
-    const {user} = useAuth();
+    const { user } = useAuth();
     const [workspaces, setWorkspaces] = useState<WorkspaceType[]>([]);
     const [showWorkspaceForm, setShowWorkspaceForm] = useState<boolean>(false);
     const menuRef = useRef<HTMLDivElement>(null);
@@ -23,6 +23,7 @@ export const Navbar = () => {
     const setWorkspace = useWorkspaceStore((state) => state.setWorkspace);
     const isMenuOpen = useWorkspaceMenuStore((store) => store.isOpen);
     const setMenuOpen = useWorkspaceMenuStore((store) => store.setOpen);
+    const isActiveDocumentLink = location.pathname.startsWith(`/workspaces/${workspace?.id}/document/`);
 
     const handleWorkspaceCreate = () => {
         setMenuOpen(false);
@@ -39,22 +40,22 @@ export const Navbar = () => {
         };
 
         if (isMenuOpen) {
-            document.addEventListener('mousedown', handleClickOutside);
+            document.addEventListener("mousedown", handleClickOutside);
         }
 
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener("mousedown", handleClickOutside);
         };
     }, [isMenuOpen, setMenuOpen]);
 
     useEffect(() => {
-        api.get('/workspaces').then((res) => {
+        api.get("/workspaces").then((res) => {
             setWorkspaces(res.data);
 
-            const storageId = localStorage.getItem('workspace_id');
+            const storageId = localStorage.getItem("workspace_id");
 
             if (!storageId) {
-                localStorage.setItem('workspace_id', res.data[0].id.toString());
+                localStorage.setItem("workspace_id", res.data[0].id.toString());
                 setWorkspace(res.data[0]);
             } else {
                 setWorkspace(res.data.find((w: WorkspaceType) => w.id.toString() == storageId) ?? res.data[0]);
@@ -65,27 +66,27 @@ export const Navbar = () => {
     return (
         <div className="navbar">
             <div className="navbar__app-info">
-                <Icon icon="appLogo" className="navbar__logo"/>
+                <Icon icon="appLogo" className="navbar__logo" />
                 <div className="navbar__app-name">Corkboard</div>
             </div>
 
-            {showWorkspaceForm && <CreateWorkspaceModal onClose={() => setShowWorkspaceForm(false)}/>}
+            {showWorkspaceForm && <CreateWorkspaceModal onClose={() => setShowWorkspaceForm(false)} />}
 
-            {workspace && workspaces.length > 0 && <Workspace ref={workspaceRef} name={workspace.name}/>}
+            {workspace && workspaces.length > 0 && <Workspace ref={workspaceRef} name={workspace.name} />}
             {isMenuOpen && workspaces.length > 0 && (
-                <WorkspaceMenu ref={menuRef} workspaces={workspaces.filter((w) => w.id !== workspace?.id)}
-                               handleWorkspaceCreate={handleWorkspaceCreate}/>
+                <WorkspaceMenu ref={menuRef} workspaces={workspaces.filter((w) => w.id !== workspace?.id)} handleWorkspaceCreate={handleWorkspaceCreate} />
             )}
 
-            <NavbarItem icon="box" label="Current Release" path={`/workspaces/${workspace?.id}/current_release`}/>
-            <NavbarItem icon="rows" label="Backlog" path="/backlog"/>
-            <NavbarItem icon="bookmarks" label="Releases" path={`/workspaces/${workspace?.id}/releases`}/>
+            <NavbarItem icon="box" label="Current Release" path={`/workspaces/${workspace?.id}/current_release`} />
+            <NavbarItem icon="rows" label="Backlog" path="/backlog" />
+            <NavbarItem icon="bookmarks" label="Releases" path={`/workspaces/${workspace?.id}/releases`} />
+            <NavbarItem icon="document" label="Docs" path={`/workspaces/${workspace?.id}/document/null`} isActive={isActiveDocumentLink} />
 
             {user && (
                 <div className="navbar__user">
-                    <UserAvatar username={user.username}/>
+                    <UserAvatar username={user.username} />
                     <span>{user.username}</span>
-                    <UserNotifications/>
+                    <UserNotifications />
                 </div>
             )}
         </div>

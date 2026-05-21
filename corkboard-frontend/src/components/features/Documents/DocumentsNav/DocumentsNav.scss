@@ -1,0 +1,49 @@
+.documents-nav {
+  &__body {
+    margin-top: 20px;
+  }
+
+  &__page {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    text-decoration: none;
+    width: 100%;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+    padding-left: 0.6rem;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+
+    color: rgba(255, 255, 255, 0.4);
+    border-radius: 0.4rem;
+
+    .icon {
+      width: 1.5rem;
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    &.active {
+      background-color: #122B4C;
+      color: #6BC1FF;
+
+      &:hover {
+        background-color: #173761;
+      }
+    }
+  }
+
+  &__create {
+    width: 100%;
+    background: none;
+    color: #6C6C6C;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+}
