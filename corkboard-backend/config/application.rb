@@ -31,7 +31,7 @@ module CorkboardBackend
     config.autoload_paths << Rails.root.join("app/services")
     config.eager_load_paths << Rails.root.join("app/services")
 
-    config.api_only = true
+    config.api_only = false
     config.session_store :cookie_store, key: '_corkboard-session'
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use config.session_store, config.session_options
