@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
+  mount ActionCable.server => "/cable"
+
   devise_for :users, path: "", path_names: {
     sign_in: "login",
     sign_out: "logout",
