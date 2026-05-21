@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   mount ActionCable.server => "/cable"
+  get "/debug-route", to: proc { |env| [200, {}, ["Debug route works"]] }
 
   get "up" => "rails/health#show", as: :rails_health_check
 
