@@ -22,6 +22,6 @@ Rails.application.configure do
 
   allowed_origins = ENV.fetch("ALLOWED_ORIGINS", "").split(",").map(&:strip).reject(&:empty?)
   config.action_cable.allowed_request_origins = allowed_origins.compact
-
+  config.action_cable.disable_request_forgery_protection = true
   config.action_cable.mount_path = "/cable"
 end
