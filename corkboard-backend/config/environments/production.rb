@@ -24,4 +24,5 @@ Rails.application.configure do
   allowed_origins = ENV.fetch("ALLOWED_ORIGINS", "").split(",").map(&:strip).reject(&:empty?)
   config.action_cable.allowed_request_origins = allowed_origins.compact
   config.action_cable.mount_path = "/cable"
+  config.middleware.insert_before 0, Rack::MethodOverride
 end
