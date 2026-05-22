@@ -1,8 +1,11 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
+  config.assume_ssl = true
+
   config.enable_reloading = false
   config.eager_load = true
+
   config.consider_all_requests_local = false
   config.public_file_server.headers = { "cache-control" => "public, max-age=#{1.year.to_i}" }
   config.active_storage.service = :local
@@ -23,6 +26,4 @@ Rails.application.configure do
   config.action_cable.url = ENV.fetch("WS_URL", "ws://localhost:3000/cable")
   allowed_origins = ENV.fetch("ALLOWED_ORIGINS", "").split(",").map(&:strip).reject(&:empty?)
   config.action_cable.allowed_request_origins = allowed_origins.compact
-  config.action_cable.mount_path = "/cable"
-  config.middleware.insert_before 0, Rack::MethodOverride
 end
