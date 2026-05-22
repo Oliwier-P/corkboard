@@ -1,6 +1,7 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
+  config.hosts << "corkboard-backend-production.up.railway.app"
   config.assume_ssl = true
 
   config.enable_reloading = false
