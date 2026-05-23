@@ -19,6 +19,7 @@
 #
 
 
+
 class Task < ApplicationRecord
   belongs_to :release, optional: true
   belongs_to :workspace

@@ -1,0 +1,66 @@
+.document-page {
+  width: 100%;
+  height: 100%;
+
+  padding: 75px;
+
+  &__title {
+    font-size: 42px;
+    border: none;
+  }
+
+  &__owner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__menu {
+    display: flex;
+    gap: 4px;
+
+    padding: 1px 5px;
+
+    background-color: #0e0e0e;
+    border: 1px solid #333333;
+    border-radius: 7px;
+
+    .item {
+      width: 25px;
+      min-width: 25px;
+      height: 25px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      border-radius: 7px;
+      background: none;
+
+      &:hover {
+        background-color: #2b2b2b;
+      }
+    }
+  }
+
+  .ProseMirror {
+    width: 100%;
+
+    margin-top: 40px;
+    outline: none;
+
+    p {
+      line-height: 1.75;
+      margin: 0;
+    }
+
+    // Editor placeholder
+    p.is-editor-empty:first-child::before {
+      content: attr(data-placeholder);
+      color: #adb5bd;
+      pointer-events: none;
+      float: left;
+      height: 0;
+    }
+  }
+}

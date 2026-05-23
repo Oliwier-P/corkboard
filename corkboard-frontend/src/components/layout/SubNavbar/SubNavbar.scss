@@ -1,0 +1,34 @@
+@use '../../../global/colors' as colors;
+
+.sub-navbar {
+  width: 180px;
+  height: 100vh;
+  background-color: colors.$primary-bg;
+  border-right: 1px solid rgba(#fff, 0.05);
+  padding: 0.8rem 0.4rem;
+
+  &__header {
+    font-weight: normal;
+    color: #fff;
+  }
+
+  &__title {
+    font-size: 0.9rem;
+    font-weight: normal;
+
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+
+    color: #646464;
+  }
+
+  &__body {
+    width: 100%;
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+  }
+}

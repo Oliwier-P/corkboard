@@ -14,6 +14,7 @@ class User < ApplicationRecord
             }
   validates :password, presence: true, length: { minimum: 6 }
   has_and_belongs_to_many :workspaces
+  has_many :documents, foreign_key: :owner_id
   belongs_to :last_workspace, class_name: "Workspace", optional: true
 
   after_create :create_workspace

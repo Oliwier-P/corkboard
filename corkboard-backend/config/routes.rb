@@ -47,7 +47,8 @@ Rails.application.routes.draw do
       get :invitation
     end
 
-
     post :switch, on: :collection
   end
+
+  resources :documents
 end
