@@ -19,6 +19,12 @@ import bell from "./svgs/bell.svg?react";
 import doorOpen from "./svgs/door-open.svg?react";
 import document from "./svgs/document.svg?react";
 
+import bold from "./svgs/bold.svg?react";
+import italic from "./svgs/italic.svg?react";
+import underline from "./svgs/underline.svg?react";
+import strike from "./svgs/strike.svg?react";
+import code from "./svgs/code.svg?react";
+
 export const icons = {
     box,
     rows,
@@ -40,4 +46,9 @@ export const icons = {
     bell,
     doorOpen,
     document,
+    bold,
+    italic,
+    underline,
+    strike,
+    code,
 };
