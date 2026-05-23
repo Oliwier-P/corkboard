@@ -23,7 +23,7 @@ export const Navbar = () => {
     const setWorkspace = useWorkspaceStore((state) => state.setWorkspace);
     const isMenuOpen = useWorkspaceMenuStore((store) => store.isOpen);
     const setMenuOpen = useWorkspaceMenuStore((store) => store.setOpen);
-    const isActiveDocumentLink = location.pathname.startsWith(`/workspaces/${workspace?.id}/document/`);
+    const isActiveDocumentLink = location.pathname.startsWith(`/workspaces/${workspace?.id}/documents/`);
 
     const handleWorkspaceCreate = () => {
         setMenuOpen(false);
@@ -80,7 +80,7 @@ export const Navbar = () => {
             <NavbarItem icon="box" label="Current Release" path={`/workspaces/${workspace?.id}/current_release`} />
             <NavbarItem icon="rows" label="Backlog" path="/backlog" />
             <NavbarItem icon="bookmarks" label="Releases" path={`/workspaces/${workspace?.id}/releases`} />
-            <NavbarItem icon="document" label="Docs" path={`/workspaces/${workspace?.id}/document/null`} isActive={isActiveDocumentLink} />
+            <NavbarItem icon="document" label="Docs" path={`/workspaces/${workspace?.id}/documents/`} isActive={isActiveDocumentLink} />
 
             {user && (
                 <div className="navbar__user">

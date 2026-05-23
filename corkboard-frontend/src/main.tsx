@@ -65,7 +65,7 @@ createRoot(document.getElementById("root")!).render(
                     />
 
                     <Route
-                        path="workspaces/:workspaceId/document/:documentId"
+                        path="workspaces/:workspaceId/documents/:documentId?"
                         element={
                             <ProtectedRoute>
                                 <Documents />

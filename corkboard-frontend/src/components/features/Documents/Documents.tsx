@@ -12,31 +12,29 @@ export const Documents = () => {
     const navigate = useNavigate();
     const workspace = useWorkspaceStore((state) => state.workspace);
     const [documents, setDocuments] = useState<DocumentType[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         api.get("/documents", { params: { workspace_id: workspace?.id } }).then((response) => {
             setDocuments(response.data);
+            setLoading(false);
         });
     }, [documentId, navigate]);
 
-    useEffect(() => {
-        console.log(documentId);
-    }, [documentId]);
-
-    useEffect(() => {
-        console.log(documents);
-    }, [documents]);
+    if (loading) {
+        return <div className="page-status">Loading...</div>;
+    }
 
     return (
         <div className="documents">
             <DocumentsNav documents={documents} setDocuments={setDocuments} />
 
-            {documentId && documentId !== "null" ? (
+            {!!documentId ? (
                 <DocumentPage document={documents.find((d) => d.id === Number(documentId)) ?? documents[0]} />
-            ) : documents.length ? (
-                <div>Wybioerz docsa</div>
+            ) : documents.length > 0 ? (
+                <div className="page-status">Choose document</div>
             ) : (
-                <div>Create new doc</div>
+                <div className="page-status">Create new document</div>
             )}
         </div>
     );

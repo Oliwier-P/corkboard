@@ -1,6 +1,6 @@
 import "./DocumentsNav.scss";
 import SubNavbar from "../../../layout/SubNavbar/SubNavbar.tsx";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Icon } from "../../../ui/Icons/Icon.tsx";
 import { Button } from "../../../ui/Button/Button.tsx";
 import { useWorkspaceStore } from "../../../../store/workspaceStore.ts";
@@ -15,6 +15,8 @@ interface DocumentNavProps {
 
 const DocumentsNav = ({ documents, setDocuments }: DocumentNavProps) => {
     const workspace = useWorkspaceStore((state) => state.workspace);
+    const navigate = useNavigate();
+
     const handleCreateDocument = () => {
         if (!workspace?.id) return;
 
@@ -23,16 +25,28 @@ const DocumentsNav = ({ documents, setDocuments }: DocumentNavProps) => {
         });
     };
 
+    const handleDeleteDocument = (id: number) => {
+        if (!workspace?.id) return;
+
+        api.delete(`documents/${id}`).then(() => {
+            navigate(`/workspaces/${workspace.id}/documents/`);
+        });
+    };
+
     return (
         <SubNavbar className="documents-nav">
             <SubNavbar.Header header="Documents" />
 
             <SubNavbar.Body className="documents-nav__body">
-                {documents.length &&
+                {documents.length > 0 &&
                     documents.map((document) => (
-                        <NavLink className="documents-nav__page" to={`/workspaces/${workspace?.id}/document/${document.id}`}>
+                        <NavLink className="documents-nav__page" to={`/workspaces/${workspace?.id}/documents/${document.id}`}>
                             <Icon icon="document" />
                             {document.name}
+
+                            <Button onClick={() => handleDeleteDocument(document.id)}>
+                                <Icon icon="trash" />
+                            </Button>
                         </NavLink>
                     ))}
 
