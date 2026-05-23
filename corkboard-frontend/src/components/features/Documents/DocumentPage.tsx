@@ -4,12 +4,14 @@ import StarterKit from "@tiptap/starter-kit";
 import { BubbleMenu } from "@tiptap/react/menus";
 import { UserAvatar } from "../../ui/UserAvatar/UserAvatar.tsx";
 import Placeholder from "@tiptap/extension-placeholder";
+import { Button } from "../../ui/Button/Button.tsx";
+import type { DocumentType } from "../../../types/DocumentType.ts";
 
 interface DocumentPageProps {
-    id: string;
+    document: DocumentType;
 }
 
-const DocumentPage = ({ id }: DocumentPageProps) => {
+const DocumentPage = ({ document }: DocumentPageProps) => {
     const editor = useEditor({
         extensions: [
             StarterKit,
@@ -22,7 +24,7 @@ const DocumentPage = ({ id }: DocumentPageProps) => {
 
     return (
         <div className="document-page">
-            <div className="document-page__title">Untilted - {id}</div>
+            <div className="document-page__title">{document.name}</div>
 
             <div className="document-page__owner">
                 <UserAvatar username={"Worekit"} />
@@ -33,14 +35,18 @@ const DocumentPage = ({ id }: DocumentPageProps) => {
 
             <BubbleMenu editor={editor}>
                 <div className="document-page__menu">
-                    <div>List type</div>
-                    <div>Font Color</div>
-                    <div>Bold</div>
-                    <div>Italic</div>
-                    <div>Underline</div>
-                    <div>Strikethrough</div>
-                    <div>Code</div>
-                    <div>Alignment</div>
+                    <Button className="item" onClick={() => editor.chain().focus().toggleBold().run()}>
+                        B
+                    </Button>
+                    <Button className="item" onClick={() => editor.chain().focus().toggleItalic().run()}>
+                        I
+                    </Button>
+                    <Button className="item" onClick={() => editor.chain().focus().toggleUnderline().run()}>
+                        U
+                    </Button>
+                    <Button className="item" onClick={() => editor.chain().focus().toggleStrike().run()}>
+                        S
+                    </Button>
                 </div>
             </BubbleMenu>
         </div>

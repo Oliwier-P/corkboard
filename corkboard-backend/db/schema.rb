@@ -10,9 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_20_185520) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_23_140056) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "documents", force: :cascade do |t|
+    t.jsonb "content"
+    t.datetime "created_at", null: false
+    t.string "name"
+    t.bigint "owner_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "workspace_id", null: false
+    t.index ["owner_id"], name: "index_documents_on_owner_id"
+    t.index ["workspace_id"], name: "index_documents_on_workspace_id"
+  end
 
   create_table "releases", force: :cascade do |t|
     t.boolean "completed"
@@ -76,6 +87,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_20_185520) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "documents", "users", column: "owner_id"
+  add_foreign_key "documents", "workspaces"
   add_foreign_key "releases", "workspaces"
   add_foreign_key "tasks", "users"
   add_foreign_key "users", "workspaces", column: "last_workspace_id"
