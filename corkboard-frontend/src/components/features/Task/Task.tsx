@@ -108,13 +108,6 @@ export const Task = memo(({ taskId }: TaskProps) => {
     return (
         <ContextMenu items={contextMenuOptions()}>
             <div className={ClassNames("task", { ghost: isDragging })} ref={ref}>
-                {!isEditing && (
-                    <div className="task__options">
-                        <Button variant="icon" size="small" icon="edit" onClick={() => setIsEditing(true)} />
-                        <Button variant="icon" size="small" icon="exclamationMark" />
-                        <Button variant="icon" size="small" icon="dots" />
-                    </div>
-                )}
                 <form className="task__header" ref={headerRef} onSubmit={handleSubmit(onSubmit)}>
                     <EditableText
                         isEditable={isEditing}
