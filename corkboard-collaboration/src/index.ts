@@ -5,7 +5,7 @@ import 'dotenv/config'
 
 const apiUrl = process.env.API_URL
 
-const port = parseInt(process.env.PORT) || 3000
+const port = parseInt(process.env.PORT || "3000")
 
 const server = new Server({
     port: port,
@@ -35,7 +35,7 @@ const server = new Server({
             async fetch({documentName}) {
                 const res = await fetch(
                     `${apiUrl}/documents/${documentName}/ydoc`,
-                    {headers: {'X-Internal-Token': process.env.INTERNAL_TOKEN}}
+                    {headers: {'X-Internal-Token': process.env.INTERNAL_TOKEN || ""}}
                 )
                 if (res.status === 204 || !res.ok) return null
                 const buffer = await res.arrayBuffer()
@@ -51,7 +51,7 @@ const server = new Server({
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/octet-stream',
-                            'X-Internal-Token': process.env.INTERNAL_TOKEN,
+                            'X-Internal-Token': process.env.INTERNAL_TOKEN || "",
                         },
                         body: new Uint8Array(state),
                     }
