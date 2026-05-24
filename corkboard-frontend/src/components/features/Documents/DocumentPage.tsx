@@ -3,29 +3,36 @@ import {UserAvatar} from "../../ui/UserAvatar/UserAvatar.tsx";
 import type {DocumentType} from "../../../types/DocumentType.ts";
 import {Input} from "../../ui/Input/Input.tsx";
 import {api} from "../../../api/api.ts";
-import {type Dispatch, type SetStateAction} from "react";
 import {CollaborativeEditor} from "../CollaborativeEditor/CollaborativeEditor.tsx";
 import {useAuth} from "../../../context/auth/useAuth.ts";
+import {useDocumentsStore} from "../../../store/documentsStore.ts";
+import {useEffect, useState} from "react";
 
 interface DocumentPageProps {
     document: DocumentType;
-    setDocuments: Dispatch<SetStateAction<DocumentType[]>>;
 }
 
-const DocumentPage = ({document, setDocuments}: DocumentPageProps) => {
+const DocumentPage = ({document}: DocumentPageProps) => {
+    const [documentName, setDocumentName] = useState("");
+
     const {user, token} = useAuth()
+    const updateDocument = useDocumentsStore(state => state.updateDocument)
 
     const handleUpdateDocumentName = (value: string) => {
         if (document.name !== value) {
             api.patch(`documents/${document.id}`, {name: value}).then(() => {
-                setDocuments((prev) => prev.map((d) => (d.id === document.id ? {...d, name: value} : d)));
+                updateDocument({...document, name: value});
             });
         }
     };
 
+    useEffect(() => {
+        setDocumentName(document.name)
+    }, [document])
+
     return (
         <div className="document-page">
-            <Input className="document-page__title" defaultValue={document.name}
+            <Input className="document-page__title" value={documentName} onChange={(e) => setDocumentName(e.target.value)}
                    onBlur={(e) => handleUpdateDocumentName(e.target.value)}/>
 
             <div className="document-page__owner">

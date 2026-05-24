@@ -3,4 +3,5 @@ export type DocumentType = {
     name: string;
     owner: { id: number; username: string };
     updated_at: string;
+    actor_id?: number;
 };

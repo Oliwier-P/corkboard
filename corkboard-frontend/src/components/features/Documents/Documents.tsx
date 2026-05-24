@@ -1,27 +1,32 @@
 import "./Documents.scss";
 import DocumentsNav from "./DocumentsNav/DocumentsNav.tsx";
 import DocumentPage from "./DocumentPage.tsx";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useWorkspaceStore } from "../../../store/workspaceStore.ts";
-import { api } from "../../../api/api.ts";
-import type { DocumentType } from "../../../types/DocumentType.ts";
-import * as _ from "lodash";
+import {useEffect, useState} from "react";
+import {useNavigate, useParams} from "react-router-dom";
+import {useWorkspaceStore} from "../../../store/workspaceStore.ts";
+import {useDocumentsStore} from "../../../store/documentsStore.ts";
+import {useDocumentsSubscription} from "../../../store/documentsSubscription.ts";
+import {useAuth} from "../../../context/auth/useAuth.ts";
 
 export const Documents = () => {
-    const { documentId } = useParams();
-    const navigate = useNavigate();
+    const {documentId} = useParams();
     const workspace = useWorkspaceStore((state) => state.workspace);
-    const [documents, setDocuments] = useState<DocumentType[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const navigate = useNavigate();
+    const {user} = useAuth()
+
+    const fetchDocuments = useDocumentsStore((state) => state.fetchDocuments)
+    const documents = useDocumentsStore((state) => state.documents);
+
+    useDocumentsSubscription(workspace?.id, user?.id)
 
     useEffect(() => {
-        api.get("/documents", { params: { workspace_id: workspace?.id } }).then((response) => {
-            const sortedDocuments = _.sortBy(response.data, ["created_at"]);
-            setDocuments(sortedDocuments);
-            setLoading(false);
+        if (!workspace) return;
+        fetchDocuments(workspace?.id, (res) => {
+            if (!documentId) navigate(`${res[0].id}`);
+            setLoading(false)
         });
-    }, [documentId, navigate]);
+    }, [documentId, fetchDocuments, navigate, workspace]);
 
     if (loading) {
         return <div className="page-status">Loading...</div>;
@@ -29,10 +34,11 @@ export const Documents = () => {
 
     return (
         <div className="documents">
-            <DocumentsNav documents={documents} setDocuments={setDocuments} />
+            <DocumentsNav documents={documents}/>
 
-            {!!documentId ? (
-                <DocumentPage key={documentId} document={documents.find((d) => d.id === Number(documentId)) ?? documents[0]} setDocuments={setDocuments} />
+            {documents.length > 0 ? (
+                <DocumentPage key={documentId}
+                              document={documents.find((d) => d.id === Number(documentId)) ?? documents[0]}/>
             ) : documents.length > 0 ? (
                 <div className="page-status">Choose document</div>
             ) : (

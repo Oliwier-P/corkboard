@@ -6,6 +6,7 @@ class DocumentsController < ApplicationController
 
   def create
     @document = Document.create(name: "Untilted", owner_id: current_user.id, workspace_id: params[:workspace_id])
+    @document.broadcast("document_created", current_user)
   end
 
   def ydoc
@@ -26,7 +27,7 @@ class DocumentsController < ApplicationController
     return if performed?
 
     request.body.rewind
-    body = request.body.read.force_encoding("BINARY")
+    body = request.body.read&.force_encoding("BINARY")
 
     document = Document.find(params[:id])
     document.update!(yjs_state: body)
@@ -36,12 +37,13 @@ class DocumentsController < ApplicationController
   def update
     @document = Document.find(params[:id])
     @document.update(document_params)
-
+    @document.broadcast("document_updated", current_user)
     render json: { message: "Successfully updated!" }
   end
 
   def destroy
     @document = Document.find(params[:id])
+    @document.broadcast("document_destroyed", current_user)
     @document.destroy
 
     render json: { message: "Successfully deleted!" }
