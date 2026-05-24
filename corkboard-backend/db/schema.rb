@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_23_140056) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_23_235151) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -21,6 +21,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_23_140056) do
     t.bigint "owner_id", null: false
     t.datetime "updated_at", null: false
     t.bigint "workspace_id", null: false
+    t.binary "yjs_state"
     t.index ["owner_id"], name: "index_documents_on_owner_id"
     t.index ["workspace_id"], name: "index_documents_on_workspace_id"
   end

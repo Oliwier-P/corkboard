@@ -10,19 +10,23 @@ type AuthProviderProps = {
 export const AuthProvider = ({children}: AuthProviderProps) => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
+    const [token, setToken] = useState<string | null>(null);
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
+        const localStorageToken = localStorage.getItem('token');
+        if (localStorageToken) {
             api.get('/users/me')
-                .then((res: { data: SetStateAction<User | null>; }) => setUser(res.data))
+                .then((res: { data: SetStateAction<User | null>; }) => {
+                    setUser(res.data)
+                    setToken(localStorageToken)
+                })
                 .catch(() => localStorage.removeItem('token'))
                 .finally(() => setLoading(false))
         }
     }, []);
 
     return (
-        <AuthContext.Provider value={{user, setUser, loading}}>
+        <AuthContext.Provider value={{user, setUser, loading, token}}>
             {children}
         </AuthContext.Provider>
     )
