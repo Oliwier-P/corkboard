@@ -23,7 +23,7 @@ export const Documents = () => {
     useEffect(() => {
         if (!workspace) return;
         fetchDocuments(workspace?.id, (res) => {
-            if (!documentId) navigate(`${res[0].id}`);
+            if (!documentId && res.length > 0) navigate(`${res[0].id}`);
             setLoading(false)
         });
     }, [documentId, fetchDocuments, navigate, workspace]);
