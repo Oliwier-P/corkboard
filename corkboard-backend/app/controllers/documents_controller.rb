@@ -1,7 +1,7 @@
 class DocumentsController < ApplicationController
 
   def index
-    @documents = Document.all
+    @documents = Document.where(workspace_id: params[:workspace_id])
   end
 
   def create
