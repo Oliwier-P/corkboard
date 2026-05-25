@@ -1,0 +1,26 @@
+{
+  "name": "corkboard-collaboration",
+  "type": "module",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "start": "node dist/src/index.js",
+    "build": "tsc -b"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@hocuspocus/extension-database": "^4.1.0",
+    "@hocuspocus/server": "^4.1.0",
+    "dotenv": "^17.4.2",
+    "yjs": "^13.6.30"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "tsx": "^4.22.3",
+    "typescript": "^6.0.3"
+  }
+}

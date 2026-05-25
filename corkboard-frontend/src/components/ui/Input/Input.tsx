@@ -12,16 +12,19 @@ type InputProps = {
     isInvaild?: boolean;
     variant?: "no-border";
     defaultValue?: string | number;
+    value?: string | number;
     onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
     onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+    onChange?: (e: React.FocusEvent<HTMLInputElement>) => void;
     style?: DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
 };
 
-export const Input = ({ className, type, id, placeholder, register, isInvaild, variant, defaultValue, onKeyDown, onBlur, style }: InputProps) => {
+export const Input = ({ className, type, id, placeholder, register, isInvaild, variant, defaultValue, value, onKeyDown, onBlur, onChange, style }: InputProps) => {
     return (
         <input
             className={ClassNames("input", className, { invalid: isInvaild }, [variant])}
             defaultValue={defaultValue}
+            value={value}
             type={type}
             id={id}
             autoComplete="off"
@@ -29,6 +32,7 @@ export const Input = ({ className, type, id, placeholder, register, isInvaild, v
             placeholder={placeholder}
             onKeyDown={(e) => onKeyDown && onKeyDown(e)}
             onBlur={onBlur}
+            onChange={onChange}
             {...register}
         />
     );

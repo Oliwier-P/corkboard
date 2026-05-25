@@ -1,0 +1,1 @@
+Rails.configuration.hocuspocus_secret = ENV.fetch('HOCUSPOCUS_SECRET', 'internal-token')

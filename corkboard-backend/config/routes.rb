@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   mount ActionCable.server => "/cable"
-  get "/debug-route", to: proc { |env| [200, {}, ["Debug route works"]] }
 
   get "up" => "rails/health#show", as: :rails_health_check
 
@@ -50,5 +49,15 @@ Rails.application.routes.draw do
     post :switch, on: :collection
   end
 
-  resources :documents
+  resources :documents do
+    collection do
+      post :authorize
+    end
+    member do
+      get :ydoc
+      put :ydoc, action: :update_ydoc
+    end
+  end
+
+  post "/auth/verify_token", to: "auth#verify_token"
 end
