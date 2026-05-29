@@ -2,10 +2,11 @@ import "./TaskModal.scss";
 import Modal from "../../ui/Modal/Modal.tsx";
 import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
 import { useReleaseBoardStore } from "../../../store/releaseBoardStore.ts";
-import { UserAvatar } from "../../ui/UserAvatar/UserAvatar.tsx";
 import { CollaborativeEditor } from "../CollaborativeEditor/CollaborativeEditor.tsx";
 import { useAuth } from "../../../context/auth/useAuth.ts";
 import { api } from "../../../api/api.ts";
+import { UserSelect } from "../../ui/UserSelect/UserSelect.tsx";
+import { upperCase } from "lodash";
 
 interface TaskModalProps {
     taskId: number;
@@ -43,9 +44,13 @@ const TaskModal = ({ taskId, setShowTaskModal }: TaskModalProps) => {
                     onBlur={(e) => handleUpdateTaskName(e.target.value)}
                 />
 
-                <div className="task-modal__owner">
-                    <UserAvatar username={"Admin"} />
-                    <span>{"Admin"}</span>
+                <div className="task-modal__properties">
+                    <div className="owner">
+                        <UserSelect taskId={taskId} taskUser={task.user} />
+                        <span>{task.user ? task.user.username : "Assign"}</span>
+                    </div>
+
+                    <div className="status">{upperCase(task.status)}</div>
                 </div>
 
                 {user && token && documentId && <CollaborativeEditor documentId={documentId} user={user} authToken={token} />}

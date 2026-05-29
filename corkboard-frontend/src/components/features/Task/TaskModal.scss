@@ -15,11 +15,34 @@
     max-height: 10lh;
   }
 
-  &__owner {
-    display: flex;
-    gap: 10px;
-  }
+  &__properties {
+    width: 100%;
 
+    display: flex;
+    gap: 120px;
+
+    margin-bottom: 10px;
+
+    .owner {
+      display: flex;
+      gap: 10px;
+
+      cursor: pointer;
+    }
+
+    .status {
+      background-color: #353535;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      padding: 2px 5px;
+      border-radius: 5px;
+
+      cursor: not-allowed;
+    }
+  }
   .modal-body {
     width: 500px;
     height: 500px;
