@@ -7,6 +7,7 @@ import { useAuth } from "../../../context/auth/useAuth.ts";
 import { api } from "../../../api/api.ts";
 import { UserSelect } from "../../ui/UserSelect/UserSelect.tsx";
 import { upperCase } from "lodash";
+import classNames from "classnames";
 
 interface TaskModalProps {
     taskId: number;
@@ -50,7 +51,10 @@ const TaskModal = ({ taskId, setShowTaskModal }: TaskModalProps) => {
                         <span>{task.user ? task.user.username : "Assign"}</span>
                     </div>
 
-                    <div className="status">{upperCase(task.status)}</div>
+                    <div className={classNames("status", task.status)}>
+                        <div className="dot"></div>
+                        <span>{upperCase(task.status)}</span>
+                    </div>
                 </div>
 
                 {user && token && documentId && <CollaborativeEditor documentId={documentId} user={user} authToken={token} />}

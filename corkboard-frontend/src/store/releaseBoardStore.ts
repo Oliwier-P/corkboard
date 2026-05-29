@@ -1,20 +1,20 @@
-import type {Column, TaskType} from "../types/ReleaseBoardTypes.ts";
-import {create} from "zustand";
-import {api} from "../api/api.ts";
-import {useWorkspaceStore} from "./workspaceStore.ts";
-import {insertTaskIntoColumn} from "./releaseBoardHelpers.ts";
+import type { Column, TaskType } from "../types/ReleaseBoardTypes.ts";
+import { create } from "zustand";
+import { api } from "../api/api.ts";
+import { useWorkspaceStore } from "./workspaceStore.ts";
+import { insertTaskIntoColumn } from "./releaseBoardHelpers.ts";
 
 const INITIAL_STATE = {
     id: 0,
     tasks: {},
     columns: [
-        {id: "backlog", taskIds: []},
-        {id: "adjustments", taskIds: []},
-        {id: "todo", taskIds: []},
-        {id: "in_progress", taskIds: []},
-        {id: "review_pending", taskIds: []},
-        {id: "testing", taskIds: []},
-        {id: "accepted", taskIds: []},
+        { id: "backlog", taskIds: [] },
+        { id: "adjustments", taskIds: [] },
+        { id: "todo", taskIds: [] },
+        { id: "in_progress", taskIds: [] },
+        { id: "review_pending", taskIds: [] },
+        { id: "testing", taskIds: [] },
+        { id: "accepted", taskIds: [] },
     ],
 };
 
@@ -54,33 +54,37 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
     ...INITIAL_STATE,
     activeTask: null,
     overColumnId: null,
-    setActiveTask: (task) => set({activeTask: task}),
-    setOverColumnId: (id) => set({overColumnId: id}),
+    setActiveTask: (task) => set({ activeTask: task }),
+    setOverColumnId: (id) => set({ overColumnId: id }),
 
     fetchBoard: (releaseId: number, callback?: () => void) => {
-        api.get(`/releases/${releaseId}/board`).then((res) => {
-            set({
-                id: releaseId,
-                tasks: res.data.tasks,
-                columns: res.data.columns,
-            });
-        }).then(() => callback && callback())
+        api.get(`/releases/${releaseId}/board`)
+            .then((res) => {
+                set({
+                    id: releaseId,
+                    tasks: res.data.tasks,
+                    columns: res.data.columns,
+                });
+            })
+            .then(() => callback && callback());
     },
 
     fetchBacklog: (workspaceId: number) => {
         api.get(`/backlog/${workspaceId}`).then((res) => {
-            set(state => {
+            set((state) => {
                 const taskIds = res.data.taskIds;
                 return {
-                    columns: [...state.columns, {
-                        id: 'backlog',
-                        taskIds: taskIds,
-                    }],
-                    tasks: {...state.tasks, ...res.data.tasks}
-                }
-            })
-
-        })
+                    columns: [
+                        ...state.columns,
+                        {
+                            id: "backlog",
+                            taskIds: taskIds,
+                        },
+                    ],
+                    tasks: { ...state.tasks, ...res.data.tasks },
+                };
+            });
+        });
     },
 
     moveTaskBetweenColumns: (activeId, fromColumnId, toColumnId, insertAt) => {
@@ -91,20 +95,22 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
             return {
                 columns: state.columns.map((col) => {
                     if (col.id === fromColumnId) {
-                        return {...col, taskIds: col.taskIds.filter((id) => id !== activeId)};
+                        return { ...col, taskIds: col.taskIds.filter((id) => id !== activeId) };
                     }
 
                     if (col.id === toColumnId) {
                         const newIds = [...col.taskIds];
                         newIds.splice(typeof insertAt === "number" ? insertAt : newIds.length, 0, activeId);
-                        return {...col, taskIds: newIds};
+                        return { ...col, taskIds: newIds };
                     }
                     return col;
                 }),
             };
         });
 
-        api.put(`/tasks/${activeId}`, {task: {status: toColumnId, order: insertAt, release_id: get().id}});
+        api.put(`/tasks/${activeId}`, { task: { status: toColumnId, order: insertAt, release_id: get().id } }).then(() => {
+            get().updateTask(activeId, { status: toColumnId, order: insertAt, release_id: get().id });
+        });
     },
 
     reorderTaskInColumn: (columnId, activeId, insertAt) => {
@@ -113,16 +119,16 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
                 if (col.id !== columnId) return col;
                 const newIds = col.taskIds.filter((id) => id !== activeId);
                 newIds.splice(insertAt, 0, activeId);
-                return {...col, taskIds: newIds};
+                return { ...col, taskIds: newIds };
             }),
         }));
 
-        api.put(`/tasks/${activeId}`, {task: {order: insertAt}});
+        api.put(`/tasks/${activeId}`, { task: { order: insertAt } });
     },
     addTask: (columnId, name) => {
         const temporaryId = Date.now() as number;
         const order = get().columns.find((col) => col.id === columnId)?.taskIds.length ?? 0;
-        const workspaceId = useWorkspaceStore.getState().workspace?.id
+        const workspaceId = useWorkspaceStore.getState().workspace?.id;
         const newTask: TaskType = {
             id: temporaryId,
             name,
@@ -131,7 +137,7 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
             release_id: columnId === "backlog" ? null : get().id,
             workspace_id: workspaceId || null,
             status: columnId,
-            user: null
+            user: null,
         };
         set((state) => {
             return {
@@ -139,25 +145,29 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
                     ...state.tasks,
                     [temporaryId]: newTask,
                 },
-                columns: state.columns.map((col) => (col.id === columnId ? {
-                    ...col,
-                    taskIds: [...col.taskIds, temporaryId]
-                } : col)),
+                columns: state.columns.map((col) =>
+                    col.id === columnId
+                        ? {
+                              ...col,
+                              taskIds: [...col.taskIds, temporaryId],
+                          }
+                        : col,
+                ),
             };
         });
-        api.post("/tasks", {task: newTask}).then((res) => {
+        api.post("/tasks", { task: newTask }).then((res) => {
             set((state) => {
-                const tasks = {...state.tasks};
+                const tasks = { ...state.tasks };
                 const savedTask = res.data;
                 delete tasks[temporaryId];
                 return {
-                    tasks: {...tasks, [savedTask.id]: savedTask},
+                    tasks: { ...tasks, [savedTask.id]: savedTask },
                     columns: state.columns.map((col) =>
                         col.id === columnId
                             ? {
-                                ...col,
-                                taskIds: col.taskIds.map((taskId) => (taskId === temporaryId ? savedTask.id : taskId)),
-                            }
+                                  ...col,
+                                  taskIds: col.taskIds.map((taskId) => (taskId === temporaryId ? savedTask.id : taskId)),
+                              }
                             : col,
                     ),
                 };
@@ -169,44 +179,44 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
             return {
                 tasks: {
                     ...state.tasks,
-                    [taskId]: {...state.tasks[taskId], ...task},
-                }
+                    [taskId]: { ...state.tasks[taskId], ...task },
+                },
             };
         });
-        api.put(`tasks/${taskId}`, {task: task});
+        api.put(`tasks/${taskId}`, { task: task });
     },
     moveToBacklog: (taskId: number) => {
         set((state) => {
-            const task = state.tasks[taskId]
+            const task = state.tasks[taskId];
             return {
-                columns: state.columns.map(col => {
+                columns: state.columns.map((col) => {
                     if (col.id === task.status) {
                         return {
                             ...col,
-                            taskIds: col.taskIds.filter(id => id !== taskId)
-                        }
+                            taskIds: col.taskIds.filter((id) => id !== taskId),
+                        };
                     } else if (col.id === "backlog") {
                         return {
                             ...col,
                             taskIds: [...col.taskIds, taskId],
-                        }
+                        };
                     } else {
-                        return col
+                        return col;
                     }
-                })
-            }
-        })
-        api.put(`tasks/${taskId}`, {task: {status: "backlog"}});
+                }),
+            };
+        });
+        api.put(`tasks/${taskId}`, { task: { status: "backlog" } });
     },
     updateTaskUser: (taskId, userId) => {
-        api.patch(`tasks/${taskId}`, {task: {user_id: userId}}).then((response) => {
-            const user = response.data.user ? {id: response.data.user.id, username: response.data.user.username} : null;
+        api.patch(`tasks/${taskId}`, { task: { user_id: userId } }).then((response) => {
+            const user = response.data.user ? { id: response.data.user.id, username: response.data.user.username } : null;
 
             set((state) => {
                 return {
                     tasks: {
                         ...state.tasks,
-                        [taskId]: {...state.tasks[taskId], user},
+                        [taskId]: { ...state.tasks[taskId], user },
                     },
                 };
             });
@@ -214,7 +224,7 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
     },
     deleteTask: (taskId: number) => {
         set((state) => {
-            const tasks = {...state.tasks};
+            const tasks = { ...state.tasks };
             delete tasks[taskId];
             return {
                 tasks: tasks,
@@ -229,7 +239,7 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
     },
     moveTaskToNextRelease: (taskId: number) => {
         set((state) => {
-            const tasks = {...state.tasks};
+            const tasks = { ...state.tasks };
             delete tasks[taskId];
             return {
                 tasks: tasks,
@@ -256,39 +266,39 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
             return {
                 tasks: {
                     ...state.tasks,
-                    [task.id]: task
+                    [task.id]: task,
                 },
-                columns: exists ? state.columns : insertTaskIntoColumn(state.columns, task.id, task.status, task.order)
-            }
-        })
+                columns: exists ? state.columns : insertTaskIntoColumn(state.columns, task.id, task.status, task.order),
+            };
+        });
     },
 
     applyTaskDestroyed: (taskId: number) => {
-        set(state => {
-            const tasks = {...state.tasks}
-            delete tasks[taskId]
+        set((state) => {
+            const tasks = { ...state.tasks };
+            delete tasks[taskId];
 
             return {
                 tasks,
                 columns: state.columns.map((col) => ({
                     ...col,
-                    taskIds: col.taskIds.filter(id => id !== taskId)
-                }))
-            }
-        })
+                    taskIds: col.taskIds.filter((id) => id !== taskId),
+                })),
+            };
+        });
     },
-    applyTaskUpdated : (task: TaskType) => {
+    applyTaskUpdated: (task: TaskType) => {
         set((state) => {
             return {
                 tasks: {
                     ...state.tasks,
                     [task.id]: {
                         ...state.tasks[task.id],
-                        ...task
-                    }
+                        ...task,
+                    },
                 },
-                columns: insertTaskIntoColumn(state.columns, task.id, task.status, task.order)
-            }
-        })
-    }
+                columns: insertTaskIntoColumn(state.columns, task.id, task.status, task.order),
+            };
+        });
+    },
 }));
