@@ -21,6 +21,8 @@ class TasksController < ApplicationController
 
     @task = Task.create!(tasks_params.merge(workspace_id: workspace_id))
 
+    Document.create!(task: @task, owner: current_user, workspace_id: workspace_id)
+
     @task.broadcast_to_release("task_created", current_user)
 
     @task
@@ -74,6 +76,6 @@ class TasksController < ApplicationController
   end
 
   def tasks_params
-    params.require(:task).permit(:name, :description, :release_id, :status, :order, :user_id, :workspace_id)
+    params.require(:task).permit(:name, :release_id, :status, :order, :user_id, :workspace_id)
   end
 end

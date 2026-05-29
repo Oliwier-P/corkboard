@@ -4,6 +4,10 @@ class DocumentsController < ApplicationController
     @documents = Document.where(workspace_id: params[:workspace_id])
   end
 
+  def show
+    @document = Document.find_by!(task_id: params[:task_id])
+  end
+
   def create
     @document = Document.create(name: "Untilted", owner_id: current_user.id, workspace_id: params[:workspace_id])
     @document.broadcast("document_created", current_user)

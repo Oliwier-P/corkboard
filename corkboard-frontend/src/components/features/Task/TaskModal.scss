@@ -1,0 +1,32 @@
+.task-modal {
+  padding: 50px;
+
+  &__name {
+    width: 100%;
+    height: 100px;
+    overflow-y: auto;
+    resize: none;
+
+    font-size: 30px;
+    border: none;
+    outline: none;
+    background: none;
+
+    max-height: 10lh;
+  }
+
+  &__owner {
+    display: flex;
+    gap: 10px;
+  }
+
+  .modal-body {
+    width: 500px;
+    height: 500px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 20px;
+  }
+}

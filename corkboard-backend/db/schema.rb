@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_23_235151) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_29_172639) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -19,10 +19,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_23_235151) do
     t.datetime "created_at", null: false
     t.string "name"
     t.bigint "owner_id", null: false
+    t.bigint "task_id"
     t.datetime "updated_at", null: false
     t.bigint "workspace_id", null: false
     t.binary "yjs_state"
     t.index ["owner_id"], name: "index_documents_on_owner_id"
+    t.index ["task_id"], name: "index_documents_on_task_id"
     t.index ["workspace_id"], name: "index_documents_on_workspace_id"
   end
 
@@ -39,7 +41,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_23_235151) do
 
   create_table "tasks", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.string "description"
     t.string "name"
     t.integer "order"
     t.integer "release_id"
@@ -88,6 +89,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_23_235151) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "documents", "tasks"
   add_foreign_key "documents", "users", column: "owner_id"
   add_foreign_key "documents", "workspaces"
   add_foreign_key "releases", "workspaces"

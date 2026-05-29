@@ -4,7 +4,6 @@
 #
 #  id           :integer          not null, primary key
 #  created_at   :datetime         not null
-#  description  :string
 #  name         :string
 #  order        :integer
 #  release_id   :integer
@@ -20,10 +19,13 @@
 
 
 
+
+
 class Task < ApplicationRecord
   belongs_to :release, optional: true
   belongs_to :workspace
   belongs_to :user, optional: true
+  has_one :document
 
   before_save :clear_release_id_for_backlog
 

@@ -49,6 +49,10 @@ Rails.application.routes.draw do
     post :switch, on: :collection
   end
 
+  resources :tasks do
+    resource :document, only: [:show]
+  end
+
   resources :documents do
     collection do
       post :authorize

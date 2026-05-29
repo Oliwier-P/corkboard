@@ -58,31 +58,4 @@
       }
     }
   }
-
-  .ProseMirror {
-    width: 100%;
-
-    margin-top: 40px;
-    outline: none;
-
-    p {
-      line-height: 1.75;
-      margin: 0;
-    }
-
-    // Editor placeholder
-    p.is-editor-empty:first-child::before {
-      content: attr(data-placeholder);
-      color: #adb5bd;
-      pointer-events: none;
-      float: left;
-      height: 0;
-    }
-
-    code {
-      background-color: #2c2c2c;
-      color: #EF4444;
-      padding: 5px;
-    }
-  }
 }

@@ -1,7 +1,7 @@
 json.tasks do
   @tasks.each do |task|
     json.set! task.id do
-      json.extract! task, :id, :name, :description, :status
+      json.extract! task, :id, :name, :status
 
       json.user do
         if task.user

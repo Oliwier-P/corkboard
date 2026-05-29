@@ -8,6 +8,7 @@ import { ClassNames } from "../../../global/utils.ts";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { ContextMenu, type ContextMenuItem } from "../../ui/ContextMenu/ContextMenu.tsx";
+import TaskModal from "./TaskModal.tsx";
 
 type TaskProps = {
     taskId: number;
@@ -20,6 +21,7 @@ type Inputs = {
 export const Task = memo(({ taskId }: TaskProps) => {
     const [isEditing, setIsEditing] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
+    const [showTaskModal, setShowTaskModal] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
     const headerRef = useRef<HTMLFormElement>(null);
     const { register, handleSubmit } = useForm<Inputs>();
@@ -31,7 +33,7 @@ export const Task = memo(({ taskId }: TaskProps) => {
     const moveToBacklog = useReleaseBoardStore((state) => state.moveToBacklog);
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        updateTask(taskId, {name: data.name});
+        updateTask(taskId, { name: data.name });
         setIsEditing(false);
     };
 
@@ -107,7 +109,7 @@ export const Task = memo(({ taskId }: TaskProps) => {
 
     return (
         <ContextMenu items={contextMenuOptions()}>
-            <div className={ClassNames("task", { ghost: isDragging })} ref={ref}>
+            <div className={ClassNames("task", { ghost: isDragging })} ref={ref} onClick={() => setShowTaskModal(true)}>
                 <form className="task__header" ref={headerRef} onSubmit={handleSubmit(onSubmit)}>
                     <EditableText
                         isEditable={isEditing}
@@ -124,6 +126,8 @@ export const Task = memo(({ taskId }: TaskProps) => {
                 </form>
                 <UserSelect taskId={taskId} taskUser={task.user} />
             </div>
+
+            {showTaskModal && <TaskModal taskId={taskId} setShowTaskModal={setShowTaskModal} />}
         </ContextMenu>
     );
 });

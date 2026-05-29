@@ -4,7 +4,6 @@
 #
 #  id           :integer          not null, primary key
 #  created_at   :datetime         not null
-#  description  :string
 #  name         :string
 #  order        :integer
 #  release_id   :integer
