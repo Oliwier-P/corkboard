@@ -2,21 +2,27 @@
 #
 # Table name: documents
 #
-#  id           :integer          not null, primary key
-#  name         :string
+#  id           :bigint           not null, primary key
 #  content      :jsonb
-#  owner_id     :integer          not null
-#  workspace_id :integer          not null
+#  name         :string
+#  yjs_state    :binary
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  yjs_state    :binary
-#  task_id      :integer
+#  owner_id     :bigint           not null
+#  task_id      :bigint
+#  workspace_id :bigint           not null
 #
 # Indexes
 #
 #  index_documents_on_owner_id      (owner_id)
 #  index_documents_on_task_id       (task_id)
 #  index_documents_on_workspace_id  (workspace_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (owner_id => users.id)
+#  fk_rails_...  (task_id => tasks.id)
+#  fk_rails_...  (workspace_id => workspaces.id)
 #
 
 

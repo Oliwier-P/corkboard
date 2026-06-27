@@ -2,15 +2,19 @@
 #
 # Table name: releases
 #
-#  id           :integer          not null, primary key
+#  id           :bigint           not null, primary key
 #  completed    :boolean
-#  created_at   :datetime         not null
 #  current      :boolean
 #  name         :string           not null
 #  order        :integer          not null
+#  status       :string
+#  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  workspace_id :integer          not null
-#  status       :string
+#
+# Foreign Keys
+#
+#  fk_rails_...  (workspace_id => workspaces.id)
 #
 
 

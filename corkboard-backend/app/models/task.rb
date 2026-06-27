@@ -2,19 +2,23 @@
 #
 # Table name: tasks
 #
-#  id           :integer          not null, primary key
-#  created_at   :datetime         not null
+#  id           :bigint           not null, primary key
 #  name         :string
 #  order        :integer
-#  release_id   :integer
 #  status       :string
+#  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  user_id      :integer
+#  release_id   :integer
+#  user_id      :bigint
 #  workspace_id :string
 #
 # Indexes
 #
 #  index_tasks_on_user_id  (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
 #
 
 

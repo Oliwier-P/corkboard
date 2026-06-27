@@ -2,8 +2,8 @@
 #
 # Table name: users_workspaces
 #
-#  user_id      :integer          not null
-#  workspace_id :integer          not null
+#  user_id      :bigint           not null
+#  workspace_id :bigint           not null
 #
 # Indexes
 #

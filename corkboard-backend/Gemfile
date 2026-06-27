@@ -9,7 +9,7 @@ gem "rack-cors"
 gem "devise"
 gem "devise-jwt"
 gem "jsonapi-serializer"
-gem "annotate"
+gem "annotaterb"
 gem "redis"
 
 gem "tzinfo-data", platforms: %i[ windows jruby ]

@@ -2,12 +2,12 @@
 #
 # Table name: workspace_invitations
 #
-#  id                 :integer          not null, primary key
+#  id                 :bigint           not null, primary key
+#  status             :string
 #  created_at         :datetime         not null
+#  updated_at         :datetime         not null
 #  invited_by_user_id :integer
 #  invited_user_id    :integer
-#  status             :string
-#  updated_at         :datetime         not null
 #  workspace_id       :integer
 #
 

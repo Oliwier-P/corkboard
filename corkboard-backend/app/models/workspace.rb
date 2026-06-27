@@ -2,11 +2,15 @@
 #
 # Table name: workspaces
 #
-#  id         :integer          not null, primary key
-#  created_at :datetime         not null
+#  id         :bigint           not null, primary key
 #  name       :string
-#  owner_id   :integer
+#  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  owner_id   :integer
+#
+# Foreign Keys
+#
+#  fk_rails_...  (owner_id => users.id) ON DELETE => nullify
 #
 
 

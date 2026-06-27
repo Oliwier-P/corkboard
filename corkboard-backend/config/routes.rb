@@ -15,6 +15,7 @@ Rails.application.routes.draw do
              defaults: { format: :json }
 
   get "users/me", to: "users#me"
+  put "users/:id", to: "users#update"
 
   resources :releases do
     member do
