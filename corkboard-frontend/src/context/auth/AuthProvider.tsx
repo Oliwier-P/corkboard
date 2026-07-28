@@ -16,7 +16,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         const localStorageToken = localStorage.getItem("token");
         if (localStorageToken) {
             api.get("/users/me")
-                .then((res: { data: SetStateAction<User | null> }) => setUser(res.data))
+                .then((res: { data: SetStateAction<User | null> }) => {
+                    setUser(res.data);
+                    setToken(localStorageToken);
+                })
                 .catch(() => localStorage.removeItem("token"))
                 .finally(() => setLoading(false));
         }

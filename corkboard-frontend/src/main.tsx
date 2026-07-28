@@ -15,6 +15,7 @@ import { UserProfile } from "./components/features/Settings/UserProfile/UserProf
 import { WorkspaceList } from "./components/features/Settings/WorkspaceList/WorkspaceList.tsx";
 import { BacklogPage } from "./pages/BacklogPage/BacklogPage.tsx";
 import { Documents } from "./components/features/Documents/Documents.tsx";
+import TaskModal from "./components/features/TaskModal/TaskModal.tsx";
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
@@ -74,6 +75,8 @@ createRoot(document.getElementById("root")!).render(
                     />
                     <Route path="*" element={<div>NO ROUTE</div>} />
                 </Routes>
+
+                <TaskModal />
             </BrowserRouter>
         </AuthProvider>
     </StrictMode>,

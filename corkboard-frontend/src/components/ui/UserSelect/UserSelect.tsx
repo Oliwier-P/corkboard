@@ -10,9 +10,10 @@ import { useReleaseBoardStore } from "../../../store/releaseBoardStore.ts";
 interface UserSelectProps {
     taskId: number;
     taskUser: User | null;
+    readonly?: boolean;
 }
 
-export const UserSelect = ({ taskId, taskUser }: UserSelectProps) => {
+export const UserSelect = ({ taskId, taskUser, readonly = false }: UserSelectProps) => {
     const [showUserSelection, setShowUserSelection] = useState<boolean>(false);
     const userSelectModalRef = useRef<HTMLDivElement>(null);
     const [users, setUsers] = useState<{ id: number; username: string }[]>([]);
@@ -20,6 +21,7 @@ export const UserSelect = ({ taskId, taskUser }: UserSelectProps) => {
     const updateTaskUser = useReleaseBoardStore((state) => state.updateTaskUser);
 
     const handleOpenUserSelection = () => {
+        if (readonly) return;
         setShowUserSelection(true);
     };
 

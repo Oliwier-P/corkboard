@@ -8,7 +8,7 @@ import { ClassNames } from "../../../global/utils.ts";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { ContextMenu, type ContextMenuItem } from "../../ui/ContextMenu/ContextMenu.tsx";
-import TaskModal from "./TaskModal.tsx";
+import { useTaskStore } from "../../../store/taskStore.ts";
 
 type TaskProps = {
     taskId: number;
@@ -21,10 +21,12 @@ type Inputs = {
 export const Task = memo(({ taskId }: TaskProps) => {
     const [isEditing, setIsEditing] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
-    const [showTaskModal, setShowTaskModal] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
     const headerRef = useRef<HTMLFormElement>(null);
     const { register, handleSubmit } = useForm<Inputs>();
+
+    const setIsOpen = useTaskStore((state) => state.setIsOpen);
+    const setTaskId = useTaskStore((state) => state.setTaskId);
 
     const task = useReleaseBoardStore((state) => state.tasks[taskId]);
     const updateTask = useReleaseBoardStore((state) => state.updateTask);
@@ -109,7 +111,14 @@ export const Task = memo(({ taskId }: TaskProps) => {
 
     return (
         <ContextMenu items={contextMenuOptions()}>
-            <div className={ClassNames("task", { ghost: isDragging })} ref={ref} onClick={() => setShowTaskModal(true)}>
+            <div
+                className={ClassNames("task", { ghost: isDragging })}
+                ref={ref}
+                onClick={() => {
+                    setIsOpen(true);
+                    setTaskId(taskId);
+                }}
+            >
                 <form className="task__header" ref={headerRef} onSubmit={handleSubmit(onSubmit)}>
                     <EditableText
                         isEditable={isEditing}
@@ -124,10 +133,8 @@ export const Task = memo(({ taskId }: TaskProps) => {
                         </Button>
                     )}
                 </form>
-                <UserSelect taskId={taskId} taskUser={task.user} />
+                <UserSelect taskId={taskId} taskUser={task.user} readonly={true} />
             </div>
-
-            {showTaskModal && <TaskModal taskId={taskId} setShowTaskModal={setShowTaskModal} />}
         </ContextMenu>
     );
 });
