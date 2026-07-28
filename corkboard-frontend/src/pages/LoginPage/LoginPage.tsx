@@ -5,6 +5,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { api } from "../../api/api.ts";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "../../components/ui/Icons/Icon.tsx";
+import { useAuth } from "../../context/auth/useAuth.ts";
 
 type Inputs = {
     username: string;
@@ -13,12 +14,13 @@ type Inputs = {
 
 export const LoginPage = () => {
     const { register, handleSubmit } = useForm<Inputs>();
-
+    const { setToken } = useAuth();
     const navigate = useNavigate();
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         api.post("/login", { user: data }).then((res) => {
             localStorage.setItem("token", res.data.token);
+            setToken(res.data.token);
             navigate(`/workspaces/${res.data.workspace_id}/current_release`);
         });
     };
