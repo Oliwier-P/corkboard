@@ -6,6 +6,7 @@ import { BubbleMenu } from "@tiptap/react/menus";
 import { Button } from "../../ui/Button/Button.tsx";
 import { Icon } from "../../ui/Icons/Icon.tsx";
 import { CollaborativeEditorProvider } from "./CollaborativeEditorProvider.tsx";
+import Loading from "../../ui/Loading/Loading.tsx";
 
 type CollaborativeEditorProps = {
     documentId: number;
@@ -23,7 +24,7 @@ export const CollaborativeEditor = ({ documentId, user, authToken }: Collaborati
 const Editor = ({ documentId, user, authToken }: CollaborativeEditorProps) => {
     const { editor, isLoading } = useCollaborativeEditor({ documentId, user, authToken });
 
-    if (isLoading) return <div>Loading...</div>;
+    if (isLoading) return <Loading />;
     if (!editor) return null;
 
     return (
