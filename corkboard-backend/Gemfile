@@ -11,6 +11,7 @@ gem "devise-jwt"
 gem "jsonapi-serializer"
 gem "annotaterb"
 gem "redis"
+gem "dotenv-rails"
 
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
