@@ -1,0 +1,70 @@
+.task-status {
+  position: relative;
+
+  .status {
+    width: 100%;
+
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 7px;
+
+    padding: 2px 5px;
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    &.item {
+      &:hover {
+        background-color: #2e2e2e;
+      }
+    }
+
+    &-modal {
+      width: 170px;
+      position: absolute;
+      top: 35px;
+      z-index: 100;
+      background-color: #1b1b1b;
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      gap: 7px;
+      padding: 5px;
+      border-radius: 10px;
+    }
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  .adjustments {
+    background-color: #EF4444;
+  }
+
+  .todo, .backlog {
+    background-color: #353535;
+  }
+
+  .in_progress {
+    background-color: #0084FF;
+  }
+
+  .review_pending {
+    background-color: #F59E0B;
+  }
+
+  .testing {
+    background-color: #14B8A6;
+  }
+
+  .accepted {
+    background-color: #22C55E;
+  }
+}

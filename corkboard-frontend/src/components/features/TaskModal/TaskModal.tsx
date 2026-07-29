@@ -2,7 +2,6 @@ import "./TaskModal.scss";
 import { useTaskStore } from "../../../store/taskStore.ts";
 import { UserSelect } from "../../ui/UserSelect/UserSelect.tsx";
 import classNames from "classnames";
-import { upperCase } from "lodash";
 import { CollaborativeEditor } from "../CollaborativeEditor/CollaborativeEditor.tsx";
 import { useReleaseBoardStore } from "../../../store/releaseBoardStore.ts";
 import { useEffect, useState } from "react";
@@ -10,6 +9,7 @@ import { useAuth } from "../../../context/auth/useAuth.ts";
 import { api } from "../../../api/api.ts";
 import Modal from "../../ui/Modal/Modal.tsx";
 import Loading from "../../ui/Loading/Loading.tsx";
+import TaskStatusSelect from "../../ui/TaskStatusSelect/TaskStatusSelect.tsx";
 
 interface TaskModalProps {
     taskId: number;
@@ -84,10 +84,7 @@ const TaskModal = ({ taskId }: TaskModalProps) => {
                                         <span>{task.user ? task.user.username : "Assign"}</span>
                                     </div>
 
-                                    <div className={classNames("status", task.status)}>
-                                        <div className="dot"></div>
-                                        <span>{upperCase(task.status)}</span>
-                                    </div>
+                                    <TaskStatusSelect taskId={taskId} taskStatus={task.status} />
                                 </div>
                                 <CollaborativeEditor documentId={documentId} user={user} authToken={token} onReadyChange={setIsDocumentReady} />
                             </div>

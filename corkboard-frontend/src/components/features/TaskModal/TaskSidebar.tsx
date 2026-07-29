@@ -3,13 +3,13 @@ import { useTaskStore } from "../../../store/taskStore.ts";
 import { useEffect, useState } from "react";
 import classNames from "classnames";
 import { UserSelect } from "../../ui/UserSelect/UserSelect.tsx";
-import { upperCase } from "lodash";
 import { CollaborativeEditor } from "../CollaborativeEditor/CollaborativeEditor.tsx";
 import { useReleaseBoardStore } from "../../../store/releaseBoardStore.ts";
 import { useAuth } from "../../../context/auth/useAuth.ts";
 import { api } from "../../../api/api.ts";
 import { useDelayedUnmount } from "./useTaskDisplay.ts";
 import Loading from "../../ui/Loading/Loading.tsx";
+import TaskStatusSelect from "../../ui/TaskStatusSelect/TaskStatusSelect.tsx";
 
 interface TaskSidebarProps {
     taskId: number;
@@ -105,10 +105,7 @@ const TaskSidebarContent = ({ taskId, isClosing }: TaskSidebarContentProps) => {
                             <span>{task.user ? task.user.username : "Assign"}</span>
                         </div>
 
-                        <div className={classNames("status", task.status)}>
-                            <div className="dot"></div>
-                            <span>{upperCase(task.status)}</span>
-                        </div>
+                        <TaskStatusSelect taskId={taskId} taskStatus={task.status} />
                     </div>
 
                     {user && token && documentId && (
