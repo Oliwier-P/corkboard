@@ -29,7 +29,7 @@ class Task < ApplicationRecord
   belongs_to :release, optional: true
   belongs_to :workspace
   belongs_to :user, optional: true
-  has_one :document
+  has_one :document, :dependent => :destroy
 
   before_save :clear_release_id_for_backlog
 

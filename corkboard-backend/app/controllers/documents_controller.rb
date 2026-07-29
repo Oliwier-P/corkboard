@@ -9,7 +9,7 @@ class DocumentsController < ApplicationController
   end
 
   def create
-    @document = Document.create(name: "Untilted", owner_id: current_user.id, workspace_id: params[:workspace_id])
+    @document = Document.create!(name: "Untilted", owner_id: current_user.id, workspace_id: params[:workspace_id])
     @document.broadcast("document_created", current_user)
   end
 
