@@ -1,16 +1,21 @@
 export type User = {
     id: number;
     username: string;
+};
+
+export type UserSettings = {
+    id: number;
+    username: string;
     preferences: UserPreferences;
 };
 
-type UserPreferences = {
+export type UserPreferences = {
     task_display: "MODAL" | "SIDEBAR";
 };
 
 export type AuthContextType = {
-    user: User | null;
-    setUser: (user: User) => void;
+    user: UserSettings | null;
+    setUser: (user: UserSettings) => void;
     loading: boolean;
     setLoading: (loading: boolean) => void;
     token: string | null;

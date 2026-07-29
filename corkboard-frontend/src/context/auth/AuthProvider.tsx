@@ -1,5 +1,5 @@
 import { type SetStateAction, useEffect, useState } from "react";
-import type { User } from "./types.ts";
+import type { UserSettings } from "./types.ts";
 import { api } from "../../api/api.ts";
 import { AuthContext } from "./AuthContext.ts";
 
@@ -8,7 +8,7 @@ type AuthProviderProps = {
 };
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<UserSettings | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [token, setToken] = useState<string | null>(null);
 
@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         const localStorageToken = localStorage.getItem("token");
         if (localStorageToken) {
             api.get("/users/me")
-                .then((res: { data: SetStateAction<User | null> }) => {
+                .then((res: { data: SetStateAction<UserSettings | null> }) => {
                     setUser(res.data);
                     setToken(localStorageToken);
                 })
