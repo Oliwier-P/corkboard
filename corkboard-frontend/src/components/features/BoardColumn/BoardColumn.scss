@@ -1,7 +1,6 @@
 @use '../../../global/colors' as colors;
 
 .board-column {
-  position: relative;
   display: flex;
   flex-direction: column;
   max-height: 100%;
