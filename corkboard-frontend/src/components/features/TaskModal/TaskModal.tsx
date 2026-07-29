@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../../context/auth/useAuth.ts";
 import { api } from "../../../api/api.ts";
 import Modal from "../../ui/Modal/Modal.tsx";
-import { useAutoResizeTextarea } from "./useTaskDisplay.ts";
+import Loading from "../../ui/Loading/Loading.tsx";
 
 interface TaskModalProps {
     taskId: number;
@@ -23,7 +23,6 @@ const TaskModal = ({ taskId }: TaskModalProps) => {
     const [taskName, setTaskName] = useState<string>(task.name);
     const { user, token } = useAuth();
     const [documentId, setDocumentId] = useState<number | null>(null);
-    const textareaRef = useAutoResizeTextarea(taskName);
 
     useEffect(() => {
         api.get(`/tasks/${taskId}/document`).then((response) => {
@@ -45,34 +44,37 @@ const TaskModal = ({ taskId }: TaskModalProps) => {
         <>
             <Modal className="task-modal" onClose={() => setIsOpen(false)}>
                 <Modal.Body>
-                    <textarea
-                        ref={textareaRef}
-                        className="task-modal__name"
-                        value={taskName}
-                        onChange={(e) => setTaskName(e.target.value)}
-                        onBlur={(e) => {
-                            const trimmedValue = e.target.value.trim();
-                            if (!trimmedValue) {
-                                setTaskName(task.name);
-                                return;
-                            }
-                            handleUpdateTaskName(trimmedValue);
-                        }}
-                    />
+                    {user && documentId && token ? (
+                        <>
+                            <textarea
+                                className="task-modal__name"
+                                value={taskName}
+                                onChange={(e) => setTaskName(e.target.value)}
+                                onBlur={(e) => {
+                                    const trimmedValue = e.target.value.trim();
+                                    if (!trimmedValue) {
+                                        setTaskName(task.name);
+                                        return;
+                                    }
+                                    handleUpdateTaskName(trimmedValue);
+                                }}
+                            />
+                            <div className="task-modal__properties">
+                                <div className="owner">
+                                    <UserSelect taskId={taskId} taskUser={task.user} />
+                                    <span>{task.user ? task.user.username : "Assign"}</span>
+                                </div>
 
-                    <div className="task-modal__properties">
-                        <div className="owner">
-                            <UserSelect taskId={taskId} taskUser={task.user} />
-                            <span>{task.user ? task.user.username : "Assign"}</span>
-                        </div>
-
-                        <div className={classNames("status", task.status)}>
-                            <div className="dot"></div>
-                            <span>{upperCase(task.status)}</span>
-                        </div>
-                    </div>
-
-                    {user && token && documentId && <CollaborativeEditor documentId={documentId} user={user} authToken={token} />}
+                                <div className={classNames("status", task.status)}>
+                                    <div className="dot"></div>
+                                    <span>{upperCase(task.status)}</span>
+                                </div>
+                            </div>
+                            <CollaborativeEditor documentId={documentId} user={user} authToken={token} />
+                        </>
+                    ) : (
+                        <Loading />
+                    )}
                 </Modal.Body>
             </Modal>
         </>

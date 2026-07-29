@@ -1,18 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-
-export const useAutoResizeTextarea = (value: string) => {
-    const ref = useRef<HTMLTextAreaElement>(null);
-
-    useEffect(() => {
-        const textarea = ref.current;
-        if (!textarea) return;
-
-        textarea.style.height = "auto";
-        textarea.style.height = `${textarea.scrollHeight}px`;
-    }, [value]);
-
-    return ref;
-};
+import { useEffect, useState } from "react";
 
 export const useDelayedUnmount = (isOpen: boolean) => {
     const [shouldRender, setShouldRender] = useState(isOpen);

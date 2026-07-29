@@ -8,7 +8,7 @@ import { CollaborativeEditor } from "../CollaborativeEditor/CollaborativeEditor.
 import { useReleaseBoardStore } from "../../../store/releaseBoardStore.ts";
 import { useAuth } from "../../../context/auth/useAuth.ts";
 import { api } from "../../../api/api.ts";
-import { useAutoResizeTextarea, useDelayedUnmount } from "./useTaskDisplay.ts";
+import { useDelayedUnmount } from "./useTaskDisplay.ts";
 
 interface TaskSidebarProps {
     taskId: number;
@@ -45,7 +45,6 @@ const TaskSidebarContent = ({ taskId, isClosing }: TaskSidebarContentProps) => {
     const [taskName, setTaskName] = useState<string>(task.name);
     const { user, token } = useAuth();
     const [documentId, setDocumentId] = useState<number | null>(null);
-    const textareaRef = useAutoResizeTextarea(taskName);
 
     useEffect(() => {
         api.get(`/tasks/${taskId}/document`).then((response) => {
@@ -67,7 +66,6 @@ const TaskSidebarContent = ({ taskId, isClosing }: TaskSidebarContentProps) => {
         <>
             <div className={classNames("task-sidebar", { "task-sidebar--closing": isClosing })}>
                 <textarea
-                    ref={textareaRef}
                     className="task-sidebar__name"
                     value={taskName}
                     onChange={(e) => setTaskName(e.target.value)}

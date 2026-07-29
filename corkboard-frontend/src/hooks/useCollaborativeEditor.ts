@@ -1,39 +1,37 @@
-import {useEditor} from "@tiptap/react";
+import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import Collaboration from "@tiptap/extension-collaboration";
 import CollaborationCaret from "@tiptap/extension-collaboration-caret";
-import type {User} from "../context/auth/types.ts";
-import {useHocuspocusProvider} from "@hocuspocus/provider-react";
-import {useEffect, useState} from "react";
-import {flushSync} from "react-dom";
+import type { User } from "../context/auth/types.ts";
+import { useHocuspocusProvider } from "@hocuspocus/provider-react";
+import { useEffect, useState } from "react";
+import { flushSync } from "react-dom";
 
 type useCollaborativeEditorProps = {
-    documentId: number
+    documentId: number;
     authToken: string;
     user: User;
-}
+};
 
-export const useCollaborativeEditor = ({user}: useCollaborativeEditorProps) => {
+export const useCollaborativeEditor = ({ user }: useCollaborativeEditorProps) => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const provider = useHocuspocusProvider()
+    const provider = useHocuspocusProvider();
 
     useEffect(() => {
-
         const handleSynced = () => {
             if (isLoading) {
-                flushSync(() => setIsLoading(false))
+                flushSync(() => setIsLoading(false));
             }
-        }
+        };
 
-        provider.on("synced", handleSynced)
+        provider.on("synced", handleSynced);
 
         return () => {
-            provider.off('synced', handleSynced)
-        }
-
-    }, [isLoading, provider])
+            provider.off("synced", handleSynced);
+        };
+    }, [isLoading, provider]);
 
     const editor = useEditor({
         immediatelyRender: false,
@@ -43,6 +41,7 @@ export const useCollaborativeEditor = ({user}: useCollaborativeEditorProps) => {
             }),
             Placeholder.configure({
                 placeholder: "Write something",
+                showOnlyCurrent: false,
             }),
             Collaboration.configure({
                 document: provider.document,
@@ -51,11 +50,11 @@ export const useCollaborativeEditor = ({user}: useCollaborativeEditorProps) => {
                 provider: provider,
                 user: {
                     name: user.username,
-                    color: "#9D00FF"
-                }
-            })
+                    color: "#9D00FF",
+                },
+            }),
         ],
     });
 
-    return {editor, isLoading};
-}
+    return { editor, isLoading };
+};
