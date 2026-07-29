@@ -1,7 +1,7 @@
 class DocumentsController < ApplicationController
 
   def index
-    @documents = Document.where(workspace_id: params[:workspace_id])
+    @documents = Document.not_task_documents.where(workspace_id: params[:workspace_id])
   end
 
   def show
@@ -9,7 +9,7 @@ class DocumentsController < ApplicationController
   end
 
   def create
-    @document = Document.create(name: "Untilted", owner_id: current_user.id, workspace_id: params[:workspace_id])
+    @document = Document.create!(name: "Untilted", owner_id: current_user.id, workspace_id: params[:workspace_id])
     @document.broadcast("document_created", current_user)
   end
 

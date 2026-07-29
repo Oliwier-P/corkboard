@@ -62,6 +62,21 @@ const TaskModal = ({ taskId }: TaskModalProps) => {
                                         }
                                         handleUpdateTaskName(trimmedValue);
                                     }}
+                                    onKeyDown={(e) => {
+                                        if (e.key === "Enter") {
+                                            e.preventDefault();
+
+                                            const trimmedValue = taskName.trim();
+                                            if (!trimmedValue) {
+                                                setTaskName(task.name);
+                                                return;
+                                            }
+
+                                            handleUpdateTaskName(trimmedValue);
+
+                                            e.currentTarget.blur();
+                                        }
+                                    }}
                                 />
                                 <div className="task-modal__properties">
                                     <div className="owner">
