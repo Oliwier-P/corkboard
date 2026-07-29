@@ -132,9 +132,11 @@ export const BoardColumn = memo(({ columnId, isCreateTaskOpen, setIsCreateTaskOp
                 {dragOverIndex === taskIds.length && <div className="board-column__placeholder" />}
                 {showCreateTask && <TaskForm onSave={handleTaskAdd} ref={newTaskRef} />}
             </div>
-            <Button className="board-column__add-task" variant="text" onClick={handleShowCreateTask}>
-                + Add Task
-            </Button>
+            <div className="board-column__footer">
+                <Button className="board-column__add-task" variant="text" onClick={handleShowCreateTask}>
+                    + Add Task
+                </Button>
+            </div>
         </div>
     );
 });

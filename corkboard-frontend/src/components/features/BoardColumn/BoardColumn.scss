@@ -1,6 +1,10 @@
 @use '../../../global/colors' as colors;
 
 .board-column {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
   height: fit-content;
   min-width: 250px;
   width: 300px;
@@ -8,6 +12,7 @@
 
   box-sizing: border-box;
   border-radius: 8px;
+
 
   &__header {
     display: flex;
@@ -28,15 +33,27 @@
     border-radius: 100%;
   }
 
-  &__tasks{
+  &__tasks {
     display: flex;
+    min-height: 0;
+    flex: 1 1;
     flex-direction: column;
     gap: 4px;
-    padding: 8px 0;
+    margin-top: 8px;
     box-sizing: border-box;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 4px;
+    }
   }
 
-  &__placeholder{
+  &__placeholder {
     width: 100%;
     height: 1px;
     background: #6BC1FF;
@@ -50,13 +67,15 @@
     width: 100%;
 
     justify-content: start;
-
-    margin-top: 8px;
     border-radius: 8px;
 
     &:hover {
       background: rgba(0, 0, 0, 0.2);
     }
+  }
+
+  & > &__footer {
+    padding: 8px 8px 0 8px;
   }
 
 
@@ -67,8 +86,19 @@
       background: colors.$red;
     }
 
-    & > .board-column__add-task {
-      color: colors.$red
+    & > .board-column__footer {
+      background: #341212;
+
+      .board-column__add-task {
+        color: colors.$red
+      }
+    }
+
+    & > .board-column__tasks {
+      &::-webkit-scrollbar-thumb {
+        background: colors.$red;
+        border-radius: 4px;
+      }
     }
   }
 
@@ -79,8 +109,19 @@
       background: colors.$gray;
     }
 
-    & > .board-column__add-task {
-      color: colors.$gray
+    & > .board-column__footer {
+      background: #0F0F0F;
+
+      .board-column__add-task {
+        color: colors.$gray
+      }
+    }
+
+    & > .board-column__tasks {
+      &::-webkit-scrollbar-thumb {
+        background: colors.$gray;
+        border-radius: 4px;
+      }
     }
   }
 
@@ -91,35 +132,72 @@
       background: colors.$blue;
     }
 
-    & > .board-column__add-task {
-      color: colors.$blue
+    & > .board-column__footer {
+      background: #041E37;
+
+      .board-column__add-task {
+        color: colors.$blue
+      }
+    }
+
+    & > .board-column__tasks {
+      &::-webkit-scrollbar-thumb {
+        background: colors.$blue;
+        border-radius: 4px;
+      }
     }
   }
 
   &--review_pending {
     background: rgba(colors.$orange, 0.2);
+    max-height: 50%;
 
     & > .board-column__header {
       background: colors.$orange;
     }
 
-    & > .board-column__add-task {
-      color: colors.$orange
+    & > .board-column__footer {
+      background: #352406;
+
+      .board-column__add-task {
+        color: colors.$orange
+      }
     }
+
+    & > .board-column__tasks {
+      &::-webkit-scrollbar-thumb {
+        background: colors.$orange;
+        border-radius: 4px;
+      }
+    }
+
+
   }
 
   &--testing {
+    max-height: 50%;
     background: rgba(colors.$mint, 0.2);
-    grid-row: 2;
-    grid-column: 4;
 
     & > .board-column__header {
       background: colors.$mint;
     }
 
-    & > .board-column__add-task {
-      color: colors.$mint
+    & > .board-column__footer {
+      background: #082925;
+
+      .board-column__add-task {
+        color: colors.$mint
+      }
     }
+
+    & > .board-column__tasks {
+      &::-webkit-scrollbar-thumb {
+        background: colors.$mint;
+        border-radius: 4px;
+      }
+    }
+
+
   }
 
   &--accepted {
@@ -129,8 +207,19 @@
       background: colors.$green;
     }
 
-    & > .board-column__add-task {
-      color: colors.$green
+    & > .board-column__footer {
+      background: #0B2B17;
+
+      .board-column__add-task {
+        color: colors.$green
+      }
+    }
+
+    & > .board-column__tasks {
+      &::-webkit-scrollbar-thumb {
+        background: colors.$green;
+        border-radius: 4px;
+      }
     }
   }
 }
