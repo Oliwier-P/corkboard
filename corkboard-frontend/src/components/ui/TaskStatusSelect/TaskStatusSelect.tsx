@@ -21,6 +21,7 @@ const TaskStatusSelect = ({ taskId, taskStatus }: TaskStatusSelectProps) => {
     const handleUpdateTaskStatus = (status: string) => {
         if (taskStatus === status) {
             setShowStatusSelect(false);
+            return;
         }
 
         if (status === "backlog") {
