@@ -15,7 +15,12 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
         return <Navigate to="/" replace />;
     }
 
-    if (loading) return <Loading />;
+    if (loading)
+        return (
+            <div style={{ width: "100vw", height: "100vh" }}>
+                <Loading />
+            </div>
+        );
 
     return (
         <>

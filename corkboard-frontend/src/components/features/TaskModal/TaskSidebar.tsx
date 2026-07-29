@@ -9,6 +9,7 @@ import { useReleaseBoardStore } from "../../../store/releaseBoardStore.ts";
 import { useAuth } from "../../../context/auth/useAuth.ts";
 import { api } from "../../../api/api.ts";
 import { useDelayedUnmount } from "./useTaskDisplay.ts";
+import Loading from "../../ui/Loading/Loading.tsx";
 
 interface TaskSidebarProps {
     taskId: number;
@@ -45,6 +46,7 @@ const TaskSidebarContent = ({ taskId, isClosing }: TaskSidebarContentProps) => {
     const [taskName, setTaskName] = useState<string>(task.name);
     const { user, token } = useAuth();
     const [documentId, setDocumentId] = useState<number | null>(null);
+    const [isDocumentReady, setIsDocumentReady] = useState(false);
 
     useEffect(() => {
         api.get(`/tasks/${taskId}/document`).then((response) => {
@@ -64,34 +66,40 @@ const TaskSidebarContent = ({ taskId, isClosing }: TaskSidebarContentProps) => {
 
     return (
         <>
-            <div className={classNames("task-sidebar", { "task-sidebar--closing": isClosing })}>
-                <textarea
-                    className="task-sidebar__name"
-                    value={taskName}
-                    onChange={(e) => setTaskName(e.target.value)}
-                    onBlur={(e) => {
-                        const trimmedValue = e.target.value.trim();
-                        if (!trimmedValue) {
-                            setTaskName(task.name);
-                            return;
-                        }
-                        handleUpdateTaskName(trimmedValue);
-                    }}
-                />
+            <div className={classNames("task-sidebar", { "task-sidebar-closing": isClosing })}>
+                {!isDocumentReady && <Loading />}
 
-                <div className="task-sidebar__properties">
-                    <div className="owner">
-                        <UserSelect taskId={taskId} taskUser={task.user} />
-                        <span>{task.user ? task.user.username : "Assign"}</span>
+                <div className={classNames({ "task-sidebar-hidden": !isDocumentReady })}>
+                    <textarea
+                        className="task-sidebar__name"
+                        value={taskName}
+                        onChange={(e) => setTaskName(e.target.value)}
+                        onBlur={(e) => {
+                            const trimmedValue = e.target.value.trim();
+                            if (!trimmedValue) {
+                                setTaskName(task.name);
+                                return;
+                            }
+                            handleUpdateTaskName(trimmedValue);
+                        }}
+                    />
+
+                    <div className="task-sidebar__properties">
+                        <div className="owner">
+                            <UserSelect taskId={taskId} taskUser={task.user} />
+                            <span>{task.user ? task.user.username : "Assign"}</span>
+                        </div>
+
+                        <div className={classNames("status", task.status)}>
+                            <div className="dot"></div>
+                            <span>{upperCase(task.status)}</span>
+                        </div>
                     </div>
 
-                    <div className={classNames("status", task.status)}>
-                        <div className="dot"></div>
-                        <span>{upperCase(task.status)}</span>
-                    </div>
+                    {user && token && documentId && (
+                        <CollaborativeEditor documentId={documentId} user={user} authToken={token} onReadyChange={setIsDocumentReady} />
+                    )}
                 </div>
-
-                {user && token && documentId && <CollaborativeEditor documentId={documentId} user={user} authToken={token} />}
             </div>
         </>
     );

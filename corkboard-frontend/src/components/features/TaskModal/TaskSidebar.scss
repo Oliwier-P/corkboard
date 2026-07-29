@@ -21,8 +21,12 @@
   overflow-y: auto;
   animation: slideIn 0.2s ease-out forwards;
 
-  &--closing {
+  &-closing {
     animation: slideOut 0.2s ease-out forwards;
+  }
+
+  &-hidden {
+    display: none;
   }
 
   &__name {
