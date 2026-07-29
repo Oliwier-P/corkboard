@@ -30,7 +30,7 @@ class Document < ApplicationRecord
   belongs_to :owner, class_name: "User"
   belongs_to :task, optional: true
 
-  default_scope -> { where(task_id: nil) }
+  scope :not_task_documents, -> { where(task_id: nil) }
 
   def broadcast(type, current_user)
     ActionCable.server.broadcast "documents_#{self.workspace_id}", {

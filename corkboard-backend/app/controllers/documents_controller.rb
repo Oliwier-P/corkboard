@@ -1,7 +1,7 @@
 class DocumentsController < ApplicationController
 
   def index
-    @documents = Document.where(workspace_id: params[:workspace_id])
+    @documents = Document.not_task_documents.where(workspace_id: params[:workspace_id])
   end
 
   def show
