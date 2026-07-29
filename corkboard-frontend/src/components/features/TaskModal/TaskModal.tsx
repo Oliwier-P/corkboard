@@ -5,39 +5,20 @@ import classNames from "classnames";
 import { upperCase } from "lodash";
 import { CollaborativeEditor } from "../CollaborativeEditor/CollaborativeEditor.tsx";
 import { useReleaseBoardStore } from "../../../store/releaseBoardStore.ts";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../../context/auth/useAuth.ts";
 import { api } from "../../../api/api.ts";
+import Modal from "../../ui/Modal/Modal.tsx";
+import { useAutoResizeTextarea } from "./useTaskDisplay.ts";
 
-const TaskModal = () => {
-    const isOpen = useTaskStore((state) => state.isOpen);
-    const taskId = useTaskStore((state) => state.taskId);
-    const setIsOpen = useTaskStore((state) => state.setIsOpen);
-
-    const shouldRender = useDelayedUnmount(isOpen);
-
-    if (!shouldRender || !taskId) return null;
-
-    return (
-        <div
-            className="task-modal-overlay"
-            onClick={(e) => {
-                if (e.target === e.currentTarget) setIsOpen(false);
-            }}
-        >
-            <TaskModalContent key={taskId} taskId={taskId} isClosing={!isOpen} />
-        </div>
-    );
-};
-
-interface TaskModalContentProps {
+interface TaskModalProps {
     taskId: number;
-    isClosing: boolean;
 }
 
-const TaskModalContent = ({ taskId, isClosing }: TaskModalContentProps) => {
+const TaskModal = ({ taskId }: TaskModalProps) => {
     const task = useReleaseBoardStore((state) => state.tasks[taskId]);
     const updateTask = useReleaseBoardStore((state) => state.updateTask);
+    const setIsOpen = useTaskStore((state) => state.setIsOpen);
 
     const [taskName, setTaskName] = useState<string>(task.name);
     const { user, token } = useAuth();
@@ -61,68 +42,41 @@ const TaskModalContent = ({ taskId, isClosing }: TaskModalContentProps) => {
     if (!task) return null;
 
     return (
-        <div className={classNames("task-modal", { "task-modal--closing": isClosing })}>
-            <textarea
-                ref={textareaRef}
-                className="task-modal__name"
-                value={taskName}
-                onChange={(e) => setTaskName(e.target.value)}
-                onBlur={(e) => {
-                    const trimmedValue = e.target.value.trim();
-                    if (!trimmedValue) {
-                        setTaskName(task.name);
-                        return;
-                    }
-                    handleUpdateTaskName(trimmedValue);
-                }}
-            />
+        <>
+            <Modal className="task-modal" onClose={() => setIsOpen(false)}>
+                <Modal.Body>
+                    <textarea
+                        ref={textareaRef}
+                        className="task-modal__name"
+                        value={taskName}
+                        onChange={(e) => setTaskName(e.target.value)}
+                        onBlur={(e) => {
+                            const trimmedValue = e.target.value.trim();
+                            if (!trimmedValue) {
+                                setTaskName(task.name);
+                                return;
+                            }
+                            handleUpdateTaskName(trimmedValue);
+                        }}
+                    />
 
-            <div className="task-modal__properties">
-                <div className="owner">
-                    <UserSelect taskId={taskId} taskUser={task.user} />
-                    <span>{task.user ? task.user.username : "Assign"}</span>
-                </div>
+                    <div className="task-modal__properties">
+                        <div className="owner">
+                            <UserSelect taskId={taskId} taskUser={task.user} />
+                            <span>{task.user ? task.user.username : "Assign"}</span>
+                        </div>
 
-                <div className={classNames("status", task.status)}>
-                    <div className="dot"></div>
-                    <span>{upperCase(task.status)}</span>
-                </div>
-            </div>
+                        <div className={classNames("status", task.status)}>
+                            <div className="dot"></div>
+                            <span>{upperCase(task.status)}</span>
+                        </div>
+                    </div>
 
-            {user && token && documentId && <CollaborativeEditor documentId={documentId} user={user} authToken={token} />}
-        </div>
+                    {user && token && documentId && <CollaborativeEditor documentId={documentId} user={user} authToken={token} />}
+                </Modal.Body>
+            </Modal>
+        </>
     );
-};
-
-const useDelayedUnmount = (isOpen: boolean) => {
-    const [shouldRender, setShouldRender] = useState(isOpen);
-
-    if (isOpen && !shouldRender) {
-        setShouldRender(true);
-    }
-
-    useEffect(() => {
-        if (isOpen) return;
-
-        const timeoutId = setTimeout(() => setShouldRender(false), 200);
-        return () => clearTimeout(timeoutId);
-    }, [isOpen]);
-
-    return shouldRender;
-};
-
-const useAutoResizeTextarea = (value: string) => {
-    const ref = useRef<HTMLTextAreaElement>(null);
-
-    useEffect(() => {
-        const textarea = ref.current;
-        if (!textarea) return;
-
-        textarea.style.height = "auto";
-        textarea.style.height = `${textarea.scrollHeight}px`;
-    }, [value]);
-
-    return ref;
 };
 
 export default TaskModal;

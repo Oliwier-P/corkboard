@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_29_172639) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_29_102647) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -49,6 +49,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_29_172639) do
     t.bigint "user_id"
     t.string "workspace_id"
     t.index ["user_id"], name: "index_tasks_on_user_id"
+  end
+
+  create_table "user_preferences", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "task_display", default: "MODAL", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_user_preferences_on_user_id", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -94,6 +102,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_29_172639) do
   add_foreign_key "documents", "workspaces"
   add_foreign_key "releases", "workspaces"
   add_foreign_key "tasks", "users"
+  add_foreign_key "user_preferences", "users"
   add_foreign_key "users", "workspaces", column: "last_workspace_id"
   add_foreign_key "workspaces", "users", column: "owner_id", on_delete: :nullify
 end

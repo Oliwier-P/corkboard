@@ -1,0 +1,123 @@
+.task-sidebar {
+  &-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  width: 600px;
+  height: 100%;
+  padding: 40px 40px 200px;
+  background-color: #0c0c0c;
+  border-left: 1px solid #222222;
+
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  overflow-y: auto;
+  animation: slideIn 0.2s ease-out forwards;
+
+  &--closing {
+    animation: slideOut 0.2s ease-out forwards;
+  }
+
+  &__name {
+    width: 100%;
+    min-height: 80px;
+    overflow-y: auto;
+    resize: none;
+
+    font-size: 30px;
+    border: none;
+    outline: none;
+    background: none;
+  }
+
+  &__properties {
+    width: 100%;
+
+    display: flex;
+    gap: 120px;
+
+    border-bottom: 1px solid #222222;
+
+    padding: 20px 0;
+    margin: 10px 0 20px 0;
+
+    .owner {
+      display: flex;
+      gap: 10px;
+
+      cursor: pointer;
+    }
+
+    .status {
+      color: #ffffff;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+
+      padding: 2px 5px;
+      border-radius: 5px;
+
+      cursor: not-allowed;
+
+      .dot {
+        width: 10px;
+        height: 10px;
+
+        border-radius: 50%;
+
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+
+      &.adjustments {
+        background-color: #EF4444;
+      }
+
+      &.todo {
+        background-color: #353535;
+      }
+
+      &.in_progress {
+        background-color: #0084FF;
+      }
+
+      &.review_pending {
+        background-color: #F59E0B;
+      }
+
+      &.testing {
+        background-color: #14B8A6;
+      }
+
+      &.accepted {
+        background-color: #22C55E;
+      }
+    }
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}

@@ -17,6 +17,8 @@ Rails.application.routes.draw do
   get "users/me", to: "users#me"
   put "users/:id", to: "users#update"
 
+  put "user_preferences", to: "user_preferences#update"
+
   resources :releases do
     member do
       get "board"

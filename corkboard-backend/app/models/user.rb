@@ -40,9 +40,11 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: 6 }
   has_and_belongs_to_many :workspaces
   has_many :documents, foreign_key: :owner_id
+  has_one :user_preference
   belongs_to :last_workspace, class_name: "Workspace", optional: true
 
   after_create :create_workspace
+  after_create :create_preference
 
   def email_required?
     false
@@ -59,6 +61,10 @@ class User < ApplicationRecord
   private
 
   def create_workspace
-    workspaces.create(name: "#{username}'s Workspace", owner: self)
+    workspaces.create!(name: "#{username}'s Workspace", owner: self)
+  end
+
+  def create_preference
+    create_user_preference! unless user_preference
   end
 end

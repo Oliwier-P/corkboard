@@ -1,0 +1,102 @@
+import "./TaskSidebar.scss";
+import { useTaskStore } from "../../../store/taskStore.ts";
+import { useEffect, useState } from "react";
+import classNames from "classnames";
+import { UserSelect } from "../../ui/UserSelect/UserSelect.tsx";
+import { upperCase } from "lodash";
+import { CollaborativeEditor } from "../CollaborativeEditor/CollaborativeEditor.tsx";
+import { useReleaseBoardStore } from "../../../store/releaseBoardStore.ts";
+import { useAuth } from "../../../context/auth/useAuth.ts";
+import { api } from "../../../api/api.ts";
+import { useAutoResizeTextarea, useDelayedUnmount } from "./useTaskDisplay.ts";
+
+interface TaskSidebarProps {
+    taskId: number;
+}
+
+const TaskSidebar = ({ taskId }: TaskSidebarProps) => {
+    const isOpen = useTaskStore((state) => state.isOpen);
+    const setIsOpen = useTaskStore((state) => state.setIsOpen);
+    const shouldRender = useDelayedUnmount(isOpen);
+
+    if (!shouldRender) return null;
+
+    return (
+        <div
+            className="task-sidebar-overlay"
+            onClick={(e) => {
+                if (e.target === e.currentTarget) setIsOpen(false);
+            }}
+        >
+            <TaskSidebarContent key={taskId} taskId={taskId} isClosing={!isOpen} />
+        </div>
+    );
+};
+
+interface TaskSidebarContentProps {
+    taskId: number;
+    isClosing: boolean;
+}
+
+const TaskSidebarContent = ({ taskId, isClosing }: TaskSidebarContentProps) => {
+    const task = useReleaseBoardStore((state) => state.tasks[taskId]);
+    const updateTask = useReleaseBoardStore((state) => state.updateTask);
+
+    const [taskName, setTaskName] = useState<string>(task.name);
+    const { user, token } = useAuth();
+    const [documentId, setDocumentId] = useState<number | null>(null);
+    const textareaRef = useAutoResizeTextarea(taskName);
+
+    useEffect(() => {
+        api.get(`/tasks/${taskId}/document`).then((response) => {
+            setDocumentId(response.data.id);
+        });
+    }, [taskId]);
+
+    const handleUpdateTaskName = (value: string) => {
+        if (task.name !== value) {
+            api.patch(`tasks/${taskId}`, { name: value }).then(() => {
+                updateTask(taskId, { name: value });
+            });
+        }
+    };
+
+    if (!task) return null;
+
+    return (
+        <>
+            <div className={classNames("task-sidebar", { "task-sidebar--closing": isClosing })}>
+                <textarea
+                    ref={textareaRef}
+                    className="task-sidebar__name"
+                    value={taskName}
+                    onChange={(e) => setTaskName(e.target.value)}
+                    onBlur={(e) => {
+                        const trimmedValue = e.target.value.trim();
+                        if (!trimmedValue) {
+                            setTaskName(task.name);
+                            return;
+                        }
+                        handleUpdateTaskName(trimmedValue);
+                    }}
+                />
+
+                <div className="task-sidebar__properties">
+                    <div className="owner">
+                        <UserSelect taskId={taskId} taskUser={task.user} />
+                        <span>{task.user ? task.user.username : "Assign"}</span>
+                    </div>
+
+                    <div className={classNames("status", task.status)}>
+                        <div className="dot"></div>
+                        <span>{upperCase(task.status)}</span>
+                    </div>
+                </div>
+
+                {user && token && documentId && <CollaborativeEditor documentId={documentId} user={user} authToken={token} />}
+            </div>
+        </>
+    );
+};
+
+export default TaskSidebar;

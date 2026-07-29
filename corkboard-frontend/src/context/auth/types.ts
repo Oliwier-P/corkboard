@@ -1,6 +1,11 @@
 export type User = {
     id: number;
     username: string;
+    preferences: UserPreferences;
+};
+
+type UserPreferences = {
+    task_display: "MODAL" | "SIDEBAR";
 };
 
 export type AuthContextType = {

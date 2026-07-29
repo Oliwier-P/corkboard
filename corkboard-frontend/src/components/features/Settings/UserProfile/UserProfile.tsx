@@ -5,6 +5,7 @@ import { api } from "../../../../api/api.ts";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../../context/auth/useAuth.ts";
 import { useState } from "react";
+import type { TaskDisplayType } from "../../../../types/TaskDisplayType.ts";
 
 export const UserProfile = () => {
     const navigate = useNavigate();
@@ -17,12 +18,18 @@ export const UserProfile = () => {
         navigate("/");
     };
 
+    const handleChangeTaskDisplay = (value: TaskDisplayType) => {
+        api.put("user_preferences", { user_preference: { task_display: value } }).then((response) => {
+            setUser(response.data);
+        });
+    };
+
     const handleChangeUsername = (value: string) => {
         if (!user || user.username === value) return;
 
-        api.put(`users/${user.id}`, {user: {username: value}}).then((response) => {
-            setUser(response.data)
-        })
+        api.put(`users/${user.id}`, { user: { username: value } }).then((response) => {
+            setUser(response.data);
+        });
     };
 
     return (
@@ -37,7 +44,48 @@ export const UserProfile = () => {
                 <div className="user-profile__section-content">
                     <div className="avatar-text">Avatar</div>
                     <div className="avatar">A</div>
-                    <LabeledInput label="Full Name" value={username} onChange={(e) => setUsername(e.target.value)} onBlur={(e) => handleChangeUsername(e.target.value)} />
+                    <LabeledInput
+                        label="Full Name"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        onBlur={(e) => handleChangeUsername(e.target.value)}
+                    />
+                </div>
+            </div>
+
+            <div className="user-profile__section">
+                <div className="user-profile__section-info">
+                    <div className="title">Task display</div>
+                    <div className="description">Choose how task details should open — as a modal window or a side panel.</div>
+                </div>
+                <div className="user-profile__section-content task-display">
+                    <label className="radio-option">
+                        <input
+                            type="radio"
+                            name="taskDisplay"
+                            value="modal"
+                            checked={user?.preferences.task_display === "MODAL"}
+                            onChange={() => handleChangeTaskDisplay("MODAL")}
+                        />
+                        <span className="radio-option__icon radio-option__icon--modal">
+                            <span className="radio-option__icon-shape" />
+                        </span>
+                        <span className="radio-option__label">Modal</span>
+                    </label>
+
+                    <label className="radio-option">
+                        <input
+                            type="radio"
+                            name="taskDisplay"
+                            value="sidebar"
+                            checked={user?.preferences.task_display === "SIDEBAR"}
+                            onChange={() => handleChangeTaskDisplay("SIDEBAR")}
+                        />
+                        <span className="radio-option__icon radio-option__icon--sidebar">
+                            <span className="radio-option__icon-shape" />
+                        </span>
+                        <span className="radio-option__label">Panel</span>
+                    </label>
                 </div>
             </div>
 
