@@ -65,6 +65,6 @@ class User < ApplicationRecord
   end
 
   def create_preference
-    create_user_preference! unless user_preference
+    create_user_preference!(task_display: "modal")
   end
 end
