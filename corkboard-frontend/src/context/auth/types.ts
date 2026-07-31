@@ -10,7 +10,7 @@ export type UserSettings = {
 };
 
 export type UserPreferences = {
-    task_display: "MODAL" | "SIDEBAR";
+    task_display: "modal" | "sidebar";
 };
 
 export type AuthContextType = {

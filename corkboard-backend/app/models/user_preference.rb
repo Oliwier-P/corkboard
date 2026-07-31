@@ -19,7 +19,7 @@
 class UserPreference < ApplicationRecord
   belongs_to :user
 
-  enum :task_display, { MODAL: "MODAL", SIDEBAR: "SIDEBAR" }
+  enum :task_display, { modal: "modal", sidebar: "sidebar" }
 
   validates :task_display, presence: true
 end

@@ -64,8 +64,8 @@ export const UserProfile = () => {
                             type="radio"
                             name="taskDisplay"
                             value="modal"
-                            checked={user?.preferences.task_display === "MODAL"}
-                            onChange={() => handleChangeTaskDisplay("MODAL")}
+                            checked={user?.preferences.task_display === "modal"}
+                            onChange={() => handleChangeTaskDisplay("modal")}
                         />
                         <span className="radio-option__icon radio-option__icon--modal">
                             <span className="radio-option__icon-shape" />
@@ -78,8 +78,8 @@ export const UserProfile = () => {
                             type="radio"
                             name="taskDisplay"
                             value="sidebar"
-                            checked={user?.preferences.task_display === "SIDEBAR"}
-                            onChange={() => handleChangeTaskDisplay("SIDEBAR")}
+                            checked={user?.preferences.task_display === "sidebar"}
+                            onChange={() => handleChangeTaskDisplay("sidebar")}
                         />
                         <span className="radio-option__icon radio-option__icon--sidebar">
                             <span className="radio-option__icon-shape" />
