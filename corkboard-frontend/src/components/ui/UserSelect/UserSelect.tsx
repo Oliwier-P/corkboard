@@ -11,9 +11,10 @@ interface UserSelectProps {
     taskId: number;
     taskUser: User | null;
     readonly?: boolean;
+    variant?: string;
 }
 
-export const UserSelect = ({ taskId, taskUser, readonly = false }: UserSelectProps) => {
+export const UserSelect = ({ taskId, taskUser, readonly = false, variant = "task" }: UserSelectProps) => {
     const [showUserSelection, setShowUserSelection] = useState<boolean>(false);
     const userSelectModalRef = useRef<HTMLDivElement>(null);
     const [users, setUsers] = useState<{ id: number; username: string }[]>([]);
@@ -54,11 +55,18 @@ export const UserSelect = ({ taskId, taskUser, readonly = false }: UserSelectPro
     return (
         <div className="user-select">
             {taskUser ? (
-                <div onClick={handleOpenUserSelection}>
+                <div className="user" onClick={handleOpenUserSelection}>
                     <UserAvatar username={taskUser.username} />
+                    {variant === "modal" && taskUser.username}
                 </div>
             ) : (
-                <Button color="outlined" size="small" variant="icon" icon="userCircle" onClick={handleOpenUserSelection} />
+                <>
+                    {variant === "modal" ? (
+                        <div onClick={handleOpenUserSelection}>Empty</div>
+                    ) : (
+                        <Button color="outlined" size="small" variant="icon" icon="userCircle" onClick={handleOpenUserSelection} />
+                    )}
+                </>
             )}
 
             {showUserSelection && (

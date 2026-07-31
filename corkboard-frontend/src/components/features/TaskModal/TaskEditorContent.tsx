@@ -2,11 +2,9 @@ import classNames from "classnames";
 import "./TaskEditorContent.scss";
 import { useAuth } from "../../../context/auth/useAuth.ts";
 import { useTaskEditor } from "./useTaskEditor.ts";
-import { UserSelect } from "../../ui/UserSelect/UserSelect.tsx";
 import { CollaborativeEditor } from "../CollaborativeEditor/CollaborativeEditor.tsx";
 import Loading from "../../ui/Loading/Loading.tsx";
-import TaskStatusSelect from "../../ui/TaskStatusSelect/TaskStatusSelect.tsx";
-import TaskPrioritySelect from "../../ui/TaskPrioritySelect/TaskPrioritySelect.tsx";
+import TaskProperties from "../TaskProperties/TaskProperties.tsx";
 
 interface TaskEditorContentProps {
     taskId: number;
@@ -42,15 +40,7 @@ export const TaskEditorContent = ({ taskId, className }: TaskEditorContentProps)
                     }}
                 />
 
-                <div className="properties">
-                    <div className="owner">
-                        <UserSelect taskId={taskId} taskUser={task.user} />
-                        <span>{task.user ? task.user.username : "Assign"}</span>
-                    </div>
-
-                    <TaskStatusSelect taskId={taskId} taskStatus={task.status} />
-                    <TaskPrioritySelect taskId={taskId} taskPriority={task.priority} />
-                </div>
+                <TaskProperties task={task} />
 
                 <CollaborativeEditor documentId={documentId} user={user} authToken={token} onReadyChange={setIsDocumentReady} />
             </div>

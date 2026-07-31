@@ -49,8 +49,8 @@ const TaskStatusSelect = ({ taskId, taskStatus }: TaskStatusSelectProps) => {
     }, []);
 
     return (
-        <div className="task-status">
-            <div ref={taskStatusButtonRef} className={classNames("status", taskStatus)} onClick={() => setShowStatusSelect(true)}>
+        <div className="task-status" onClick={() => setShowStatusSelect(true)}>
+            <div ref={taskStatusButtonRef} className={classNames("status", taskStatus)}>
                 <div className="dot"></div>
                 <span>{upperCase(taskStatus)}</span>
             </div>

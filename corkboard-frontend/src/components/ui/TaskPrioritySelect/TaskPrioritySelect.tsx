@@ -1,7 +1,6 @@
 import "./TaskPrioritySelect.scss";
 import { useEffect, useRef, useState } from "react";
 import classNames from "classnames";
-import { upperCase } from "lodash";
 import { useReleaseBoardStore } from "../../../store/releaseBoardStore.ts";
 import { Icon } from "../Icons/Icon.tsx";
 
@@ -52,8 +51,8 @@ const TaskPrioritySelect = ({ taskId, taskPriority }: TaskPrioritySelectProps) =
     return (
         <div className="task-priority">
             <div ref={taskPriorityButtonRef} className={classNames("priority")} onClick={() => setShowStatusSelect(true)}>
-                <Icon className={taskPriority ?? ""} icon="priority" />
-                <span>{upperCase(taskPriority ? taskPriority : "Empty")}</span>
+                {taskPriority && <Icon className={taskPriority ?? ""} icon="priority" />}
+                <span>{taskPriority ? taskPriority : "Empty"}</span>
             </div>
 
             {showStatusSelect && (
@@ -61,7 +60,7 @@ const TaskPrioritySelect = ({ taskId, taskPriority }: TaskPrioritySelectProps) =
                     {statuses.map((priority) => (
                         <div className={classNames("priority item")} onClick={() => handleUpdateTaskStatus(priority)}>
                             <Icon className={priority} icon="priority" />
-                            <span>{upperCase(priority)}</span>
+                            <span>{priority}</span>
                         </div>
                     ))}
                 </div>
