@@ -21,13 +21,13 @@ const TaskProperties = ({ task }: TaskPropertiesProps) => {
         {
             id: "assign",
             name: "Assign",
-            icon: "userCircle",
+            icon: "circleUser",
             component: <UserSelect taskId={task.id} taskUser={task.user} variant="modal" />,
         },
         {
             id: "status",
             name: "Status",
-            icon: "priority",
+            icon: "circleStatus",
             component: <TaskStatusSelect taskId={task.id} taskStatus={task.status} />,
         },
         {

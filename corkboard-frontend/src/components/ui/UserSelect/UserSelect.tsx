@@ -64,7 +64,7 @@ export const UserSelect = ({ taskId, taskUser, readonly = false, variant = "task
                     {variant === "modal" ? (
                         <div onClick={handleOpenUserSelection}>Empty</div>
                     ) : (
-                        <Button color="outlined" size="small" variant="icon" icon="userCircle" onClick={handleOpenUserSelection} />
+                        <Button color="outlined" size="small" variant="icon" icon="circleUser" onClick={handleOpenUserSelection} />
                     )}
                 </>
             )}
