@@ -10,6 +10,7 @@ import { api } from "../../../api/api.ts";
 import Modal from "../../ui/Modal/Modal.tsx";
 import Loading from "../../ui/Loading/Loading.tsx";
 import TaskStatusSelect from "../../ui/TaskStatusSelect/TaskStatusSelect.tsx";
+import TaskPrioritySelect from "../../ui/TaskPrioritySelect/TaskPrioritySelect.tsx";
 
 interface TaskModalProps {
     taskId: number;
@@ -85,6 +86,8 @@ const TaskModal = ({ taskId }: TaskModalProps) => {
                                     </div>
 
                                     <TaskStatusSelect taskId={taskId} taskStatus={task.status} />
+
+                                    <TaskPrioritySelect taskId={taskId} taskPriority={task.priority} />
                                 </div>
                                 <CollaborativeEditor documentId={documentId} user={user} authToken={token} onReadyChange={setIsDocumentReady} />
                             </div>

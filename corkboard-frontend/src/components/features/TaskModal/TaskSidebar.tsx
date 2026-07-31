@@ -10,6 +10,7 @@ import { api } from "../../../api/api.ts";
 import { useDelayedUnmount } from "./useTaskDisplay.ts";
 import Loading from "../../ui/Loading/Loading.tsx";
 import TaskStatusSelect from "../../ui/TaskStatusSelect/TaskStatusSelect.tsx";
+import TaskPrioritySelect from "../../ui/TaskPrioritySelect/TaskPrioritySelect.tsx";
 
 interface TaskSidebarProps {
     taskId: number;
@@ -106,6 +107,8 @@ const TaskSidebarContent = ({ taskId, isClosing }: TaskSidebarContentProps) => {
                         </div>
 
                         <TaskStatusSelect taskId={taskId} taskStatus={task.status} />
+
+                        <TaskPrioritySelect taskId={taskId} taskPriority={task.priority} />
                     </div>
 
                     {user && token && documentId && (

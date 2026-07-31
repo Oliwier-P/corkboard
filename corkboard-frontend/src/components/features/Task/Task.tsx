@@ -9,6 +9,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { ContextMenu, type ContextMenuItem } from "../../ui/ContextMenu/ContextMenu.tsx";
 import { useTaskStore } from "../../../store/taskStore.ts";
+import { Icon } from "../../ui/Icons/Icon.tsx";
 
 type TaskProps = {
     taskId: number;
@@ -134,6 +135,7 @@ export const Task = memo(({ taskId }: TaskProps) => {
                     )}
                 </form>
                 <UserSelect taskId={taskId} taskUser={task.user} readonly={true} />
+                {task.priority && <Icon className={`${task.priority} priority`} icon="priority" />}
             </div>
         </ContextMenu>
     );
