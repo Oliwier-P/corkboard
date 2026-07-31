@@ -1,0 +1,38 @@
+.task-editor {
+  &.hidden {
+    display: none;
+  }
+
+  .name {
+    width: 100%;
+    flex-shrink: 0;
+
+    overflow-y: auto;
+    resize: none;
+    field-sizing: content;
+
+    font-size: 30px;
+    border: none;
+    outline: none;
+    background: none;
+  }
+
+  .properties {
+    width: 100%;
+
+    display: flex;
+    gap: 120px;
+
+    border-bottom: 1px solid #222222;
+
+    padding: 20px 0;
+    margin: 10px 0 20px 0;
+
+    .owner {
+      display: flex;
+      gap: 10px;
+
+      cursor: pointer;
+    }
+  }
+}
