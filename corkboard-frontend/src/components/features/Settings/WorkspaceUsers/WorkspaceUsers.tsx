@@ -23,7 +23,7 @@ export const WorkspaceUsers = () => {
     const { workspaceId } = useParams();
 
     useEffect(() => {
-        api.get(`workspaces/${localStorage.getItem("workspace_id")}/collaborators`).then((res) => {
+        api.get(`workspaces/${workspaceId}/collaborators`).then((res) => {
             setUsers(res.data.collaborators);
             setInvitedUsers(res.data.invited_users);
         });
