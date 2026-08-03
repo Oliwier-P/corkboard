@@ -12,6 +12,8 @@ import { CreateWorkspaceModal } from "./CreateWorkspaceModal.tsx";
 import { useWorkspaceMenuStore } from "../../../store/workspaceMenuStore.ts";
 import { UserAvatar } from "../../ui/UserAvatar/UserAvatar.tsx";
 import { UserNotifications } from "../UserNotifications/UserNotifications.tsx";
+import { Button } from "../../ui/Button/Button.tsx";
+import { useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
     const { user } = useAuth();
@@ -19,15 +21,25 @@ export const Navbar = () => {
     const [showWorkspaceForm, setShowWorkspaceForm] = useState<boolean>(false);
     const menuRef = useRef<HTMLDivElement>(null);
     const workspaceRef = useRef<HTMLDivElement>(null);
+    const profileRef = useRef<HTMLDivElement>(null);
+    const userModalRef = useRef<HTMLDivElement>(null);
     const workspace = useWorkspaceStore((state) => state.workspace);
     const setWorkspace = useWorkspaceStore((state) => state.setWorkspace);
     const isMenuOpen = useWorkspaceMenuStore((store) => store.isOpen);
     const setMenuOpen = useWorkspaceMenuStore((store) => store.setOpen);
     const isActiveDocumentLink = location.pathname.startsWith(`/workspaces/${workspace?.id}/documents/`);
+    const [showUserModal, setShowUserModal] = useState<boolean>(false);
+    const navigate = useNavigate();
 
     const handleWorkspaceCreate = () => {
         setMenuOpen(false);
         setShowWorkspaceForm(true);
+    };
+
+    const handleLogout = () => {
+        api.delete("/logout");
+        localStorage.setItem("token", "");
+        navigate("/");
     };
 
     useEffect(() => {
@@ -37,16 +49,20 @@ export const Navbar = () => {
             if (menuRef.current && workspaceRef.current && !menuRef.current.contains(target) && !workspaceRef.current.contains(target)) {
                 setMenuOpen(false);
             }
+
+            if (profileRef.current && !profileRef.current.contains(target) && (!userModalRef.current || !userModalRef.current.contains(target))) {
+                setShowUserModal(false);
+            }
         };
 
-        if (isMenuOpen) {
+        if (isMenuOpen || showUserModal) {
             document.addEventListener("mousedown", handleClickOutside);
         }
 
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, [isMenuOpen, setMenuOpen]);
+    }, [isMenuOpen, setMenuOpen, showUserModal]);
 
     useEffect(() => {
         api.get("/workspaces").then((res) => {
@@ -83,11 +99,31 @@ export const Navbar = () => {
             <NavbarItem icon="document" label="Docs" path={`/workspaces/${workspace?.id}/documents/`} isActive={isActiveDocumentLink} />
 
             {user && (
-                <div className="navbar__user">
-                    <UserAvatar username={user.username} />
-                    <span>{user.username}</span>
-                    <UserNotifications />
-                </div>
+                <>
+                    <div ref={profileRef} className="user" onClick={() => setShowUserModal(true)}>
+                        <UserAvatar username={user.username} />
+                        <span>{user.username}</span>
+                        <UserNotifications />
+                    </div>
+
+                    {showUserModal && (
+                        <div className="user-modal" ref={userModalRef}>
+                            <Button
+                                icon="circleUser"
+                                color="none"
+                                onClick={() => {
+                                    navigate("/settings/user/profile");
+                                    setShowUserModal(false);
+                                }}
+                            >
+                                Profile
+                            </Button>
+                            <Button icon="doorOpen" color="none" onClick={handleLogout}>
+                                Logout
+                            </Button>
+                        </div>
+                    )}
+                </>
             )}
         </div>
     );
