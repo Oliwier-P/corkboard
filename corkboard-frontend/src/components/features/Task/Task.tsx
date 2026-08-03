@@ -134,7 +134,7 @@ export const Task = memo(({ taskId }: TaskProps) => {
                         </Button>
                     )}
                 </form>
-                <UserSelect taskId={taskId} taskUser={task.user} readonly={true} />
+                <UserSelect taskId={taskId} taskUser={task.user} />
                 {task.priority && <Icon className={`${task.priority} priority`} icon="priority" />}
             </div>
         </ContextMenu>

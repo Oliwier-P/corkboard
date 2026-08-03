@@ -10,11 +10,10 @@ import { useReleaseBoardStore } from "../../../store/releaseBoardStore.ts";
 interface UserSelectProps {
     taskId: number;
     taskUser: User | null;
-    readonly?: boolean;
     variant?: string;
 }
 
-export const UserSelect = ({ taskId, taskUser, readonly = false, variant = "task" }: UserSelectProps) => {
+export const UserSelect = ({ taskId, taskUser, variant = "task" }: UserSelectProps) => {
     const [showUserSelection, setShowUserSelection] = useState<boolean>(false);
     const userSelectModalRef = useRef<HTMLDivElement>(null);
     const [users, setUsers] = useState<{ id: number; username: string }[]>([]);
@@ -22,7 +21,6 @@ export const UserSelect = ({ taskId, taskUser, readonly = false, variant = "task
     const updateTaskUser = useReleaseBoardStore((state) => state.updateTaskUser);
 
     const handleOpenUserSelection = () => {
-        if (readonly) return;
         setShowUserSelection(true);
     };
 
@@ -53,7 +51,7 @@ export const UserSelect = ({ taskId, taskUser, readonly = false, variant = "task
     }, [showUserSelection, setUsers, workspace?.id]);
 
     return (
-        <div className="user-select">
+        <div className="user-select" onClick={(e) => e.stopPropagation()}>
             {taskUser ? (
                 <div className="user" onClick={handleOpenUserSelection}>
                     <UserAvatar username={taskUser.username} />
