@@ -100,9 +100,11 @@ export const Navbar = () => {
 
             {user && (
                 <>
-                    <div ref={profileRef} className="user" onClick={() => setShowUserModal(true)}>
-                        <UserAvatar username={user.username} />
-                        <span>{user.username}</span>
+                    <div className="user">
+                        <div className="info" ref={profileRef} onClick={() => setShowUserModal(true)}>
+                            <UserAvatar username={user.username} />
+                            <span>{user.username}</span>
+                        </div>
                         <UserNotifications />
                     </div>
 

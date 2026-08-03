@@ -41,6 +41,13 @@
     border-radius: 4px;
     user-select: none;
 
+    .info {
+      display: flex;
+      gap: 10px;
+
+      cursor: pointer;
+    }
+
     &-modal {
       position: absolute;
       left: 10px;
