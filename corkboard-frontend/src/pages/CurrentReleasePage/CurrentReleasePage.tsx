@@ -11,6 +11,7 @@ import { CompleteReleaseModal } from "./CompleteReleaseModal.tsx";
 import { Page } from "../../components/layout/Page/Page.tsx";
 import { useReleaseSubscription } from "../../store/useReleaseSubscription.ts";
 import { useAuth } from "../../context/auth/useAuth.ts";
+import Loading from "../../components/ui/Loading/Loading.tsx";
 
 export const CurrentReleasePage = () => {
     const [release, setRelease] = useState<ReleaseType | null>(null);
@@ -18,6 +19,7 @@ export const CurrentReleasePage = () => {
     const [showCreateReleaseModal, setShowCreateReleaseModal] = useState(false);
     const [showCompleteReleaseModal, setShowCompleteReleaseModal] = useState(false);
     const addRelease = useReleasesStore((state) => state.addRelease);
+    const [loading, setLoading] = useState<boolean>(true);
     const { user } = useAuth();
 
     useReleaseSubscription(release ? release.id : null, user ? user.id : null);
@@ -26,6 +28,7 @@ export const CurrentReleasePage = () => {
         if (workspaceId) {
             api.get(`/workspaces/${workspaceId}/current_release`).then((res) => {
                 setRelease(res.data);
+                setLoading(false);
             });
         }
     }, [workspaceId]);
@@ -53,6 +56,8 @@ export const CurrentReleasePage = () => {
             </>
         );
     };
+
+    if (loading) return <Loading overlay={true} />;
 
     return (
         <Page title="Current Release" subTitle={release?.name} className="current-release" buttons={renderOptionsButtons()}>
