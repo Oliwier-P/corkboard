@@ -20,6 +20,10 @@ import doorOpen from "./svgs/door-open.svg?react";
 import document from "./svgs/document.svg?react";
 import priority from "./svgs/priority.svg?react";
 import circleStatus from "./svgs/circle-status.svg?react";
+import info from "./svgs/info.svg?react";
+import warning from "./svgs/warning.svg?react";
+import success from "./svgs/success.svg?react";
+import close from "./svgs/close.svg?react";
 
 import bold from "./svgs/bold.svg?react";
 import italic from "./svgs/italic.svg?react";
@@ -55,4 +59,8 @@ export const icons = {
     strike,
     code,
     priority,
+    info,
+    warning,
+    success,
+    close,
 };

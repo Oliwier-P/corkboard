@@ -16,6 +16,7 @@ import { WorkspaceList } from "./components/features/Settings/WorkspaceList/Work
 import { BacklogPage } from "./pages/BacklogPage/BacklogPage.tsx";
 import { Documents } from "./components/features/Documents/Documents.tsx";
 import TaskDisplay from "./components/features/TaskModal/TaskDisplay.tsx";
+import ToastContainer from "./components/ui/Toast/ToastContainer.tsx";
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
@@ -77,6 +78,7 @@ createRoot(document.getElementById("root")!).render(
                 </Routes>
 
                 <TaskDisplay />
+                <ToastContainer />
             </BrowserRouter>
         </AuthProvider>
     </StrictMode>,
