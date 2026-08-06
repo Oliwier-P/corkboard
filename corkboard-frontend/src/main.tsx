@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.scss";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { LoginPage } from "./pages/LoginPage/LoginPage.tsx";
 import { CurrentReleasePage } from "./pages/./CurrentReleasePage/CurrentReleasePage.tsx";
 import { ProtectedRoute } from "./components/features/ProtectedRoute.tsx";
@@ -17,6 +17,7 @@ import { BacklogPage } from "./pages/BacklogPage/BacklogPage.tsx";
 import { Documents } from "./components/features/Documents/Documents.tsx";
 import TaskDisplay from "./components/features/TaskModal/TaskDisplay.tsx";
 import ToastContainer from "./components/ui/Toast/ToastContainer.tsx";
+import SuperAdminUsers from "./components/features/SuperAdmin/SuperAdminUsers.tsx";
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
@@ -74,6 +75,19 @@ createRoot(document.getElementById("root")!).render(
                             </ProtectedRoute>
                         }
                     />
+
+                    <Route
+                        path="/superadmin"
+                        element={
+                            <ProtectedRoute role="superadmin">
+                                <Outlet />
+                            </ProtectedRoute>
+                        }
+                    >
+                        <Route index element={<Navigate to="users" />} />
+                        <Route path="users" element={<SuperAdminUsers />} />
+                    </Route>
+
                     <Route path="*" element={<div>NO ROUTE</div>} />
                 </Routes>
 

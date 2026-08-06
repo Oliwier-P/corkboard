@@ -7,6 +7,7 @@ export type UserSettings = {
     id: number;
     username: string;
     preferences: UserPreferences;
+    role: "user" | "superadmin";
 };
 
 export type UserPreferences = {

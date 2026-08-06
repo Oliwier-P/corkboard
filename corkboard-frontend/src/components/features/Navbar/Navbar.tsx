@@ -88,15 +88,25 @@ export const Navbar = () => {
 
             {showWorkspaceForm && <CreateWorkspaceModal onClose={() => setShowWorkspaceForm(false)} />}
 
-            {workspace && workspaces.length > 0 && <Workspace ref={workspaceRef} name={workspace.name} />}
+            {workspace && workspaces.length > 0 && user?.role === "user" && <Workspace ref={workspaceRef} name={workspace.name} />}
             {isMenuOpen && workspaces.length > 0 && (
                 <WorkspaceMenu ref={menuRef} workspaces={workspaces.filter((w) => w.id !== workspace?.id)} handleWorkspaceCreate={handleWorkspaceCreate} />
             )}
 
-            <NavbarItem icon="box" label="Current Release" path={`/workspaces/${workspace?.id}/current_release`} />
-            <NavbarItem icon="rows" label="Backlog" path="/backlog" />
-            <NavbarItem icon="bookmarks" label="Releases" path={`/workspaces/${workspace?.id}/releases`} />
-            <NavbarItem icon="document" label="Docs" path={`/workspaces/${workspace?.id}/documents/`} isActive={isActiveDocumentLink} />
+            {user?.role === "user" && (
+                <>
+                    <NavbarItem icon="box" label="Current Release" path={`/workspaces/${workspace?.id}/current_release`} />
+                    <NavbarItem icon="rows" label="Backlog" path="/backlog" />
+                    <NavbarItem icon="bookmarks" label="Releases" path={`/workspaces/${workspace?.id}/releases`} />
+                    <NavbarItem icon="document" label="Docs" path={`/workspaces/${workspace?.id}/documents/`} isActive={isActiveDocumentLink} />
+                </>
+            )}
+
+            {user?.role === "superadmin" && (
+                <>
+                    <NavbarItem icon="users" label="Users" path="/superadmin/users" />
+                </>
+            )}
 
             {user && (
                 <>
