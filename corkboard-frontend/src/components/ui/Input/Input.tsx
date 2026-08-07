@@ -15,6 +15,7 @@ type InputProps = {
     defaultValue?: string | number;
     value?: string | number;
     error?: string;
+    autoComplete?: string;
     onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
     onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
     onChange?: (e: React.FocusEvent<HTMLInputElement>) => void;
@@ -36,6 +37,7 @@ export const Input = ({
     onKeyDown,
     onBlur,
     onChange,
+    autoComplete = "off",
     style,
 }: InputProps) => {
     return (
@@ -47,7 +49,7 @@ export const Input = ({
                 type={type}
                 id={id}
                 name={name}
-                autoComplete="off"
+                autoComplete={autoComplete}
                 style={style}
                 placeholder={placeholder}
                 onKeyDown={(e) => onKeyDown && onKeyDown(e)}

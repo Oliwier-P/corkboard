@@ -135,6 +135,7 @@ const SuperAdminUser = () => {
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             error={formik.touched.password ? formik.errors.password : undefined}
+                            autoComplete="new-password"
                             require
                         />
                         <LabeledInput
@@ -145,6 +146,7 @@ const SuperAdminUser = () => {
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             error={formik.touched.confirmPassword ? formik.errors.confirmPassword : undefined}
+                            autoComplete="new-password"
                             require
                         />
                     </>
