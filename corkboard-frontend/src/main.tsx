@@ -17,7 +17,8 @@ import { BacklogPage } from "./pages/BacklogPage/BacklogPage.tsx";
 import { Documents } from "./components/features/Documents/Documents.tsx";
 import TaskDisplay from "./components/features/TaskModal/TaskDisplay.tsx";
 import ToastContainer from "./components/ui/Toast/ToastContainer.tsx";
-import SuperAdminUsers from "./components/features/SuperAdmin/SuperAdminUsers.tsx";
+import SuperAdminUsers from "./components/features/SuperAdmin/SuperAdminUsers/SuperAdminUsers.tsx";
+import SuperAdminUser from "./components/features/SuperAdmin/SuperAdminUsers/SuperAdminUser.tsx";
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
@@ -86,6 +87,7 @@ createRoot(document.getElementById("root")!).render(
                     >
                         <Route index element={<Navigate to="users" />} />
                         <Route path="users" element={<SuperAdminUsers />} />
+                        <Route path="users/:id" element={<SuperAdminUser />} />
                     </Route>
 
                     <Route path="*" element={<div>NO ROUTE</div>} />

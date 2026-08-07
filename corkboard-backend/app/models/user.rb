@@ -39,10 +39,10 @@ class User < ApplicationRecord
               with: /\A[a-zA-Z0-9_-]+\z/,
               message: "cannot contain spaces"
             }
-  validates :password, presence: true, length: { minimum: 6 }
+  validates :password, length: { minimum: 6 }, if: -> { password.present? }
   has_and_belongs_to_many :workspaces
   has_many :documents, foreign_key: :owner_id
-  has_one :user_preference
+  has_one :user_preference, dependent: :destroy
   belongs_to :last_workspace, class_name: "Workspace", optional: true
 
   after_create :create_workspace
