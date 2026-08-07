@@ -25,6 +25,10 @@
     padding: 1rem;
 
     border-bottom: 1px solid colors.$border-color;
+
+    .icon {
+      width: 30px;
+    }
   }
 
   &__title{
