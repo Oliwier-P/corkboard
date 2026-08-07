@@ -109,7 +109,7 @@ const SuperAdminUser = () => {
                     require
                 />
 
-                <label className="change-password-checkbox">
+                <label>
                     <input
                         type="checkbox"
                         name="changePassword"
