@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ErrorsDisplay } from "../../../ui/ErrorsDisplay/ErrorsDisplay.tsx";
 import { api } from "../../../../api/api.ts";
+import { useToast } from "../../../../hooks/useToast.ts";
 
 type InviteUserModalProps = {
     onClose: () => void;
@@ -26,10 +27,15 @@ export const InviteUserModal = ({ onClose, workspaceId }: InviteUserModalProps) 
         handleSubmit,
         formState: { errors },
     } = useForm({ resolver: yupResolver(schema) });
+    const toast = useToast();
 
     const onSubmit = (data: FormData) => {
         api.post(`workspaces/${workspaceId}/invite_user`, { username: data.username.toLowerCase() }).then((response) => {
-            alert(response.data.message);
+            if (response.data.status === "success") {
+                toast.success(response.data.message);
+            } else {
+                toast.warning(response.data.message);
+            }
             onClose();
         });
     };

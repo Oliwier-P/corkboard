@@ -43,7 +43,7 @@ class WorkspacesController < ApplicationController
     return render json: { message: "Username already invited!" } if already_invited
 
     WorkspaceInvitation.create!(invited_user_id: @user&.id, workspace_id: params[:id], invited_by_user_id: current_user.id)
-    render json: { message: "Username successfully invited!" }
+    render json: { message: "Username successfully invited!", status: "success" }
   end
 
   def invitation
