@@ -67,6 +67,11 @@ class WorkspacesController < ApplicationController
     render json: { message: "Successfully cancel invitation" }, status: :ok
   end
 
+  def delete_user
+    UsersWorkspaces.where(workspace_id: params[:id], user_id: params[:user_id]).delete_all
+    render json: { message: "Delete user" }, status: :ok
+  end
+
   def current_release
     workspace = Workspace.find(params[:id])
     @current_release = workspace.releases.find_by(current: true)

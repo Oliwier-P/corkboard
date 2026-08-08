@@ -9,6 +9,9 @@ import { Table } from "../../../ui/Table/Table.tsx";
 import { UserDisplay } from "../../../ui/UserDisplay/UserDisplay.tsx";
 import Loading from "../../../ui/Loading/Loading.tsx";
 import type { User } from "../../../../context/auth/types.ts";
+import { useWorkspaceStore } from "../../../../store/workspaceStore.ts";
+import { useAuth } from "../../../../context/auth/useAuth.ts";
+import DeleteWorkspaceUserModal from "./DeleteWorkspaceUserModal.tsx";
 
 export const WorkspaceUsers = () => {
     const [users, setUsers] = useState<User[]>([]);
@@ -16,6 +19,9 @@ export const WorkspaceUsers = () => {
     const [showInviteModal, setShowInviteModal] = useState(false);
     const [loading, setLoading] = useState<boolean>(true);
     const { workspaceId } = useParams();
+    const { user } = useAuth();
+    const workspace = useWorkspaceStore((state) => state.workspace);
+    const [userToDelete, setUserToDelete] = useState<User | null>(null);
 
     useEffect(() => {
         api.get(`workspaces/${workspaceId}/collaborators`).then((response) => {
@@ -48,10 +54,14 @@ export const WorkspaceUsers = () => {
                         {
                             key: "id",
                             header: "Options",
-                            render: () => (
+                            render: (_, row) => (
                                 <>
-                                    <Button icon="trash" variant="icon" size="small" color="outlined" />
-                                    <Button icon="edit" variant="icon" size="small" color="outlined" />
+                                    {workspace?.owner.id === user?.id && user?.id !== row.id && (
+                                        <>
+                                            <Button icon="edit" variant="icon" size="small" color="outlined" />
+                                            <Button icon="trash" variant="icon" size="small" color="outlined" onClick={() => setUserToDelete(row)} />
+                                        </>
+                                    )}
                                 </>
                             ),
                         },
@@ -71,6 +81,16 @@ export const WorkspaceUsers = () => {
                     }}
                     onClose={() => setShowInviteModal(false)}
                     workspaceId={parseInt(workspaceId)}
+                />
+            )}
+            {userToDelete && (
+                <DeleteWorkspaceUserModal
+                    user={userToDelete}
+                    onSave={(user: User) => {
+                        setUserToDelete(null);
+                        setUsers((prev) => prev.filter((u) => u.id !== user.id));
+                    }}
+                    onClose={() => setUserToDelete(null)}
                 />
             )}
         </div>

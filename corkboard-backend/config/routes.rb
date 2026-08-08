@@ -46,6 +46,7 @@ Rails.application.routes.draw do
       post :accept_invitation
       delete :decline_invitation
       delete :cancel_invitation
+      delete :delete_user
       post :complete_release
     end
 
