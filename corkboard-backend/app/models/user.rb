@@ -67,10 +67,13 @@ class User < ApplicationRecord
   private
 
   def create_workspace
-    workspaces.create!(name: "#{username}'s Workspace", owner: self)
+    workspace = Workspace.create(name: "#{username}'s Workspace", owner: self)
+    update_column(:last_workspace_id, workspace.id) if workspace.persisted? && respond_to?(:last_workspace_id)
   end
 
   def create_preference
-    create_user_preference!(task_display: "modal")
+    UserPreference.find_or_create_by(user_id: id) do |pref|
+      pref.task_display = "modal"
+    end
   end
 end
