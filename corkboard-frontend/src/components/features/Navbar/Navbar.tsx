@@ -86,7 +86,15 @@ export const Navbar = () => {
                 <div className="navbar__app-name">Corkboard</div>
             </div>
 
-            {showWorkspaceForm && <CreateWorkspaceModal onClose={() => setShowWorkspaceForm(false)} />}
+            {showWorkspaceForm && (
+                <CreateWorkspaceModal
+                    onSave={(data: WorkspaceType) => {
+                        workspaces.push(data);
+                        setShowWorkspaceForm(false);
+                    }}
+                    onClose={() => setShowWorkspaceForm(false)}
+                />
+            )}
 
             {workspace && workspaces.length > 0 && user?.role === "user" && <Workspace ref={workspaceRef} name={workspace.name} />}
             {isMenuOpen && workspaces.length > 0 && (
