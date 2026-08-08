@@ -51,10 +51,10 @@ class WorkspacesController < ApplicationController
   end
 
   def accept_invitation
+    @workspace = Workspace.find(params[:id])
     invitation = WorkspaceInvitation.find_by(invited_user_id: current_user.id, workspace_id: params[:id])
     invitation.destroy! if invitation
     UsersWorkspaces.create!(workspace_id: params[:id], user_id: current_user.id)
-    render json: { message: "Accept invitation" }, status: :ok
   end
 
   def decline_invitation

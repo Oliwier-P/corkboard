@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { Icon } from "../../ui/Icons/Icon.tsx";
 import { api } from "../../../api/api.ts";
 import { useToast } from "../../../hooks/useToast.ts";
+import type { WorkspaceType } from "../../../types/WorkspaceType.ts";
+import { useWorkspaceStore } from "../../../store/workspaceStore.ts";
 
 type invitationType = {
     invited_by: string;
@@ -13,12 +15,17 @@ type invitationType = {
     };
 };
 
-export const UserNotifications = () => {
+interface UserNotificationsProps {
+    updateWorkspaces: (workspace: WorkspaceType) => void;
+}
+
+export const UserNotifications = ({ updateWorkspaces }: UserNotificationsProps) => {
     const [showNotifications, setShowNotifications] = useState(false);
     const [invitations, setInvitations] = useState<invitationType[]>([]);
     const notificationMenuRef = useRef<HTMLDivElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
     const toast = useToast();
+    const setWorkspace = useWorkspaceStore((state) => state.setWorkspace);
 
     useEffect(() => {
         api.get("workspaces/invitation").then((res) => setInvitations(res.data));
@@ -46,6 +53,8 @@ export const UserNotifications = () => {
         api.post(`workspaces/${invitationId}/accept_invitation`).then((response) => {
             setInvitations((prev) => prev.filter((invitation) => invitation.workspace.id !== invitationId));
             toast.success(response.data.message);
+            updateWorkspaces(response.data.workspace);
+            setWorkspace(response.data.workspace);
         });
     };
 
