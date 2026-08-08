@@ -7,15 +7,8 @@ import { InviteUserModal } from "./InviteUserModal.tsx";
 import { useParams } from "react-router-dom";
 import { Table } from "../../../ui/Table/Table.tsx";
 import { UserDisplay } from "../../../ui/UserDisplay/UserDisplay.tsx";
-import type { UserPreferences } from "../../../../context/auth/types.ts";
 import Loading from "../../../ui/Loading/Loading.tsx";
-
-type User = {
-    id: number;
-    username: string;
-    preferences: UserPreferences;
-    role: string;
-};
+import type { User } from "../../../../context/auth/types.ts";
 
 export const WorkspaceUsers = () => {
     const [users, setUsers] = useState<User[]>([]);
@@ -25,9 +18,9 @@ export const WorkspaceUsers = () => {
     const { workspaceId } = useParams();
 
     useEffect(() => {
-        api.get(`workspaces/${workspaceId}/collaborators`).then((res) => {
-            setUsers(res.data.collaborators);
-            setInvitedUsers(res.data.invited_users);
+        api.get(`workspaces/${workspaceId}/collaborators`).then((response) => {
+            setUsers(response.data.collaborators);
+            setInvitedUsers(response.data.invited_users);
             setLoading(false);
         });
     }, []);
@@ -39,7 +32,10 @@ export const WorkspaceUsers = () => {
             <span className="workspace-users__title">Manage people</span>
 
             <div className="workspace-users__list">
-                {invitedUsers && invitedUsers.map((user, index) => <WorkspaceUser key={index} username={user.username} role={user.role} isInvited />)}
+                {invitedUsers &&
+                    invitedUsers.map((user, index) => (
+                        <WorkspaceUser key={index} user={user} onCancel={() => setInvitedUsers((prev) => prev.filter((u) => u.id !== user.id))} isInvited />
+                    ))}
 
                 <Table
                     data={users}
@@ -48,10 +44,6 @@ export const WorkspaceUsers = () => {
                             key: "username",
                             header: "Username",
                             render: (_, row) => <UserDisplay user={row} />,
-                        },
-                        {
-                            key: "role",
-                            header: "Role",
                         },
                         {
                             key: "id",
@@ -71,7 +63,16 @@ export const WorkspaceUsers = () => {
                     </Button>
                 </Table>
             </div>
-            {showInviteModal && workspaceId && <InviteUserModal onClose={() => setShowInviteModal(false)} workspaceId={parseInt(workspaceId)} />}
+            {showInviteModal && workspaceId && (
+                <InviteUserModal
+                    onSave={(user: User) => {
+                        invitedUsers.push(user);
+                        setShowInviteModal(false);
+                    }}
+                    onClose={() => setShowInviteModal(false)}
+                    workspaceId={parseInt(workspaceId)}
+                />
+            )}
         </div>
     );
 };

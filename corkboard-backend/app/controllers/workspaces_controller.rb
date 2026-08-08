@@ -27,7 +27,8 @@ class WorkspacesController < ApplicationController
   end
 
   def collaborators
-    @users = Workspace.find(params[:id]).users
+    @workspace = Workspace.find(params[:id])
+    @users = @workspace.users
     invited_user_ids = WorkspaceInvitation.where(workspace_id: params[:id]).pluck(:invited_user_id)
     @invited_users = User.where(id: invited_user_ids)
   end
@@ -43,7 +44,6 @@ class WorkspacesController < ApplicationController
     return render json: { message: "Username already invited!" } if already_invited
 
     WorkspaceInvitation.create!(invited_user_id: @user&.id, workspace_id: params[:id], invited_by_user_id: current_user.id)
-    render json: { message: "Username successfully invited!", status: "success" }
   end
 
   def invitation
@@ -54,10 +54,17 @@ class WorkspacesController < ApplicationController
     invitation = WorkspaceInvitation.find_by(invited_user_id: current_user.id, workspace_id: params[:id])
     invitation.destroy! if invitation
     UsersWorkspaces.create!(workspace_id: params[:id], user_id: current_user.id)
+    render json: { message: "Accept invitation" }, status: :ok
   end
 
   def decline_invitation
     WorkspaceInvitation.where(invited_user_id: current_user.id, workspace_id: params[:id]).delete_all
+    render json: { message: "Decline invitation" }, status: :ok
+  end
+
+  def cancel_invitation
+    WorkspaceInvitation.where(invited_user_id: params[:invited_user_id], workspace_id: params[:id]).delete_all
+    render json: { message: "Successfully cancel invitation" }, status: :ok
   end
 
   def current_release
