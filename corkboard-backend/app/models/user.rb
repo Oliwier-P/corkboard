@@ -61,7 +61,7 @@ class User < ApplicationRecord
   end
 
   def superadmin?
-    role == 'superadmin'
+    role == "superadmin"
   end
 
   private
