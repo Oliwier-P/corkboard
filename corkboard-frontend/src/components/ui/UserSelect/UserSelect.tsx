@@ -4,7 +4,6 @@ import { UserAvatar } from "../UserAvatar/UserAvatar.tsx";
 import type { User } from "../../../context/auth/types.ts";
 import { useUserSelect } from "../../../hooks/useUserSelect.ts";
 import { Icon } from "../Icons/Icon.tsx";
-import { useReleaseBoardStore } from "../../../store/releaseBoardStore.ts";
 
 interface UserSelectProps {
     taskId: number;
@@ -14,10 +13,6 @@ interface UserSelectProps {
 
 export const UserSelect = ({ taskId, taskUser, variant = "task" }: UserSelectProps) => {
     const { showUserSelection, position, users, userSelectModalRef, buttonRef, handleOpenUserSelection, handleAssignUserToTask } = useUserSelect({ taskId });
-    const task = useReleaseBoardStore((state) => state.tasks[taskId]);
-
-    console.log(task);
-    console.log(taskUser);
 
     return (
         <div className="user-select" onClick={(e) => e.stopPropagation()}>
