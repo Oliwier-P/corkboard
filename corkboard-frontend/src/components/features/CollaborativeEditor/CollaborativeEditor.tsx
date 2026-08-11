@@ -51,6 +51,9 @@ const Editor = ({ documentId, user, authToken, onReadyChange }: CollaborativeEdi
                     <Button className="item" onClick={() => editor.chain().focus().toggleCode().run()}>
                         <Icon icon="code" />
                     </Button>
+                    <Button className="item" onClick={() => editor.chain().focus().toggleCode().run()}>
+                        Lists
+                    </Button>
                 </div>
             </BubbleMenu>
         </>
