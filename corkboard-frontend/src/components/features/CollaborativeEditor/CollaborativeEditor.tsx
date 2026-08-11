@@ -52,7 +52,7 @@ const Editor = ({ documentId, user, authToken, onReadyChange }: CollaborativeEdi
                         <Icon icon="code" />
                     </Button>
                     <Button className="item" onClick={() => editor.chain().focus().toggleCode().run()}>
-                        Lists
+                        Listsasd
                     </Button>
                 </div>
             </BubbleMenu>
