@@ -12,7 +12,7 @@ import { useTaskStore } from "../../../store/taskStore.ts";
 import { Icon } from "../../ui/Icons/Icon.tsx";
 
 type TaskProps = {
-    taskId: number;
+    taskId: string;
 };
 
 type Inputs = {

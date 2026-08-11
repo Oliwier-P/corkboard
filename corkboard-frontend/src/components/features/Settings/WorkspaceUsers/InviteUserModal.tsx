@@ -12,7 +12,7 @@ import type { User } from "../../../../context/auth/types.ts";
 type InviteUserModalProps = {
     onSave: (user: User) => void;
     onClose: () => void;
-    workspaceId: number;
+    workspaceId: string;
 };
 
 const schema = yup

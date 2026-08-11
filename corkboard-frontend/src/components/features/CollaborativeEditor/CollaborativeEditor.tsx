@@ -9,7 +9,7 @@ import { CollaborativeEditorProvider } from "./CollaborativeEditorProvider.tsx";
 import { useEffect } from "react";
 
 type CollaborativeEditorProps = {
-    documentId: number;
+    documentId: string;
     user: User;
     authToken: string;
     onReadyChange?: (ready: boolean) => void;

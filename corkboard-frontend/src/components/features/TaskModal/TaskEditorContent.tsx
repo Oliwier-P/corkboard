@@ -7,7 +7,7 @@ import Loading from "../../ui/Loading/Loading.tsx";
 import TaskProperties from "../TaskProperties/TaskProperties.tsx";
 
 interface TaskEditorContentProps {
-    taskId: number;
+    taskId: string;
     className?: string;
 }
 

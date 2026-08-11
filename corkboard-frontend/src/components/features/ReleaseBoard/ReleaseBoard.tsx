@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 
 type ReleaseBoardProps = {
-    releaseId: number;
+    releaseId: string;
 };
 
 export const ReleaseBoard = ({ releaseId }: ReleaseBoardProps) => {

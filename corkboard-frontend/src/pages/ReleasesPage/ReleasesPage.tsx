@@ -30,12 +30,12 @@ export const ReleasesPage = () => {
         setShowCreateReleaseModal(false);
     };
 
-    const handleDelete = (releaseId: number) => {
+    const handleDelete = (releaseId: string) => {
         deleteRelease(releaseId);
         setReleaseToDelete(null);
     };
 
-    const handleEdit = (releaseId: number, name: string) => {
+    const handleEdit = (releaseId: string, name: string) => {
         updateRelease(releaseId, name);
         setReleaseToDelete(null);
     };

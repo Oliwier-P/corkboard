@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { useReleaseBoardStore } from "../../../store/releaseBoardStore.ts";
 import { api } from "../../../api/api.ts";
 
-export const useTaskEditor = (taskId: number) => {
+export const useTaskEditor = (taskId: string) => {
     const task = useReleaseBoardStore((state) => state.tasks[taskId]);
     const updateTask = useReleaseBoardStore((state) => state.updateTask);
 
     const [taskName, setTaskName] = useState<string>(task?.name ?? "");
-    const [documentId, setDocumentId] = useState<number | null>(null);
+    const [documentId, setDocumentId] = useState<string | null>(null);
     const [isDocumentReady, setIsDocumentReady] = useState(false);
 
     useEffect(() => {

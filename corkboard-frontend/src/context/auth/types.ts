@@ -1,10 +1,10 @@
 export type User = {
-    id: number;
+    id: string;
     username: string;
 };
 
 export type UserSettings = {
-    id: number;
+    id: string;
     username: string;
     preferences: UserPreferences;
     role: "user" | "superadmin";

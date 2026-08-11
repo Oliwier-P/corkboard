@@ -5,7 +5,7 @@ import { useWorkspaceMenuStore } from "../../../store/workspaceMenuStore.ts";
 import type { User } from "../../../context/auth/types.ts";
 
 type WorkspaceMenuItemProps = {
-    id: number;
+    id: string;
     name: string;
     owner: User;
     number_of_members: number;
@@ -17,7 +17,7 @@ export const WorkspaceMenuItem = ({ id, name, owner, number_of_members }: Worksp
     const navigate = useNavigate();
 
     const handleSwitchWorkspace = () => {
-        localStorage.setItem("workspace_id", id.toString());
+        localStorage.setItem("workspace_id", id);
         setWorkspace({ id, name, logo: "", owner, number_of_members });
         setMenuOpen(false);
         navigate(`/workspaces/${id}/current_release`);

@@ -3,19 +3,19 @@ import type { User } from "../context/auth/types.ts";
 export type Priority = "low" | "medium" | "high" | "urgent";
 
 export type TaskType = {
-    id: number;
+    id: string;
     name: string;
     description: string;
-    release_id: number | null;
-    workspace_id: number | null;
+    release_id: string | null;
+    workspace_id: string | null;
     status: string;
     order: number;
     priority: string | null;
     user: User | null;
-    actor_id?: number;
+    actor_id?: string;
 };
 
 export type Column = {
     id: string;
-    taskIds: number[];
+    taskIds: string[];
 };

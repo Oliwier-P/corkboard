@@ -6,7 +6,7 @@ import { useUserSelect } from "../../../hooks/useUserSelect.ts";
 import { Icon } from "../Icons/Icon.tsx";
 
 interface UserSelectProps {
-    taskId: number;
+    taskId: string;
     taskUser: User | null;
     variant?: string;
 }

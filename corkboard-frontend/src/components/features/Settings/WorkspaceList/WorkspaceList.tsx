@@ -15,7 +15,7 @@ export const WorkspaceList = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const navigate = useNavigate();
 
-    const handleOpenWorkspaceSettings = (id: number) => {
+    const handleOpenWorkspaceSettings = (id: string) => {
         navigate(`/settings/workspace/${id}/general`);
     };
 

@@ -73,7 +73,7 @@ export const BoardColumn = memo(({ columnId, isCreateTaskOpen, setIsCreateTaskOp
                 setIsDragOver(false);
                 setDragOverIndex(null);
 
-                const taskId = source.data.taskId as number;
+                const taskId = source.data.taskId as string;
                 if (!taskId) return;
 
                 const { columns, moveTaskBetweenColumns, reorderTaskInColumn } = useReleaseBoardStore.getState();

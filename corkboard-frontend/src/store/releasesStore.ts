@@ -5,17 +5,17 @@ import { api } from "../api/api.ts";
 interface ReleasesStore {
     releases: ReleaseType[];
     notQueuedReleases: ReleaseType[];
-    currentReleaseId: number | null;
-    nextReleaseId: number | null;
+    currentReleaseId: string | null;
+    nextReleaseId: string | null;
 
-    fetchReleases: (workspace_id: number, callback: () => void) => void;
-    addRelease: (name: string, workspaceId: number, status: string, callback?: (release: ReleaseType) => void) => void;
-    updateRelease: (id: number, name: string, callback?: () => void) => void;
-    deleteRelease: (id: number, callback?: () => void) => void;
+    fetchReleases: (workspace_id: string, callback: () => void) => void;
+    addRelease: (name: string, workspaceId: string, status: string, callback?: (release: ReleaseType) => void) => void;
+    updateRelease: (id: string, name: string, callback?: () => void) => void;
+    deleteRelease: (id: string, callback?: () => void) => void;
 
-    moveReleaseBetweenColumns: (activeId: number, fromColumnId: string, toColumnId: string, insertAt?: number) => void;
+    moveReleaseBetweenColumns: (activeId: string, fromColumnId: string, toColumnId: string, insertAt?: number) => void;
 
-    reorderReleaseInColumn: (columnId: string, activeId: number, insertAt: number) => void;
+    reorderReleaseInColumn: (columnId: string, activeId: string, insertAt: number) => void;
 }
 
 export const useReleasesStore = create<ReleasesStore>((set) => ({
@@ -24,7 +24,7 @@ export const useReleasesStore = create<ReleasesStore>((set) => ({
     currentReleaseId: null,
     nextReleaseId: null,
 
-    fetchReleases: (workspace_id: number, callback: () => void) => {
+    fetchReleases: (workspace_id, callback) => {
         api.get(`/workspaces/${workspace_id}/releases`).then((res) => {
             set({
                 releases: res.data.releases.filter((release: ReleaseType) => release.status === "QUEUED"),
@@ -35,7 +35,7 @@ export const useReleasesStore = create<ReleasesStore>((set) => ({
             callback();
         });
     },
-    addRelease: (name: string, workspaceId: number, status: string, callback?: (release: ReleaseType) => void) => {
+    addRelease: (name, workspaceId, status, callback) => {
         api.post("/releases", { name, workspace_id: workspaceId, status }).then((res) => {
             set((state) => ({
                 notQueuedReleases: [...state.notQueuedReleases, res.data],
@@ -45,13 +45,13 @@ export const useReleasesStore = create<ReleasesStore>((set) => ({
             }
         });
     },
-    updateRelease: (id: number, name: string, callback?: () => void) => {
+    updateRelease: (id, name, callback) => {
         set((state) => ({
             releases: state.releases.map((r) => (r.id === id ? { ...r, name } : r)),
         }));
         api.put(`/releases/${id}`, { name }).then(() => callback && callback());
     },
-    deleteRelease: (id: number, callback?: () => void) => {
+    deleteRelease: (id, callback) => {
         set((state) => ({
             releases: state.releases.filter((r) => r.id !== id),
             notQueuedReleases: state.notQueuedReleases.filter((r) => r.id !== id),

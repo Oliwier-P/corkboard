@@ -4,7 +4,7 @@ import { useTaskStore } from "../../../store/taskStore.ts";
 import { TaskEditorContent } from "./TaskEditorContent.tsx";
 
 interface TaskSidebarProps {
-    taskId: number;
+    taskId: string;
 }
 
 const TaskSidebar = ({ taskId }: TaskSidebarProps) => {

@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { flushSync } from "react-dom";
 
 type useCollaborativeEditorProps = {
-    documentId: number;
+    documentId: string;
     authToken: string;
     user: User;
 };

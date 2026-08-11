@@ -2,15 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import { useWorkspaceStore } from "../store/workspaceStore.ts";
 import { useReleaseBoardStore } from "../store/releaseBoardStore.ts";
 import { api } from "../api/api.ts";
+import type { User } from "../context/auth/types.ts";
 
 interface UseUserSelectProps {
-    taskId: number;
+    taskId: string;
 }
 
 export const useUserSelect = ({ taskId }: UseUserSelectProps) => {
     const [showUserSelection, setShowUserSelection] = useState<boolean>(false);
     const [position, setPosition] = useState<{ top: number; left: number; position: "absolute" | "fixed" }>({ top: 0, left: 0, position: "fixed" });
-    const [users, setUsers] = useState<{ id: number; username: string }[]>([]);
+    const [users, setUsers] = useState<User[]>([]);
 
     const userSelectModalRef = useRef<HTMLDivElement>(null);
     const buttonRef = useRef<HTMLDivElement>(null);
@@ -36,7 +37,7 @@ export const useUserSelect = ({ taskId }: UseUserSelectProps) => {
         setShowUserSelection(true);
     };
 
-    const handleAssignUserToTask = (userId: number) => {
+    const handleAssignUserToTask = (userId: string) => {
         updateTaskUser(taskId, userId);
         setShowUserSelection(false);
     };

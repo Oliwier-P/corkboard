@@ -66,7 +66,7 @@ class User < ApplicationRecord
   private
 
   def create_workspace
-    workspace = Workspace.create(name: "#{username}'s Workspace", owner: self)
+    workspace = workspaces.create!(name: "#{username}'s Workspace", owner: self)
     update_column(:last_workspace_id, workspace.id) if workspace.persisted? && respond_to?(:last_workspace_id)
   end
 

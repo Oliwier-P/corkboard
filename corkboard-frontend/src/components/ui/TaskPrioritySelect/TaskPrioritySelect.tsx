@@ -7,7 +7,7 @@ import { Icon } from "../Icons/Icon.tsx";
 const statuses = ["medium", "high", "urgent"];
 
 interface TaskPrioritySelectProps {
-    taskId: number;
+    taskId: string;
     taskPriority: string | null;
 }
 

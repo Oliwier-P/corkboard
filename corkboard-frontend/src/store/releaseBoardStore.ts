@@ -3,9 +3,10 @@ import { create } from "zustand";
 import { api } from "../api/api.ts";
 import { useWorkspaceStore } from "./workspaceStore.ts";
 import { insertTaskIntoColumn } from "./releaseBoardHelpers.ts";
+import { v4 as uuidv4 } from "uuid";
 
 const INITIAL_STATE = {
-    id: 0,
+    id: "",
     tasks: {},
     columns: [
         { id: "backlog", taskIds: [] },
@@ -19,8 +20,8 @@ const INITIAL_STATE = {
 };
 
 interface ReleaseBoardStore {
-    id: number;
-    tasks: Record<number, TaskType>;
+    id: string;
+    tasks: Record<string, TaskType>;
     columns: Column[];
 
     activeTask: TaskType | null;
@@ -29,24 +30,24 @@ interface ReleaseBoardStore {
     setActiveTask: (task: TaskType | null) => void;
     setOverColumnId: (id: string | null) => void;
 
-    moveTaskBetweenColumns: (activeId: number, fromColumnId: string, toColumnId: string, insertAt?: number) => void;
-    reorderTaskInColumn: (columnId: string, activeId: number, insertAt: number) => void;
+    moveTaskBetweenColumns: (activeId: string, fromColumnId: string, toColumnId: string, insertAt?: number) => void;
+    reorderTaskInColumn: (columnId: string, activeId: string, insertAt: number) => void;
 
-    fetchBoard: (releaseId: number, callback?: () => void) => void;
-    fetchBacklog: (workspaceId: number) => void;
+    fetchBoard: (releaseId: string, callback?: () => void) => void;
+    fetchBacklog: (workspaceId: string) => void;
 
     addTask: (columnId: string, name: string) => void;
-    updateTask: (taskId: number, task: Partial<TaskType>) => void;
-    updateTaskUser: (taskId: number, userId: number) => void;
-    moveToBacklog: (taskId: number) => void;
-    deleteTask: (taskId: number) => void;
-    moveTaskToNextRelease: (taskId: number) => void;
+    updateTask: (taskId: string, task: Partial<TaskType>) => void;
+    updateTaskUser: (taskId: string, userId: string) => void;
+    moveToBacklog: (taskId: string) => void;
+    deleteTask: (taskId: string) => void;
+    moveTaskToNextRelease: (taskId: string) => void;
 
     getColumn: (id: string) => Column | undefined;
-    getColumnByTaskId: (taskId: number) => Column | undefined;
+    getColumnByTaskId: (taskId: string) => Column | undefined;
 
     applyTaskCreated: (task: TaskType) => void;
-    applyTaskDestroyed: (taskId: number) => void;
+    applyTaskDestroyed: (taskId: string) => void;
     applyTaskUpdated: (task: TaskType) => void;
 }
 
@@ -56,8 +57,7 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
     overColumnId: null,
     setActiveTask: (task) => set({ activeTask: task }),
     setOverColumnId: (id) => set({ overColumnId: id }),
-
-    fetchBoard: (releaseId: number, callback?: () => void) => {
+    fetchBoard: (releaseId, callback) => {
         api.get(`/releases/${releaseId}/board`)
             .then((res) => {
                 set({
@@ -68,8 +68,7 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
             })
             .then(() => callback && callback());
     },
-
-    fetchBacklog: (workspaceId: number) => {
+    fetchBacklog: (workspaceId) => {
         api.get(`/backlog/${workspaceId}`).then((res) => {
             set((state) => {
                 const taskIds = res.data.taskIds;
@@ -86,7 +85,6 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
             });
         });
     },
-
     moveTaskBetweenColumns: (activeId, fromColumnId, toColumnId, insertAt) => {
         set((state) => {
             const toColumn = state.columns.find((col) => col.id === toColumnId);
@@ -112,7 +110,6 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
             get().updateTask(activeId, { status: toColumnId, order: insertAt, release_id: get().id });
         });
     },
-
     reorderTaskInColumn: (columnId, activeId, insertAt) => {
         set((state) => ({
             columns: state.columns.map((col) => {
@@ -126,7 +123,7 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
         api.put(`/tasks/${activeId}`, { task: { order: insertAt } });
     },
     addTask: (columnId, name) => {
-        const temporaryId = Date.now() as number;
+        const temporaryId = uuidv4();
         const order = get().columns.find((col) => col.id === columnId)?.taskIds.length ?? 0;
         const workspaceId = useWorkspaceStore.getState().workspace?.id;
         const newTask: TaskType = {
@@ -186,7 +183,7 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
         });
         api.put(`tasks/${taskId}`, { task: task });
     },
-    moveToBacklog: (taskId: number) => {
+    moveToBacklog: (taskId) => {
         set((state) => {
             const task = state.tasks[taskId];
             return {
@@ -223,7 +220,7 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
             });
         });
     },
-    deleteTask: (taskId: number) => {
+    deleteTask: (taskId) => {
         set((state) => {
             const tasks = { ...state.tasks };
             delete tasks[taskId];
@@ -238,7 +235,7 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
 
         api.delete(`tasks/${taskId}`);
     },
-    moveTaskToNextRelease: (taskId: number) => {
+    moveTaskToNextRelease: (taskId) => {
         set((state) => {
             const tasks = { ...state.tasks };
             delete tasks[taskId];
@@ -259,7 +256,6 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
     getColumnByTaskId: (taskId) => {
         return get().columns.find((col) => col.taskIds.includes(taskId));
     },
-
     applyTaskCreated: (task: TaskType) => {
         set((state) => {
             const exists = Boolean(state.tasks[task.id]);
@@ -273,8 +269,7 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
             };
         });
     },
-
-    applyTaskDestroyed: (taskId: number) => {
+    applyTaskDestroyed: (taskId) => {
         set((state) => {
             const tasks = { ...state.tasks };
             delete tasks[taskId];
@@ -288,7 +283,7 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
             };
         });
     },
-    applyTaskUpdated: (task: TaskType) => {
+    applyTaskUpdated: (task) => {
         set((state) => {
             return {
                 tasks: {

@@ -80,7 +80,7 @@ export const WorkspaceUsers = () => {
                         setShowInviteModal(false);
                     }}
                     onClose={() => setShowInviteModal(false)}
-                    workspaceId={parseInt(workspaceId)}
+                    workspaceId={workspaceId}
                 />
             )}
             {userToDelete && (

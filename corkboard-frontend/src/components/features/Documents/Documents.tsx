@@ -36,7 +36,7 @@ export const Documents = () => {
             <DocumentsNav documents={documents} />
 
             {documents.length > 0 ? (
-                <DocumentPage key={documentId} document={documents.find((d) => d.id === Number(documentId)) ?? documents[0]} />
+                <DocumentPage key={documentId} document={documents.find((d) => d.id === documentId) ?? documents[0]} />
             ) : documents.length > 0 ? (
                 <div className="page-status">Choose document</div>
             ) : (

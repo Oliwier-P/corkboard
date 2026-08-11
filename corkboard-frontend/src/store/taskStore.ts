@@ -3,17 +3,17 @@ import { create } from "zustand";
 interface TaskStore {
     isOpen: boolean;
     setIsOpen: (value: boolean) => void;
-    taskId: number | null;
-    setTaskId: (value: number) => void;
+    taskId: string | null;
+    setTaskId: (value: string) => void;
 }
 
 export const useTaskStore = create<TaskStore>((set) => ({
     isOpen: false,
     taskId: null,
-    setIsOpen: (value: boolean) => {
+    setIsOpen: (value) => {
         set({ isOpen: value });
     },
-    setTaskId: (value: number) => {
+    setTaskId: (value) => {
         set({ taskId: value });
     },
 }));

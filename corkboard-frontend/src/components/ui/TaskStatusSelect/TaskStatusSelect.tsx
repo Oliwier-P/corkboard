@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { useReleaseBoardStore } from "../../../store/releaseBoardStore.ts";
 
 interface TaskStatusSelectProps {
-    taskId: number;
+    taskId: string;
     taskStatus: string;
 }
 
