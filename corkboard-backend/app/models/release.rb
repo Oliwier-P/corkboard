@@ -2,19 +2,19 @@
 #
 # Table name: releases
 #
-#  id           :bigint           not null, primary key
+#  id           :uuid             not null, primary key
 #  completed    :boolean
 #  current      :boolean
 #  name         :string           not null
 #  order        :integer          not null
-#  status       :string
+#  status       :string           default("NOT_QUEUED")
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  workspace_id :integer          not null
+#  workspace_id :uuid             not null
 #
 # Foreign Keys
 #
-#  fk_rails_...  (workspace_id => workspaces.id)
+#  fk_rails_...  (workspace_id => workspaces.id) ON DELETE => cascade
 #
 
 

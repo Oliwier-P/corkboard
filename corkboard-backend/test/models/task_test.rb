@@ -2,24 +2,22 @@
 #
 # Table name: tasks
 #
-#  id           :bigint           not null, primary key
+#  id           :uuid             not null, primary key
 #  name         :string
 #  order        :integer
 #  priority     :string
 #  status       :string
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  release_id   :integer
-#  user_id      :bigint
-#  workspace_id :string
-#
-# Indexes
-#
-#  index_tasks_on_user_id  (user_id)
+#  release_id   :uuid
+#  user_id      :uuid
+#  workspace_id :uuid
 #
 # Foreign Keys
 #
-#  fk_rails_...  (user_id => users.id)
+#  fk_rails_...  (release_id => releases.id) ON DELETE => cascade
+#  fk_rails_...  (user_id => users.id) ON DELETE => nullify
+#  fk_rails_...  (workspace_id => workspaces.id) ON DELETE => cascade
 #
 
 

@@ -2,11 +2,11 @@
 #
 # Table name: user_preferences
 #
-#  id           :bigint           not null, primary key
+#  id           :uuid             not null, primary key
 #  task_display :string           default(NULL), not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  user_id      :bigint           not null
+#  user_id      :uuid             not null
 #
 # Indexes
 #
@@ -14,7 +14,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (user_id => users.id)
+#  fk_rails_...  (user_id => users.id) ON DELETE => cascade
 #
 class UserPreference < ApplicationRecord
   belongs_to :user

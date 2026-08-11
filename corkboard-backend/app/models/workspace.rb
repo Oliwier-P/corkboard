@@ -2,11 +2,12 @@
 #
 # Table name: workspaces
 #
-#  id         :bigint           not null, primary key
-#  name       :string
+#  id         :uuid             not null, primary key
+#  current    :boolean          default(FALSE), not null
+#  name       :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  owner_id   :integer
+#  owner_id   :uuid
 #
 # Foreign Keys
 #
