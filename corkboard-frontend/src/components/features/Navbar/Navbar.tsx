@@ -10,11 +10,8 @@ import type { WorkspaceType } from "../../../types/WorkspaceType.ts";
 import { useWorkspaceStore } from "../../../store/workspaceStore.ts";
 import { CreateWorkspaceModal } from "./CreateWorkspaceModal.tsx";
 import { useWorkspaceMenuStore } from "../../../store/workspaceMenuStore.ts";
-import { UserAvatar } from "../../ui/UserAvatar/UserAvatar.tsx";
 import { UserNotifications } from "../UserNotifications/UserNotifications.tsx";
-import { Button } from "../../ui/Button/Button.tsx";
-import { useNavigate } from "react-router-dom";
-import { useToast } from "../../../hooks/useToast.ts";
+import ProfilePopover from "../../ui/Popovers/ProfilePopover/ProfilePopover.tsx";
 
 export const Navbar = () => {
     const { user } = useAuth();
@@ -30,20 +27,10 @@ export const Navbar = () => {
     const setMenuOpen = useWorkspaceMenuStore((store) => store.setOpen);
     const isActiveDocumentLink = location.pathname.startsWith(`/workspaces/${workspace?.id}/documents/`);
     const [showUserModal, setShowUserModal] = useState<boolean>(false);
-    const navigate = useNavigate();
-    const toast = useToast();
 
     const handleWorkspaceCreate = () => {
         setMenuOpen(false);
         setShowWorkspaceForm(true);
-    };
-
-    const handleLogout = () => {
-        api.delete("/logout").then((response) => {
-            localStorage.setItem("token", "");
-            navigate("/");
-            toast.success(response.data.message);
-        });
     };
 
     useEffect(() => {
@@ -123,30 +110,9 @@ export const Navbar = () => {
             {user && (
                 <>
                     <div className="user">
-                        <div className="info" ref={profileRef} onClick={() => setShowUserModal(true)}>
-                            <UserAvatar username={user.username} />
-                            <span>{user.username}</span>
-                        </div>
+                        <ProfilePopover />
                         <UserNotifications updateWorkspaces={(workspace: WorkspaceType) => workspaces.push(workspace)} />
                     </div>
-
-                    {showUserModal && (
-                        <div className="user-modal" ref={userModalRef}>
-                            <Button
-                                icon="circleUser"
-                                color="none"
-                                onClick={() => {
-                                    navigate("/settings/user/profile");
-                                    setShowUserModal(false);
-                                }}
-                            >
-                                Profile
-                            </Button>
-                            <Button icon="doorOpen" color="none" onClick={handleLogout}>
-                                Logout
-                            </Button>
-                        </div>
-                    )}
                 </>
             )}
         </div>

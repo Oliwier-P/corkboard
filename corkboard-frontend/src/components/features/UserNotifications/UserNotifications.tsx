@@ -1,80 +1,28 @@
-import { Button } from "../../ui/Button/Button.tsx";
 import "./UserNotifications.scss";
-import { useEffect, useRef, useState } from "react";
+import { Button } from "../../ui/Button/Button.tsx";
 import { Icon } from "../../ui/Icons/Icon.tsx";
-import { api } from "../../../api/api.ts";
-import { useToast } from "../../../hooks/useToast.ts";
 import type { WorkspaceType } from "../../../types/WorkspaceType.ts";
-import { useWorkspaceStore } from "../../../store/workspaceStore.ts";
-
-type invitationType = {
-    invited_by: string;
-    workspace: {
-        id: number;
-        name: string;
-    };
-};
+import useUserNotification from "./useUserNotification.ts";
 
 interface UserNotificationsProps {
     updateWorkspaces: (workspace: WorkspaceType) => void;
 }
 
 export const UserNotifications = ({ updateWorkspaces }: UserNotificationsProps) => {
-    const [showNotifications, setShowNotifications] = useState(false);
-    const [invitations, setInvitations] = useState<invitationType[]>([]);
-    const notificationMenuRef = useRef<HTMLDivElement>(null);
-    const buttonRef = useRef<HTMLButtonElement>(null);
-    const toast = useToast();
-    const setWorkspace = useWorkspaceStore((state) => state.setWorkspace);
-
-    useEffect(() => {
-        api.get("workspaces/invitation").then((res) => setInvitations(res.data));
-    }, []);
-
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            const target = event.target as Node;
-
-            if (buttonRef.current && !buttonRef.current.contains(target) && notificationMenuRef.current && !notificationMenuRef.current.contains(target)) {
-                setShowNotifications(false);
-            }
-        };
-
-        if (showNotifications) {
-            document.addEventListener("mousedown", handleClickOutside);
-        }
-
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [showNotifications, setShowNotifications]);
-
-    const acceptInvitation = (invitationId: number) => {
-        api.post(`workspaces/${invitationId}/accept_invitation`).then((response) => {
-            setInvitations((prev) => prev.filter((invitation) => invitation.workspace.id !== invitationId));
-            toast.success(response.data.message);
-            updateWorkspaces(response.data.workspace);
-            setWorkspace(response.data.workspace);
-        });
-    };
-
-    const declineInvitation = (invitationId: number) => {
-        api.delete(`workspaces/${invitationId}/decline_invitation`).then((response) => {
-            setInvitations((prev) => prev.filter((invitation) => invitation.workspace.id !== invitationId));
-            toast.success(response.data.message);
-        });
-    };
+    const { showNotifications, setShowNotifications, invitations, triggerRef, menuRef, acceptInvitation, declineInvitation } = useUserNotification({
+        updateWorkspaces,
+    });
 
     return (
-        <>
+        <div className="user-notifications">
             {showNotifications && (
-                <div className="user-notifications__menu" ref={notificationMenuRef}>
-                    <div className="user-notifications__header">
+                <div className="menu" ref={menuRef}>
+                    <div className="header">
                         <Icon icon="bell" />
-                        Notifications
+                        <span>Notifications</span>
                     </div>
                     {invitations.map((invitation) => (
-                        <div className="user-notifications__notification">
+                        <div className="notification">
                             <div className="user-notifications__message">
                                 {invitation.invited_by} invited you to {invitation.workspace.name}
                             </div>
@@ -89,20 +37,21 @@ export const UserNotifications = ({ updateWorkspaces }: UserNotificationsProps) 
                         </div>
                     ))}
 
-                    {invitations.length === 0 && <div className="user-notifications__notification">You have no notification</div>}
+                    {invitations.length === 0 && <div className="notification">You have no notification</div>}
                 </div>
             )}
+
             <Button
-                ref={buttonRef}
-                className="user-notifications"
+                ref={triggerRef}
+                className="trigger"
                 variant="icon"
                 color="outlined"
                 size="small"
                 icon="bell"
                 onClick={() => setShowNotifications((prev) => !prev)}
             >
-                {invitations.length > 0 && <div className="user-notifications__dot" />}
+                {invitations.length > 0 && <div className="dot" />}
             </Button>
-        </>
+        </div>
     );
 };
