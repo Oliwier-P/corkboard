@@ -1,5 +1,4 @@
 import "./Task.scss";
-import { UserSelect } from "../../ui/UserSelect/UserSelect.tsx";
 import { Button } from "../../ui/Button/Button.tsx";
 import { EditableText } from "../../ui/EditableText/EditableText.tsx";
 import { useReleaseBoardStore } from "../../../store/releaseBoardStore.ts";
@@ -10,6 +9,7 @@ import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { ContextMenu, type ContextMenuItem } from "../../ui/ContextMenu/ContextMenu.tsx";
 import { useTaskStore } from "../../../store/taskStore.ts";
 import { Icon } from "../../ui/Icons/Icon.tsx";
+import UserPopover from "../../ui/Popovers/UserPopover/UserPopover.tsx";
 
 type TaskProps = {
     taskId: string;
@@ -134,7 +134,7 @@ export const Task = memo(({ taskId }: TaskProps) => {
                         </Button>
                     )}
                 </form>
-                <UserSelect taskId={taskId} taskUser={task.user} />
+                <UserPopover taskId={taskId} taskUser={task.user} />
                 {task.priority && <Icon className={`${task.priority} priority`} icon="priority" />}
             </div>
         </ContextMenu>

@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { api } from "../api/api.ts";
 import { useWorkspaceStore } from "./workspaceStore.ts";
 import { insertTaskIntoColumn } from "./releaseBoardHelpers.ts";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuid } from "uuid";
 
 const INITIAL_STATE = {
     id: "",
@@ -123,7 +123,7 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
         api.put(`/tasks/${activeId}`, { task: { order: insertAt } });
     },
     addTask: (columnId, name) => {
-        const temporaryId = uuidv4();
+        const temporaryId = uuid();
         const order = get().columns.find((col) => col.id === columnId)?.taskIds.length ?? 0;
         const workspaceId = useWorkspaceStore.getState().workspace?.id;
         const newTask: TaskType = {

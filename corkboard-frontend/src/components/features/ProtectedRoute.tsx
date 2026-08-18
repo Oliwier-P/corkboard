@@ -16,7 +16,12 @@ export const ProtectedRoute = ({ role = "user", children }: ProtectedRouteProps)
         return <Navigate to="/" replace />;
     }
 
-    if (loading) return <Loading overlay={true} />;
+    if (loading)
+        return (
+            <div style={{ width: "100%", height: "100vh", display: "flex" }}>
+                <Loading overlay={true} />
+            </div>
+        );
 
     if (user?.role !== role) {
         return <Navigate to="/" replace />;

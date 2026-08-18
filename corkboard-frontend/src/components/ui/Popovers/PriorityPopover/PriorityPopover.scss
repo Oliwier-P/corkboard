@@ -1,0 +1,29 @@
+.priority-popover {
+  .trigger {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    .icon {
+      width: 22px;
+    }
+  }
+
+  .medium {
+    .icon {
+      color: #0061CF;
+    }
+  }
+
+  .high {
+    .icon {
+      color: #F59E0B;
+    }
+  }
+
+  .urgent {
+    .icon {
+      color: #EF4444;
+    }
+  }
+}

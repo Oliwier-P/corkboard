@@ -1,7 +1,5 @@
-.task-status {
-  position: relative;
-
-  .status {
+.task-status-popover {
+  .trigger {
     width: fit-content;
 
     display: flex;
@@ -14,28 +12,6 @@
 
     color: white;
     cursor: pointer;
-
-    &.item {
-      width: 100%;
-
-      &:hover {
-        background-color: #2e2e2e;
-      }
-    }
-
-    &-modal {
-      width: 170px;
-      position: absolute;
-      top: 35px;
-      z-index: 100;
-      background-color: #1b1b1b;
-      display: flex;
-      flex-direction: column;
-      align-items: start;
-      gap: 7px;
-      padding: 5px;
-      border-radius: 10px;
-    }
   }
 
   .dot {
