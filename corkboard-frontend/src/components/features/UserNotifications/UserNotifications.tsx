@@ -30,7 +30,7 @@ export const UserNotifications = ({ updateWorkspaces }: UserNotificationsProps) 
                                 <Button color="outlined" size="small" onClick={() => acceptInvitation(invitation.workspace.id)}>
                                     Accept
                                 </Button>
-                                <Button color="outlined" size="small" onClick={() => declineInvitation(invitation.workspace.id)}>
+                                <Button color="outlined" size="small" onClick={() => declineInvitation(invitation.workspace.id, invitation.workspace.name)}>
                                     Decline
                                 </Button>
                             </div>

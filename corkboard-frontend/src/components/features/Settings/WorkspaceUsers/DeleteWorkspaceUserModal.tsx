@@ -16,7 +16,7 @@ const DeleteWorkspaceUserModal = ({ user, onSave, onClose }: DeleteWorkspaceUser
     const { workspaceId } = useParams();
 
     const handleDeleteWorkspaceUser = () => {
-        api.delete(`/workspaces/${workspaceId}/delete_user`, { data: { user_id: user.id } }).then((response) => {
+        api.delete(`/workspaces/${workspaceId}/delete_user`, { data: { user_id: user.id, username: user.username } }).then((response) => {
             toast.success(response.data.message);
             onSave(user);
         });

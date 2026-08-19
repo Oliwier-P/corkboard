@@ -55,8 +55,8 @@ const useUserNotification = ({ updateWorkspaces }: UseUserNotificationProps) => 
         });
     };
 
-    const declineInvitation = (invitationId: number) => {
-        api.delete(`workspaces/${invitationId}/decline_invitation`).then((response) => {
+    const declineInvitation = (invitationId: number, invitationName: string) => {
+        api.delete(`workspaces/${invitationId}/decline_invitation`, { data: { name: invitationName } }).then((response) => {
             setInvitations((prev) => prev.filter((invitation) => invitation.workspace.id !== invitationId));
             toast.success(response.data.message);
         });

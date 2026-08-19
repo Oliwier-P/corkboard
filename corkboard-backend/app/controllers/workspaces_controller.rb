@@ -34,14 +34,15 @@ class WorkspacesController < ApplicationController
   end
 
   def invite_user
-    @user = User.find_by(username: params[:username])
-    return render json: { message: "Username not found!" } if @user.nil?
+    username = params[:username]
+    @user = User.find_by(username: username)
+    return render json: { message: "User #{username} not found!" } if @user.nil?
 
     already_in_workspace = UsersWorkspaces.find_by(workspace_id: params[:id], user_id: @user&.id)
-    return render json: { message: "Username already in workspace!" } if already_in_workspace
+    return render json: { message: "User #{username} is already in workspace!" } if already_in_workspace
 
     already_invited = WorkspaceInvitation.find_by(invited_user_id: @user&.id, workspace_id: params[:id])
-    return render json: { message: "Username already invited!" } if already_invited
+    return render json: { message: "User #{username} is already invited!" } if already_invited
 
     WorkspaceInvitation.create!(invited_user_id: @user&.id, workspace_id: params[:id], invited_by_user_id: current_user.id)
   end
@@ -59,7 +60,7 @@ class WorkspacesController < ApplicationController
 
   def decline_invitation
     WorkspaceInvitation.where(invited_user_id: current_user.id, workspace_id: params[:id]).delete_all
-    render json: { message: "Decline invitation" }, status: :ok
+    render json: { message: "Decline invitation to #{params[:name]}" }, status: :ok
   end
 
   def cancel_invitation
@@ -69,7 +70,7 @@ class WorkspacesController < ApplicationController
 
   def delete_user
     UsersWorkspaces.where(workspace_id: params[:id], user_id: params[:user_id]).delete_all
-    render json: { message: "Delete user" }, status: :ok
+    render json: { message: "User #{params[:username]} was removed from the workspace" }, status: :ok
   end
 
   def current_release
