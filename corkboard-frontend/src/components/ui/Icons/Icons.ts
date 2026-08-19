@@ -30,6 +30,18 @@ import italic from "./svgs/italic.svg?react";
 import underline from "./svgs/underline.svg?react";
 import strike from "./svgs/strike.svg?react";
 import code from "./svgs/code.svg?react";
+import alignLeft from "./svgs/align-left.svg?react";
+import alignCenter from "./svgs/align-center.svg?react";
+import alignRight from "./svgs/align-right.svg?react";
+import text from "./svgs/text.svg?react";
+import bulletedList from "./svgs/bulleted-list.svg?react";
+import numberedList from "./svgs/numbered-list.svg?react";
+import checklist from "./svgs/checklist.svg?react";
+import textColor from "./svgs/text-color.svg?react";
+import headingOne from "./svgs/heading-1.svg?react";
+import headingTwo from "./svgs/heading-2.svg?react";
+import headingThree from "./svgs/heading-3.svg?react";
+import headingFour from "./svgs/heading-4.svg?react";
 
 export const icons = {
     box,
@@ -58,6 +70,18 @@ export const icons = {
     underline,
     strike,
     code,
+    textColor,
+    alignLeft,
+    alignCenter,
+    alignRight,
+    text,
+    bulletedList,
+    numberedList,
+    checklist,
+    headingOne,
+    headingTwo,
+    headingThree,
+    headingFour,
     priority,
     info,
     warning,

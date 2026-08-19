@@ -3,6 +3,13 @@ import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import Collaboration from "@tiptap/extension-collaboration";
 import CollaborationCaret from "@tiptap/extension-collaboration-caret";
+import TextAlign from "@tiptap/extension-text-align";
+import BulletList from "@tiptap/extension-bullet-list";
+import OrderedList from "@tiptap/extension-ordered-list";
+import TaskList from "@tiptap/extension-task-list";
+import CustomTaskItem from "../components/features/CollaborativeEditor/Extensions/CustomTaskItem.tsx";
+import Color from "@tiptap/extension-color";
+import { TextStyle } from "@tiptap/extension-text-style";
 import type { User } from "../context/auth/types.ts";
 import { useHocuspocusProvider } from "@hocuspocus/provider-react";
 import { useEffect, useState } from "react";
@@ -38,6 +45,15 @@ export const useCollaborativeEditor = ({ user }: useCollaborativeEditorProps) =>
         extensions: [
             StarterKit.configure({
                 undoRedo: false,
+            }),
+            TextStyle,
+            Color,
+            BulletList,
+            OrderedList,
+            TaskList,
+            CustomTaskItem.configure({ nested: true }),
+            TextAlign.configure({
+                types: ["heading", "paragraph"],
             }),
             Placeholder.configure({
                 placeholder: "Write something",

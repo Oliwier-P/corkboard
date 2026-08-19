@@ -39,15 +39,16 @@ const Popover = ({ className, trigger, children, offset }: PopoverProps) => {
 
 interface PopoverItemProps<T> {
     className?: string;
+    style?: React.CSSProperties;
     icon?: React.ReactNode;
-    label: string;
+    label?: string;
     value: T;
     selected?: boolean;
     onSelect: (value: T) => void;
     closeOnSelect?: boolean;
 }
 
-const PopoverItem = <T,>({ className, icon, label, value, selected, onSelect, closeOnSelect = true }: PopoverItemProps<T>) => {
+const PopoverItem = <T,>({ className, icon, label, value, selected, onSelect, closeOnSelect = true, style }: PopoverItemProps<T>) => {
     const close = usePopoverStore((state) => state.close);
 
     return (
@@ -57,9 +58,10 @@ const PopoverItem = <T,>({ className, icon, label, value, selected, onSelect, cl
                 onSelect(value);
                 if (closeOnSelect) close();
             }}
+            style={style}
         >
             {icon}
-            <span className="label">{label}</span>
+            {label && <span className="label">{label}</span>}
         </Button>
     );
 };

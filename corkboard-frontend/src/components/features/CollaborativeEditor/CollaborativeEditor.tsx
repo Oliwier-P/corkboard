@@ -7,6 +7,10 @@ import { Button } from "../../ui/Button/Button.tsx";
 import { Icon } from "../../ui/Icons/Icon.tsx";
 import { CollaborativeEditorProvider } from "./CollaborativeEditorProvider.tsx";
 import { useEffect } from "react";
+import AlignPopover from "../../ui/Popovers/DocumentPopovers/AlignPopover/AlignPopover.tsx";
+import TextPopover from "../../ui/Popovers/DocumentPopovers/TextPopover/TextPopover.tsx";
+import ListPopover from "../../ui/Popovers/DocumentPopovers/ListPopover/ListPopover.tsx";
+import TextColorPopover from "../../ui/Popovers/DocumentPopovers/TextColorPopover/TextColorPopover.tsx";
 
 type CollaborativeEditorProps = {
     documentId: string;
@@ -35,25 +39,26 @@ const Editor = ({ documentId, user, authToken, onReadyChange }: CollaborativeEdi
         <>
             <EditorContent editor={editor} />
             <BubbleMenu editor={editor}>
-                <div className="document-page__menu">
-                    <Button className="item" onClick={() => editor.chain().focus().toggleBold().run()}>
+                <div className="bubble-menu">
+                    <ListPopover editor={editor} />
+                    <TextPopover editor={editor} />
+                    <TextColorPopover editor={editor} />
+                    <Button className="bubble-item" onClick={() => editor.chain().focus().toggleBold().run()}>
                         <Icon icon="bold" />
                     </Button>
-                    <Button className="item" onClick={() => editor.chain().focus().toggleItalic().run()}>
+                    <Button className="bubble-item" onClick={() => editor.chain().focus().toggleItalic().run()}>
                         <Icon icon="italic" />
                     </Button>
-                    <Button className="item" onClick={() => editor.chain().focus().toggleUnderline().run()}>
+                    <Button className="bubble-item" onClick={() => editor.chain().focus().toggleUnderline().run()}>
                         <Icon icon="underline" />
                     </Button>
-                    <Button className="item" onClick={() => editor.chain().focus().toggleStrike().run()}>
+                    <Button className="bubble-item" onClick={() => editor.chain().focus().toggleStrike().run()}>
                         <Icon icon="strike" />
                     </Button>
-                    <Button className="item" onClick={() => editor.chain().focus().toggleCode().run()}>
+                    <Button className="bubble-item" onClick={() => editor.chain().focus().toggleCode().run()}>
                         <Icon icon="code" />
                     </Button>
-                    <Button className="item" onClick={() => editor.chain().focus().toggleCode().run()}>
-                        Listsasd
-                    </Button>
+                    <AlignPopover editor={editor} />
                 </div>
             </BubbleMenu>
         </>

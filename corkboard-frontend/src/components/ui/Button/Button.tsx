@@ -6,6 +6,7 @@ type ButtonProps = {
     onClick?: () => void;
     children?: React.ReactNode;
     className?: string;
+    style?: React.CSSProperties;
     color?: "primary" | "secondary" | "orange" | "green" | "red" | "outlined" | "none";
     variant?: "rounded" | "square" | "text" | "icon" | "tab";
     type?: "button" | "submit" | "reset";
@@ -15,9 +16,28 @@ type ButtonProps = {
     disabled?: boolean;
 };
 
-export const Button = ({ onClick, children, className, color = "primary", variant = "square", type, size = "medium", icon, ref, disabled }: ButtonProps) => {
+export const Button = ({
+    onClick,
+    children,
+    className,
+    style,
+    color = "primary",
+    variant = "square",
+    type,
+    size = "medium",
+    icon,
+    ref,
+    disabled,
+}: ButtonProps) => {
     return (
-        <button ref={ref} className={ClassNames("button", className, [color, variant, size])} onClick={onClick && onClick} disabled={disabled} type={type}>
+        <button
+            ref={ref}
+            className={ClassNames("button", className, [color, variant, size])}
+            style={style}
+            onClick={onClick && onClick}
+            disabled={disabled}
+            type={type}
+        >
             <span className="button__content">
                 {icon && <Icon icon={icon} className="button__icon" />}
                 {children}
