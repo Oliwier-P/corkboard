@@ -76,7 +76,7 @@ export const WorkspaceGeneral = () => {
 
                 <div className="workspace-general__setting">
                     <span className="workspace-general__label">Name</span>
-                    <Input defaultValue={!isLoading ? getValues("name") : ""} register={register("name")} />
+                    <Input defaultValue={!isLoading ? getValues("name") : ""} autoFocus={false} register={register("name")} />
                 </div>
             </div>
 

@@ -19,6 +19,7 @@ export const BoardColumn = memo(({ columnId, isCreateTaskOpen, setIsCreateTaskOp
     const [showCreateTask, setShowCreateTask] = useState(false);
     const newTaskRef = useRef<HTMLDivElement>(null);
     const ref = useRef<HTMLDivElement>(null);
+    const tasksContainerRef = useRef<HTMLDivElement>(null);
     const [isDragOver, setIsDragOver] = useState(false);
     const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
@@ -116,13 +117,22 @@ export const BoardColumn = memo(({ columnId, isCreateTaskOpen, setIsCreateTaskOp
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [isCreateTaskOpen, setIsCreateTaskOpen]);
 
+    useEffect(() => {
+        if (tasksContainerRef.current && showCreateTask) {
+            tasksContainerRef.current.scrollTo({
+                top: tasksContainerRef.current.scrollHeight,
+                behavior: "smooth",
+            });
+        }
+    }, [showCreateTask]);
+
     return (
         <div ref={ref} className={ClassNames("board-column", [columnId.toString()], { over: isDragOver })}>
             <div className="board-column__header">
                 <div className="board-column__dot" />
                 {_.upperCase(columnId as string)}
             </div>
-            <div className="board-column__tasks">
+            <div ref={tasksContainerRef} className="board-column__tasks">
                 {taskIds.map((taskId, index) => (
                     <>
                         {dragOverIndex === index && <div className="board-column__placeholder" />}

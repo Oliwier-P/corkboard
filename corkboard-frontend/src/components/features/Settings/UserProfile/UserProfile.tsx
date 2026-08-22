@@ -47,6 +47,7 @@ export const UserProfile = () => {
                     <LabeledInput
                         label="Full Name"
                         value={username}
+                        autoFocus={false}
                         onChange={(e) => setUsername(e.target.value)}
                         onBlur={(e) => handleChangeUsername(e.target.value)}
                     />
