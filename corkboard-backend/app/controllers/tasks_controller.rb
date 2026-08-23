@@ -19,9 +19,24 @@ class TasksController < ApplicationController
 
     workspace_id = release.present? ? release.workspace_id : tasks_params[:workspace_id]
 
-    @task = Task.create!(tasks_params.merge(workspace_id: workspace_id))
+    ActiveRecord::Base.transaction do
+      locked_orders = Task.where(
+        workspace_id: workspace_id,
+        status: tasks_params[:status],
+        release_id: tasks_params[:release_id]
+      ).lock.pluck(:order)
 
-    Document.create!(task: @task, owner: current_user, workspace_id: workspace_id)
+      max_order = locked_orders.max || -1
+
+      @task = Task.create!(
+        tasks_params.except(:order).merge(
+          workspace_id: workspace_id,
+          order: max_order + 1
+        )
+      )
+
+      Document.create!(task: @task, owner: current_user, workspace_id: workspace_id)
+    end
 
     @task.broadcast_to_release("task_created", current_user)
 
@@ -31,30 +46,50 @@ class TasksController < ApplicationController
   def update
     task = Task.includes(:user).find(params[:id])
 
-    if tasks_params[:order]
-      if tasks_params[:status]
-        if task.status != tasks_params[:status]
-          task.workspace.tasks.where(status: task.status, order: task.order..., release_id: task.release_id).where.not(id: params[:id]).each do |t|
-            order = t.order - 1
-            t.update_column(:order, order)
+    ActiveRecord::Base.transaction do
+      old_status = task.status
+      old_order  = task.order
+      new_status = tasks_params[:status] || old_status
+      new_order  = tasks_params[:order]
+
+      if old_status == new_status
+        if new_order != old_order
+          if new_order < old_order
+            task.workspace.tasks
+                .where(status: old_status, release_id: task.release_id)
+                .where("\"order\" >= ? AND \"order\" < ?", new_order, old_order)
+                .where.not(id: task.id)
+                .update_all("\"order\" = \"order\" + 1")
+          else
+            task.workspace.tasks
+                .where(status: old_status, release_id: task.release_id)
+                .where("\"order\" > ? AND \"order\" <= ?", old_order, new_order)
+                .where.not(id: task.id)
+                .update_all("\"order\" = \"order\" - 1")
           end
         end
+      else
+        task.workspace.tasks
+            .where(status: old_status, release_id: task.release_id)
+            .where("\"order\" > ?", old_order)
+            .update_all("\"order\" = \"order\" - 1")
+
+        task.workspace.tasks
+            .where(status: new_status, release_id: task.release_id)
+            .where("\"order\" >= ?", new_order)
+            .update_all("\"order\" = \"order\" + 1")
       end
 
-      order = tasks_params[:order]
-      task.workspace.tasks.where(status: tasks_params[:status] || task.status, order: tasks_params[:order]..., release_id: task.release_id).where.not(id: params[:id]).each do |t|
-        order = order + 1
-        t.update_column(:order, order)
-      end
+      task.update!(order: new_order, status: new_status)
     end
 
-    attrs = tasks_params.to_h
+    attrs = tasks_params.to_h.except(:order, :status)
 
     if attrs[:user_id].present?
       attrs[:user_id] = nil if attrs[:user_id].to_i == task.user_id
     end
 
-    task.update!(attrs)
+    task.update!(attrs) if attrs.present?
     task.broadcast_to_release("task_updated", current_user)
     render json: { task: task, user: task.user }, status: :created
   end

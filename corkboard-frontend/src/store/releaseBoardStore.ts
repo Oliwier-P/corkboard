@@ -124,7 +124,13 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
     },
     addTask: (columnId, name) => {
         const temporaryId = uuid();
-        const order = get().columns.find((col) => col.id === columnId)?.taskIds.length ?? 0;
+        const column = get().columns.find((col) => col.id === columnId);
+        const maxOrder =
+            column?.taskIds.reduce((max, taskId) => {
+                const taskOrder = get().tasks[taskId]?.order ?? 0;
+                return Math.max(max, taskOrder);
+            }, -1) ?? -1;
+        const order = maxOrder + 1;
         const workspaceId = useWorkspaceStore.getState().workspace?.id;
         const newTask: TaskType = {
             id: temporaryId,
