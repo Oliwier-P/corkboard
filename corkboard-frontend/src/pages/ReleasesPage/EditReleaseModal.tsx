@@ -3,7 +3,7 @@ import { Button } from "../../components/ui/Button/Button.tsx";
 import { LabeledInput } from "../../components/ui/LabeledInput/LabeledInput.tsx";
 import { type SubmitHandler, useForm } from "react-hook-form";
 
-type CreateReleaseModalProps = {
+type EditReleaseModalProps = {
     onSave: (name: string) => void;
     onClose: () => void;
     releaseName: string;
@@ -13,7 +13,7 @@ type Inputs = {
     name: string;
 };
 
-export const EditReleaseModal = ({ onSave, onClose, releaseName }: CreateReleaseModalProps) => {
+export const EditReleaseModal = ({ onSave, onClose, releaseName }: EditReleaseModalProps) => {
     const { register, handleSubmit } = useForm<Inputs>();
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {

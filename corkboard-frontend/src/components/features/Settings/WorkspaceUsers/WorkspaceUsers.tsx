@@ -3,7 +3,6 @@ import { WorkspaceUser } from "./WorkspaceUser.tsx";
 import { useEffect, useState } from "react";
 import { Button } from "../../../ui/Button/Button.tsx";
 import { api } from "../../../../api/api.ts";
-import { InviteUserModal } from "./InviteUserModal.tsx";
 import { useParams } from "react-router-dom";
 import { Table } from "../../../ui/Table/Table.tsx";
 import { UserDisplay } from "../../../ui/UserDisplay/UserDisplay.tsx";
@@ -11,9 +10,11 @@ import Loading from "../../../ui/Loading/Loading.tsx";
 import type { User } from "../../../../context/auth/types.ts";
 import { useWorkspaceStore } from "../../../../store/workspaceStore.ts";
 import { useAuth } from "../../../../context/auth/useAuth.ts";
-import DeleteWorkspaceUserModal from "./DeleteWorkspaceUserModal.tsx";
+import { useToast } from "../../../../hooks/useToast.ts";
+import CreateModal from "../../../ui/Modals/CreateModal.tsx";
+import ConfirmationModal from "../../../ui/Modals/ConfirmationModal.tsx";
 
-export const WorkspaceUsers = () => {
+const WorkspaceUsers = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [invitedUsers, setInvitedUsers] = useState<User[]>([]);
     const [showInviteModal, setShowInviteModal] = useState(false);
@@ -22,6 +23,30 @@ export const WorkspaceUsers = () => {
     const { user } = useAuth();
     const workspace = useWorkspaceStore((state) => state.workspace);
     const [userToDelete, setUserToDelete] = useState<User | null>(null);
+    const toast = useToast();
+
+    const handleDeleteWorkspaceUser = () => {
+        if (!userToDelete) return;
+
+        api.delete(`/workspaces/${workspaceId}/delete_user`, { data: { user_id: userToDelete.id, username: userToDelete.username } }).then((response) => {
+            toast.success(response.data.message);
+            setUserToDelete(null);
+            setUsers((prev) => prev.filter((u) => u.id !== userToDelete.id));
+        });
+    };
+
+    const handleInviteUser = (data: { name: string }) => {
+        api.post(`workspaces/${workspaceId}/invite_user`, { username: data.name.toLowerCase() }).then((response) => {
+            if (response.data.status === "success") {
+                toast.success(response.data.message);
+                invitedUsers.push(response.data.user);
+                setShowInviteModal(false);
+            } else {
+                toast.warning(response.data.message);
+                setShowInviteModal(false);
+            }
+        });
+    };
 
     useEffect(() => {
         api.get(`workspaces/${workspaceId}/collaborators`).then((response) => {
@@ -74,25 +99,25 @@ export const WorkspaceUsers = () => {
                 </Table>
             </div>
             {showInviteModal && workspaceId && (
-                <InviteUserModal
-                    onSave={(user: User) => {
-                        invitedUsers.push(user);
-                        setShowInviteModal(false);
-                    }}
+                <CreateModal
+                    title="Invite user"
+                    inputLabel="Username"
+                    buttonLabel="Invite"
+                    onSave={handleInviteUser}
                     onClose={() => setShowInviteModal(false)}
-                    workspaceId={workspaceId}
                 />
             )}
             {userToDelete && (
-                <DeleteWorkspaceUserModal
-                    user={userToDelete}
-                    onSave={(user: User) => {
-                        setUserToDelete(null);
-                        setUsers((prev) => prev.filter((u) => u.id !== user.id));
-                    }}
+                <ConfirmationModal
+                    title="Delete workspace user:"
+                    subtitle={`${userToDelete.username}`}
+                    message={`Are you sure you want to delete ${userToDelete.username} from this workspace?`}
+                    onDelete={handleDeleteWorkspaceUser}
                     onClose={() => setUserToDelete(null)}
                 />
             )}
         </div>
     );
 };
+
+export default WorkspaceUsers;

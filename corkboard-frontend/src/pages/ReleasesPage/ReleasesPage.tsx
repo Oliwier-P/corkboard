@@ -1,16 +1,16 @@
 import "./ReleasesPage.scss";
 import { useEffect, useState } from "react";
-import { CreateReleaseModal } from "./CreateReleaseModal.tsx";
 import { useReleasesStore } from "../../store/releasesStore.ts";
 import { Button } from "../../components/ui/Button/Button.tsx";
 import type { ReleaseType } from "../../types/ReleaseType.ts";
-import { DeleteReleaseModal } from "./DeleteReleaseModal.tsx";
-import { EditReleaseModal } from "./EditReleaseModal.tsx";
 import { useWorkspaceStore } from "../../store/workspaceStore.ts";
 import { Row } from "../../components/layout/Row/Row.tsx";
 import { Page } from "../../components/layout/Page/Page.tsx";
 import { ReleaseList } from "./ReleaseList/ReleaseList.tsx";
 import Loading from "../../components/ui/Loading/Loading.tsx";
+import ConfirmationModal from "../../components/ui/Modals/ConfirmationModal.tsx";
+import CreateModal from "../../components/ui/Modals/CreateModal.tsx";
+import { EditReleaseModal } from "./EditReleaseModal.tsx";
 
 export const ReleasesPage = () => {
     const [showCreateReleaseModal, setShowCreateReleaseModal] = useState<boolean>(false);
@@ -25,13 +25,15 @@ export const ReleasesPage = () => {
     const workspaceId = useWorkspaceStore((state) => state.workspace?.id);
     const [loading, setLoading] = useState<boolean>(true);
 
-    const handleSave = (name: string) => {
-        addRelease(name, workspaceId!, "NOT_QUEUED");
+    const handleSave = (data: { name: string }) => {
+        addRelease(data.name, workspaceId!, "NOT_QUEUED");
         setShowCreateReleaseModal(false);
     };
 
-    const handleDelete = (releaseId: string) => {
-        deleteRelease(releaseId);
+    const handleDelete = () => {
+        if (!releaseToDelete) return;
+
+        deleteRelease(releaseToDelete.id);
         setReleaseToDelete(null);
     };
 
@@ -75,12 +77,20 @@ export const ReleasesPage = () => {
                     <ReleaseList columnId="QUEUED" releases={releases} onEdit={setReleaseToEdit} onDelete={setReleaseToDelete} />
                 </div>
             </div>
-            {showCreateReleaseModal && <CreateReleaseModal onSave={handleSave} onClose={() => setShowCreateReleaseModal(false)} />}
+            {showCreateReleaseModal && <CreateModal title="Create new release" onSave={handleSave} onClose={() => setShowCreateReleaseModal(false)} />}
             {releaseToDelete && (
-                <DeleteReleaseModal
+                <ConfirmationModal
+                    title="Delete Release:"
+                    subtitle={releaseToDelete.name}
+                    message={
+                        <>
+                            Are you sure that you want to delete this release?
+                            <br />
+                            (All tasks assigned to this release will be moved to the backlog)
+                        </>
+                    }
+                    onDelete={handleDelete}
                     onClose={() => setReleaseToDelete(null)}
-                    releaseName={releaseToDelete.name}
-                    onDelete={() => handleDelete(releaseToDelete.id)}
                 />
             )}
 

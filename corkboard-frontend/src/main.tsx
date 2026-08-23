@@ -10,7 +10,7 @@ import { SignUpPage } from "./pages/SignUpPage/SignUpPage.tsx";
 import { ReleasesPage } from "./pages/ReleasesPage/ReleasesPage.tsx";
 import { SettingsPage } from "./pages/SettingsPage/SettingsPage.tsx";
 import { WorkspaceGeneral } from "./components/features/Settings/WorkspaceGeneral/WorkspaceGeneral.tsx";
-import { WorkspaceUsers } from "./components/features/Settings/WorkspaceUsers/WorkspaceUsers.tsx";
+import WorkspaceUsers from "./components/features/Settings/WorkspaceUsers/WorkspaceUsers.tsx";
 import { UserProfile } from "./components/features/Settings/UserProfile/UserProfile.tsx";
 import { WorkspaceList } from "./components/features/Settings/WorkspaceList/WorkspaceList.tsx";
 import { BacklogPage } from "./pages/BacklogPage/BacklogPage.tsx";
