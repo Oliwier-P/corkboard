@@ -4,4 +4,16 @@
     align-items: center;
     gap: 10px;
   }
+
+  .item {
+    .user-avatar {
+      width: 20px;
+      height: 20px;
+    }
+
+    .button__content {
+      padding: 2px;
+      gap: 0;
+    }
+  }
 }
