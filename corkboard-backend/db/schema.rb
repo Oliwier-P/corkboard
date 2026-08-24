@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_11_194000) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_23_145318) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -27,6 +27,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_11_194000) do
     t.binary "yjs_state"
   end
 
+  create_table "friendly_id_slugs", force: :cascade do |t|
+    t.datetime "created_at"
+    t.string "scope"
+    t.string "slug", null: false
+    t.integer "sluggable_id", null: false
+    t.string "sluggable_type", limit: 50
+    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
+    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
+    t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
+  end
+
   create_table "releases", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.boolean "completed"
     t.datetime "created_at", null: false
@@ -36,6 +47,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_11_194000) do
     t.string "status", default: "NOT_QUEUED"
     t.datetime "updated_at", null: false
     t.uuid "workspace_id", null: false
+  end
+
+  create_table "tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "color", null: false
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "workspace_id", null: false
+    t.index ["workspace_id", "name"], name: "index_tags_on_workspace_id_and_name"
+    t.index ["workspace_id"], name: "index_tags_on_workspace_id"
   end
 
   create_table "tasks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -48,6 +69,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_11_194000) do
     t.datetime "updated_at", null: false
     t.uuid "user_id"
     t.uuid "workspace_id"
+  end
+
+  create_table "tasks_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.uuid "tag_id", null: false
+    t.uuid "task_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tag_id"], name: "index_tasks_tags_on_tag_id"
+    t.index ["task_id", "tag_id"], name: "index_tasks_tags_on_task_id_and_tag_id", unique: true
+    t.index ["task_id"], name: "index_tasks_tags_on_task_id"
   end
 
   create_table "user_preferences", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -95,16 +126,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_11_194000) do
     t.boolean "current", default: false, null: false
     t.string "name", null: false
     t.uuid "owner_id"
+    t.string "slug"
     t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_workspaces_on_slug", unique: true
   end
 
   add_foreign_key "documents", "tasks", on_delete: :nullify
   add_foreign_key "documents", "users", column: "owner_id", on_delete: :cascade
   add_foreign_key "documents", "workspaces", on_delete: :cascade
   add_foreign_key "releases", "workspaces", on_delete: :cascade
+  add_foreign_key "tags", "workspaces"
   add_foreign_key "tasks", "releases", on_delete: :cascade
   add_foreign_key "tasks", "users", on_delete: :nullify
   add_foreign_key "tasks", "workspaces", on_delete: :cascade
+  add_foreign_key "tasks_tags", "tags"
+  add_foreign_key "tasks_tags", "tasks"
   add_foreign_key "user_preferences", "users", on_delete: :cascade
   add_foreign_key "users", "workspaces", column: "last_workspace_id", on_delete: :nullify
   add_foreign_key "users_workspaces", "users", on_delete: :cascade

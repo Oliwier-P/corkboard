@@ -35,7 +35,15 @@ Rails.application.routes.draw do
     member do
       put :move_to_next_release
     end
+    resources :tags, only: [] do
+      member do
+        post :assign
+        delete :unassign
+      end
+    end
   end
+
+  resources :tags
 
   resources :workspaces do
     member do

@@ -5,9 +5,14 @@
 #  id         :uuid             not null, primary key
 #  current    :boolean          default(FALSE), not null
 #  name       :string           not null
+#  slug       :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  owner_id   :uuid
+#
+# Indexes
+#
+#  index_workspaces_on_slug  (slug) UNIQUE
 #
 # Foreign Keys
 #
@@ -22,6 +27,7 @@ class Workspace < ApplicationRecord
   has_many :releases
   has_many :tasks
   has_many :documents
+  has_many :tags, dependent: :destroy
 
   has_and_belongs_to_many :users
   belongs_to :owner, class_name: "User", foreign_key: :owner_id

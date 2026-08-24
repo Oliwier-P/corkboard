@@ -4,14 +4,14 @@ import { Icon } from "../../Icons/Icon.tsx";
 import Popover from "../../Popover/Popover.tsx";
 import usePriorityPopover from "./usePriorityPopover.ts";
 
-interface TaskPrioritySelectProps {
+interface PriorityPopoverProps {
     taskId: string;
     taskPriority: string | null;
 }
 
 const priorities = ["medium", "high", "urgent"];
 
-const TaskPrioritySelect = ({ taskId, taskPriority }: TaskPrioritySelectProps) => {
+const PriorityPopover = ({ taskId, taskPriority }: PriorityPopoverProps) => {
     const { handleUpdateTaskStatus } = usePriorityPopover({ taskId, taskPriority });
 
     return (
@@ -39,4 +39,4 @@ const TaskPrioritySelect = ({ taskId, taskPriority }: TaskPrioritySelectProps) =
     );
 };
 
-export default TaskPrioritySelect;
+export default PriorityPopover;

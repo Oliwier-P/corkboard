@@ -1,0 +1,71 @@
+.tags-popover {
+  .task-tags {
+    display: flex;
+    gap: 5px;
+  }
+
+  .button__content {
+    .label {
+      color: unset;
+    }
+  }
+
+  .tag {
+    min-width: 50px;
+    width: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: start;
+
+    border-radius: 5px;
+
+    &:hover {
+      scale: 1.02;
+      opacity: 0.95;
+
+      .icon-container {
+        pointer-events: all;
+        opacity: 1;
+      }
+    }
+
+    .label {
+      padding: 3px 5px;
+      font-weight: 500;
+    }
+
+    .icon-container {
+      padding-right: 5px;
+      pointer-events: none;
+      opacity: 0;
+
+      transition: opacity 0.15s ease-in-out;
+    }
+
+    .icon {
+      height: 15px;
+      width: 15px;
+    }
+  }
+
+  .list {
+    max-width: 320px;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+
+    padding-right: 10px;
+
+    .empty {
+      padding: 3px;
+    }
+  }
+
+  .add {
+    width: fit-content;
+
+    margin-top: 10px;
+  }
+}
