@@ -5,13 +5,13 @@ import { api } from "../../api/api.ts";
 import { ReleaseBoard } from "../../components/features/ReleaseBoard/ReleaseBoard.tsx";
 import type { ReleaseType } from "../../types/ReleaseType.ts";
 import { useWorkspaceStore } from "../../store/workspaceStore.ts";
-import { CreateReleaseModal } from "../ReleasesPage/CreateReleaseModal.tsx";
 import { useReleasesStore } from "../../store/releasesStore.ts";
-import { CompleteReleaseModal } from "./CompleteReleaseModal.tsx";
 import { Page } from "../../components/layout/Page/Page.tsx";
 import { useReleaseSubscription } from "../../store/useReleaseSubscription.ts";
 import { useAuth } from "../../context/auth/useAuth.ts";
 import Loading from "../../components/ui/Loading/Loading.tsx";
+import CreateModal from "../../components/ui/Modals/CreateModal.tsx";
+import ConfirmationModal from "../../components/ui/Modals/ConfirmationModal.tsx";
 
 export const CurrentReleasePage = () => {
     const [release, setRelease] = useState<ReleaseType | null>(null);
@@ -33,8 +33,8 @@ export const CurrentReleasePage = () => {
         }
     }, [workspaceId]);
 
-    const handleCreateRelease = (name: string) => {
-        addRelease(name, workspaceId!, "QUEUED", (release: ReleaseType) => setRelease(release));
+    const handleCreateRelease = (data: { name: string }) => {
+        addRelease(data.name, workspaceId!, "QUEUED", (release: ReleaseType) => setRelease(release));
         setShowCreateReleaseModal(false);
     };
 
@@ -69,8 +69,17 @@ export const CurrentReleasePage = () => {
                 </div>
             )}
 
-            {showCreateReleaseModal && <CreateReleaseModal onSave={handleCreateRelease} onClose={() => setShowCreateReleaseModal(false)} />}
-            {showCompleteReleaseModal && <CompleteReleaseModal onComplete={handleCompleteRelease} onClose={() => setShowCompleteReleaseModal(false)} />}
+            {showCreateReleaseModal && <CreateModal title="Create new release" onSave={handleCreateRelease} onClose={() => setShowCreateReleaseModal(false)} />}
+            {showCompleteReleaseModal && (
+                <ConfirmationModal
+                    title="Complete release"
+                    message="Are you sure you want to complete current release?"
+                    confirmButtonLabel="Complete"
+                    confirmButtonColor="primary"
+                    onDelete={handleCompleteRelease}
+                    onClose={() => setShowCompleteReleaseModal(false)}
+                />
+            )}
         </Page>
     );
 };

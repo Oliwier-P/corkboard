@@ -8,10 +8,10 @@ import { useEffect, useRef, useState } from "react";
 import { api } from "../../../api/api.ts";
 import type { WorkspaceType } from "../../../types/WorkspaceType.ts";
 import { useWorkspaceStore } from "../../../store/workspaceStore.ts";
-import { CreateWorkspaceModal } from "./CreateWorkspaceModal.tsx";
 import { useWorkspaceMenuStore } from "../../../store/workspaceMenuStore.ts";
 import { UserNotifications } from "../UserNotifications/UserNotifications.tsx";
 import ProfilePopover from "../../ui/Popovers/ProfilePopover/ProfilePopover.tsx";
+import CreateModal from "../../ui/Modals/CreateModal.tsx";
 
 export const Navbar = () => {
     const { user } = useAuth();
@@ -31,6 +31,13 @@ export const Navbar = () => {
     const handleWorkspaceCreate = () => {
         setMenuOpen(false);
         setShowWorkspaceForm(true);
+    };
+
+    const handleCreateWorkspace = (data: { name: string }) => {
+        api.post("/workspaces", { name: data.name }).then((response) => {
+            workspaces.push(response.data);
+            setShowWorkspaceForm(false);
+        });
     };
 
     useEffect(() => {
@@ -78,11 +85,10 @@ export const Navbar = () => {
             </div>
 
             {showWorkspaceForm && (
-                <CreateWorkspaceModal
-                    onSave={(data: WorkspaceType) => {
-                        workspaces.push(data);
-                        setShowWorkspaceForm(false);
-                    }}
+                <CreateModal
+                    title="Create new workspace"
+                    requiredMessage="You have to enter a workspace name!"
+                    onSave={handleCreateWorkspace}
                     onClose={() => setShowWorkspaceForm(false)}
                 />
             )}
