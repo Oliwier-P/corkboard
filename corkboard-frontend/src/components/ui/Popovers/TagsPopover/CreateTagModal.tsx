@@ -12,6 +12,7 @@ interface CreateTagModalProps {
 
 type Inputs = {
     name: string;
+    color: string;
 };
 
 const CreateTagModal = ({ onSave, onClose }: CreateTagModalProps) => {
@@ -19,8 +20,9 @@ const CreateTagModal = ({ onSave, onClose }: CreateTagModalProps) => {
     const workspaceId = useWorkspaceStore((state) => state.workspace?.id);
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        api.post("/tags", { name: data.name, color: "#ffffff", workspace_id: workspaceId }).then((response) => {
+        api.post("/tags", { name: data.name, color: data.color, workspace_id: workspaceId }).then((response) => {
             onSave(response.data);
+            onClose();
         });
     };
 
@@ -33,6 +35,12 @@ const CreateTagModal = ({ onSave, onClose }: CreateTagModalProps) => {
                     label="Name"
                     register={register("name", {
                         required: "You have to enter a tag name!",
+                    })}
+                />
+                <input
+                    type="color"
+                    {...register("color", {
+                        required: "You have to select a color!",
                     })}
                 />
             </Modal.Body>
