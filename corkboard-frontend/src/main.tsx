@@ -19,6 +19,7 @@ import TaskDisplay from "./components/features/TaskModal/TaskDisplay.tsx";
 import ToastContainer from "./components/ui/Toast/ToastContainer.tsx";
 import SuperAdminUsers from "./components/features/SuperAdmin/SuperAdminUsers/SuperAdminUsers.tsx";
 import SuperAdminUser from "./components/features/SuperAdmin/SuperAdminUsers/SuperAdminUser.tsx";
+import TagsManager from "./components/features/Settings/TagsManager/TagsManager.tsx";
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
@@ -55,6 +56,7 @@ createRoot(document.getElementById("root")!).render(
 
                         <Route path="workspace/:workspaceId/general" element={<WorkspaceGeneral />} />
                         <Route path="workspace/:workspaceId/users" element={<WorkspaceUsers />} />
+                        <Route path="workspace/:workspaceId/tags" element={<TagsManager />} />
                         <Route path="user/profile" element={<UserProfile />} />
                         <Route path="user/workspaces" element={<WorkspaceList />} />
                     </Route>

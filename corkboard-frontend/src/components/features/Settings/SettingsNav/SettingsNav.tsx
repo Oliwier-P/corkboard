@@ -23,6 +23,10 @@ export const SettingsNav = () => {
                         <Icon icon="users" />
                         Users
                     </NavLink>
+                    <NavLink className="settings-nav__tab" to={`/settings/workspace/${workspace?.id}/tags`}>
+                        <Icon icon="tag" />
+                        Tags Manager
+                    </NavLink>
                 </SubNavbar.Body>
             </div>
 
