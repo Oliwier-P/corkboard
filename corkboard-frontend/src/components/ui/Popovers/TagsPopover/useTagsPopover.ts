@@ -1,15 +1,10 @@
 import { useEffect, useState } from "react";
 import { api } from "../../../../api/api.ts";
+import type { TagType } from "../../../../types/TagType.ts";
 
 interface useTagsPopoverProps {
     taskId: string;
 }
-
-type TagType = {
-    id: string;
-    name: string;
-    color: string;
-};
 
 const useTagsPopover = ({ taskId }: useTagsPopoverProps) => {
     const [showCreateTagModal, setShowCreateTagModal] = useState<boolean>(false);
@@ -32,7 +27,6 @@ const useTagsPopover = ({ taskId }: useTagsPopoverProps) => {
 
     useEffect(() => {
         api.get("/tags", { params: { task_id: taskId } }).then((response) => {
-            console.log(response.data);
             setTags(response.data.tags);
             setTaskTags(response.data.task_tags);
         });

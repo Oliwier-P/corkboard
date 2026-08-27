@@ -1,15 +1,31 @@
 class TagsController < ApplicationController
   def index
-    task = Task.find(params[:task_id])
+    if params[:task_id].present?
+      task = Task.find(params[:task_id])
 
-    @tags = Tag.where(workspace_id: task.workspace_id)
-               .where.not(id: task.tags.select(:id))
+      @tags = Tag.where(workspace_id: task.workspace_id)
+                 .where.not(id: task.tags.select(:id))
 
-    @task_tags = task.tags
+      @task_tags = task.tags
+    end
+
+    if params[:workspace_id].present?
+      @tags = Tag.where(workspace_id: params[:workspace_id])
+    end
+  end
+
+  def update
+    @tag = Tag.find(params[:id])
+    @tag.update(tag_params)
   end
 
   def create
     @tag = Tag.create!(tag_params)
+  end
+
+  def destroy
+    @tag = Tag.find(params[:id])
+    @tag.destroy
   end
 
   def assign
