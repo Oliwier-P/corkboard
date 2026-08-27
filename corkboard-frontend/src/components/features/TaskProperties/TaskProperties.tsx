@@ -4,6 +4,7 @@ import { Icon, type IconNames } from "../../ui/Icons/Icon.tsx";
 import PriorityPopover from "../../ui/Popovers/PriorityPopover/PriorityPopover.tsx";
 import TaskStatusPopover from "../../ui/Popovers/TaskStatusPopover/TaskStatusPopover.tsx";
 import UserPopover from "../../ui/Popovers/UserPopover/UserPopover.tsx";
+import TagsPopover from "../../ui/Popovers/TagsPopover/TagsPopover.tsx";
 
 interface TaskPropertiesProps {
     task: TaskType;
@@ -35,6 +36,12 @@ const TaskProperties = ({ task }: TaskPropertiesProps) => {
             name: "Priority",
             icon: "priority",
             component: <PriorityPopover taskId={task.id} taskPriority={task.priority} />,
+        },
+        {
+            id: "tags",
+            name: "Tags",
+            icon: "tag",
+            component: <TagsPopover taskId={task.id} />,
         },
     ];
 

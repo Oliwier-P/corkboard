@@ -28,6 +28,8 @@ class Task < ApplicationRecord
   belongs_to :release, optional: true
   belongs_to :workspace
   belongs_to :user, optional: true
+  has_many :tasks_tags, dependent: :destroy
+  has_many :tags, through: :tasks_tags
   has_one :document, :dependent => :destroy
 
   before_save :clear_release_id_for_backlog
