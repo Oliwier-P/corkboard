@@ -12,6 +12,7 @@ import Loading from "../../../ui/Loading/Loading.tsx";
 
 const TagsManager = () => {
     const [tags, setTags] = useState<TagType[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
     const [tagToDelete, setTagToDelete] = useState<TagType | null>(null);
     const [tagToEdit, setTagToEdit] = useState<TagType | null>(null);
     const workspaceId = useWorkspaceStore((state) => state.workspace?.id);
@@ -28,10 +29,11 @@ const TagsManager = () => {
     useEffect(() => {
         api.get(`/tags`, { params: { workspace_id: workspaceId } }).then((response) => {
             setTags(response.data.tags);
+            setLoading(false);
         });
     }, [workspaceId]);
 
-    if (tags.length < 1) {
+    if (loading) {
         return <Loading />;
     }
 

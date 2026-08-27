@@ -96,7 +96,15 @@ const TagsPopover = ({ taskId }: TagsPopoverProps) => {
                 <Popover.PopoverItem className="add" label="+ Add new" value={true} selected={false} onSelect={setShowCreateTagModal} />
             </Popover>
 
-            {showCreateTagModal && <CreateTagModal onSave={(data) => tags.push(data)} onClose={() => setShowCreateTagModal(false)} />}
+            {showCreateTagModal && (
+                <CreateTagModal
+                    onSave={(data) => {
+                        tags.push(data);
+                        setShowCreateTagModal(false);
+                    }}
+                    onClose={() => setShowCreateTagModal(false)}
+                />
+            )}
         </div>
     );
 };

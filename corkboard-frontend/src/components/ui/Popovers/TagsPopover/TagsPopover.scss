@@ -12,6 +12,7 @@
 
   .panel {
     max-height: 250px;
+    min-width: 200px;
     padding: 0;
   }
 
@@ -80,6 +81,7 @@
 
   .add {
     width: fit-content;
+    color: #5a5a5a;
 
     margin: 10px;
   }
