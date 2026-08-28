@@ -142,6 +142,7 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
             status: columnId,
             user: null,
             priority: null,
+            tags: [],
         };
         set((state) => {
             return {

@@ -10,6 +10,7 @@ import { ContextMenu, type ContextMenuItem } from "../../ui/ContextMenu/ContextM
 import { useTaskStore } from "../../../store/taskStore.ts";
 import { Icon } from "../../ui/Icons/Icon.tsx";
 import UserPopover from "../../ui/Popovers/UserPopover/UserPopover.tsx";
+import Tag from "../../ui/Tag/Tag.tsx";
 
 type TaskProps = {
     taskId: string;
@@ -134,7 +135,18 @@ export const Task = memo(({ taskId }: TaskProps) => {
                         </Button>
                     )}
                 </form>
-                <UserPopover taskId={taskId} taskUser={task.user} />
+                <div className="tags">
+                    <UserPopover taskId={taskId} taskUser={task.user} />
+
+                    {task.tags.slice(0, 3).map((tag) => (
+                        <Tag tag={tag} />
+                    ))}
+                    {task.tags.length > 3 && (
+                        <div className="tag">
+                            <span>+{task.tags.length - 3}</span>
+                        </div>
+                    )}
+                </div>
                 {task.priority && <Icon className={`${task.priority} priority`} icon="priority" />}
             </div>
         </ContextMenu>

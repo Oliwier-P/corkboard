@@ -1,4 +1,5 @@
 import type { User } from "../context/auth/types.ts";
+import type { TagType } from "./TagType.ts";
 
 export type Priority = "low" | "medium" | "high" | "urgent";
 
@@ -13,6 +14,7 @@ export type TaskType = {
     priority: string | null;
     user: User | null;
     actor_id?: string;
+    tags: TagType[];
 };
 
 export type Column = {

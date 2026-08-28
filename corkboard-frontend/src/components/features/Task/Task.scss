@@ -30,6 +30,19 @@
     width: 1.75rem;
   }
 
+  .tags {
+    display: flex;
+    gap: 5px;
+
+    .user-popover {
+      margin-right: 5px;
+    }
+
+    .tag {
+      font-size: 10px;
+    }
+  }
+
   .priority {
     height: 25px;
     width: 25px;

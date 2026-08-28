@@ -47,40 +47,44 @@ class TasksController < ApplicationController
     task = Task.includes(:user).find(params[:id])
 
     ActiveRecord::Base.transaction do
-      old_status = task.status
-      old_order  = task.order
-      new_status = tasks_params[:status] || old_status
-      new_order  = tasks_params[:order]
+      if tasks_params[:order].present?
+        old_status = task.status
+        old_order  = task.order
+        new_status = tasks_params[:status] || old_status
+        new_order  = tasks_params[:order]
 
-      if old_status == new_status
-        if new_order != old_order
-          if new_order < old_order
-            task.workspace.tasks
-                .where(status: old_status, release_id: task.release_id)
-                .where("\"order\" >= ? AND \"order\" < ?", new_order, old_order)
-                .where.not(id: task.id)
-                .update_all("\"order\" = \"order\" + 1")
-          else
-            task.workspace.tasks
-                .where(status: old_status, release_id: task.release_id)
-                .where("\"order\" > ? AND \"order\" <= ?", old_order, new_order)
-                .where.not(id: task.id)
-                .update_all("\"order\" = \"order\" - 1")
+        if old_status == new_status
+          if new_order != old_order
+            if new_order < old_order
+              task.workspace.tasks
+                  .where(status: old_status, release_id: task.release_id)
+                  .where("\"order\" >= ? AND \"order\" < ?", new_order, old_order)
+                  .where.not(id: task.id)
+                  .update_all("\"order\" = \"order\" + 1")
+            else
+              task.workspace.tasks
+                  .where(status: old_status, release_id: task.release_id)
+                  .where("\"order\" > ? AND \"order\" <= ?", old_order, new_order)
+                  .where.not(id: task.id)
+                  .update_all("\"order\" = \"order\" - 1")
+            end
           end
+        else
+          task.workspace.tasks
+              .where(status: old_status, release_id: task.release_id)
+              .where("\"order\" > ?", old_order)
+              .update_all("\"order\" = \"order\" - 1")
+
+          task.workspace.tasks
+              .where(status: new_status, release_id: task.release_id)
+              .where("\"order\" >= ?", new_order)
+              .update_all("\"order\" = \"order\" + 1")
         end
-      else
-        task.workspace.tasks
-            .where(status: old_status, release_id: task.release_id)
-            .where("\"order\" > ?", old_order)
-            .update_all("\"order\" = \"order\" - 1")
 
-        task.workspace.tasks
-            .where(status: new_status, release_id: task.release_id)
-            .where("\"order\" >= ?", new_order)
-            .update_all("\"order\" = \"order\" + 1")
+        task.update!(order: new_order, status: new_status)
+      elsif tasks_params[:status].present? && tasks_params[:status] != task.status
+        task.update!(status: tasks_params[:status])
       end
-
-      task.update!(order: new_order, status: new_status)
     end
 
     attrs = tasks_params.to_h.except(:order, :status)
