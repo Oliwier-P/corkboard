@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  authorize_resource
+  authorize_resource except: :me
 
   def me
     @user = current_user
