@@ -1,4 +1,6 @@
 class TagsController < ApplicationController
+  load_and_authorize_resource
+
   def index
     if params[:task_id].present?
       task = Task.find(params[:task_id])

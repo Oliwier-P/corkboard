@@ -1,4 +1,6 @@
 class WorkspacesController < ApplicationController
+  load_and_authorize_resource
+
   def index
     @workspaces = current_user.workspaces
   end

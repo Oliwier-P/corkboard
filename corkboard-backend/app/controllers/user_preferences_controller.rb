@@ -1,4 +1,6 @@
 class UserPreferencesController < ApplicationController
+  load_and_authorize_resource
+
   def update
     @user = current_user
 
