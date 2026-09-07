@@ -51,7 +51,8 @@ class Task < ApplicationRecord
   }
 
   def clear_release_id_for_backlog
-    if self.status_changed? && self.status == "backlog"
+    # TODO: Add status_changed? when we are sure that the update is called only once
+    if self.status == "backlog"
       self.release_id = nil
     end
   end
