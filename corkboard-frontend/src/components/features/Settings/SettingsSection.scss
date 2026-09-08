@@ -1,0 +1,30 @@
+@use "@/global/colors" as colors;
+
+.section {
+  display: grid;
+  grid-template-columns: minmax(200px, 1fr) minmax(200px, 4fr);
+  border: 1px solid colors.$border-color;
+  border-radius: 1rem;
+
+  .info {
+    box-sizing: border-box;
+    padding: 20px;
+
+    .title {
+      color: #fff;
+    }
+
+    .description {
+      color: #4D4D4D;
+    }
+  }
+
+  .content {
+    box-sizing: border-box;
+    padding: 20px;
+    width: max-content;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
