@@ -1,6 +1,6 @@
 import "./Tag.scss";
-import type { TagType } from "../../../types/TagType.ts";
-import { reverseColor } from "../../../global/utils.ts";
+import type { TagType } from "@/types/TagType.ts";
+import { reverseColor } from "@/global/utils.ts";
 
 interface TagProps {
     tag: TagType;

@@ -1,15 +1,15 @@
 import "./ReleasesPage.scss";
 import { useEffect, useState } from "react";
-import { useReleasesStore } from "../../store/releasesStore.ts";
-import { Button } from "../../components/ui/Button/Button.tsx";
-import type { ReleaseType } from "../../types/ReleaseType.ts";
-import { useWorkspaceStore } from "../../store/workspaceStore.ts";
-import { Row } from "../../components/layout/Row/Row.tsx";
-import { Page } from "../../components/layout/Page/Page.tsx";
-import { ReleaseList } from "./ReleaseList/ReleaseList.tsx";
-import Loading from "../../components/ui/Loading/Loading.tsx";
-import ConfirmationModal from "../../components/ui/Modals/ConfirmationModal.tsx";
-import CreateModal from "../../components/ui/Modals/CreateModal.tsx";
+import { useReleasesStore } from "@/store/releasesStore.ts";
+import { Button } from "@/ui/Button/Button.tsx";
+import type { ReleaseType } from "@/types/ReleaseType.ts";
+import { useWorkspaceStore } from "@/store/workspaceStore.ts";
+import { Row } from "@/layout/Row/Row.tsx";
+import { Page } from "@/layout/Page/Page.tsx";
+import { ReleaseList } from "@/pages/ReleasesPage/ReleaseList/ReleaseList.tsx";
+import Loading from "@/ui/Loading/Loading.tsx";
+import ConfirmationModal from "@/ui/Modals/ConfirmationModal.tsx";
+import CreateModal from "@/ui/Modals/CreateModal.tsx";
 import { EditReleaseModal } from "./EditReleaseModal.tsx";
 
 export const ReleasesPage = () => {

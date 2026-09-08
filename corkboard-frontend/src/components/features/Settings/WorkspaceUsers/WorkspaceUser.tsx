@@ -1,11 +1,11 @@
 import "./WorkspaceUser.scss";
-import { Button } from "../../../ui/Button/Button.tsx";
-import { UserAvatar } from "../../../ui/UserAvatar/UserAvatar.tsx";
-import { ClassNames } from "../../../../global/utils.ts";
-import { api } from "../../../../api/api.ts";
-import { useToast } from "../../../../hooks/useToast.ts";
+import { Button } from "@/ui/Button/Button.tsx";
+import { UserAvatar } from "@/ui/UserAvatar/UserAvatar.tsx";
+import { ClassNames } from "@/global/utils.ts";
+import { api } from "@/api";
+import { useToast } from "@/hooks/useToast.ts";
 import { useParams } from "react-router-dom";
-import type { User } from "../../../../context/auth/types.ts";
+import type { User } from "@/context/auth/types.ts";
 
 type WorkspaceUserProps = {
     user: User;

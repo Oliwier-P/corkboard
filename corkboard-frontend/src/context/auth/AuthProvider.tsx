@@ -1,6 +1,6 @@
 import { type SetStateAction, useEffect, useState } from "react";
 import type { UserSettings } from "./types.ts";
-import { api } from "../../api/api.ts";
+import { api } from "@/api";
 import { AuthContext } from "./AuthContext.ts";
 
 type AuthProviderProps = {

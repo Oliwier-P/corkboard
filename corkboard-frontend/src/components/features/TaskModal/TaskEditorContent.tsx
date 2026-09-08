@@ -1,9 +1,9 @@
 import classNames from "classnames";
 import "./TaskEditorContent.scss";
-import { useAuth } from "../../../context/auth/useAuth.ts";
+import { useAuth } from "@/context/auth/useAuth.ts";
 import { useTaskEditor } from "./useTaskEditor.ts";
 import { CollaborativeEditor } from "../CollaborativeEditor/CollaborativeEditor.tsx";
-import Loading from "../../ui/Loading/Loading.tsx";
+import Loading from "@/ui/Loading/Loading.tsx";
 import TaskProperties from "../TaskProperties/TaskProperties.tsx";
 
 interface TaskEditorContentProps {

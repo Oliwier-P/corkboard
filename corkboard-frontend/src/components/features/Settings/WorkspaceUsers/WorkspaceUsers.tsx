@@ -1,18 +1,18 @@
 import "./WorkspaceUsers.scss";
 import { WorkspaceUser } from "./WorkspaceUser.tsx";
 import { useEffect, useState } from "react";
-import { Button } from "../../../ui/Button/Button.tsx";
-import { api } from "../../../../api/api.ts";
+import { Button } from "@/ui/Button/Button.tsx";
+import { api } from "@/api";
 import { useParams } from "react-router-dom";
-import { Table } from "../../../ui/Table/Table.tsx";
-import { UserDisplay } from "../../../ui/UserDisplay/UserDisplay.tsx";
-import Loading from "../../../ui/Loading/Loading.tsx";
-import type { User } from "../../../../context/auth/types.ts";
-import { useWorkspaceStore } from "../../../../store/workspaceStore.ts";
-import { useAuth } from "../../../../context/auth/useAuth.ts";
-import { useToast } from "../../../../hooks/useToast.ts";
-import CreateModal from "../../../ui/Modals/CreateModal.tsx";
-import ConfirmationModal from "../../../ui/Modals/ConfirmationModal.tsx";
+import { Table } from "@/ui/Table/Table.tsx";
+import { UserDisplay } from "@/ui/UserDisplay/UserDisplay.tsx";
+import Loading from "@/ui/Loading/Loading.tsx";
+import type { User } from "@/context/auth/types.ts";
+import { useWorkspaceStore } from "@/store/workspaceStore.ts";
+import { useAuth } from "@/context/auth/useAuth.ts";
+import { useToast } from "@/hooks/useToast.ts";
+import CreateModal from "@/ui/Modals/CreateModal.tsx";
+import ConfirmationModal from "@/ui/Modals/ConfirmationModal.tsx";
 
 const WorkspaceUsers = () => {
     const [users, setUsers] = useState<User[]>([]);
@@ -54,7 +54,7 @@ const WorkspaceUsers = () => {
             setInvitedUsers(response.data.invited_users);
             setLoading(false);
         });
-    }, []);
+    }, [workspaceId]);
 
     if (loading) return <Loading overlay={true} />;
 

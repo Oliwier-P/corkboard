@@ -1,7 +1,7 @@
 import "./NavbarItem.scss";
-import { Icon, type IconNames } from "../../ui/Icons/Icon.tsx";
+import { Icon, type IconNames } from "@/ui/Icons/Icon.tsx";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ClassNames } from "../../../global/utils.ts";
+import { ClassNames } from "@/global/utils.ts";
 
 type NavbarItemProps = {
     icon: IconNames;

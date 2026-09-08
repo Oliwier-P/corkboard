@@ -1,5 +1,5 @@
 import "./Input.scss";
-import { ClassNames } from "../../../global/utils.ts";
+import { ClassNames } from "@/global/utils.ts";
 import type { UseFormRegisterReturn } from "react-hook-form";
 import type { DetailedHTMLProps, InputHTMLAttributes } from "react";
 

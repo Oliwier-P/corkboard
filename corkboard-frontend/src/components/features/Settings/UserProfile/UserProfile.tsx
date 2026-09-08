@@ -1,11 +1,11 @@
 import "./UserProfile.scss";
-import { Button } from "../../../ui/Button/Button.tsx";
-import { LabeledInput } from "../../../ui/LabeledInput/LabeledInput.tsx";
-import { api } from "../../../../api/api.ts";
+import { Button } from "@/ui/Button/Button.tsx";
+import { LabeledInput } from "@/ui/LabeledInput/LabeledInput.tsx";
+import { api } from "@/api";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../../../context/auth/useAuth.ts";
+import { useAuth } from "@/context/auth/useAuth.ts";
 import { useState } from "react";
-import type { TaskDisplayType } from "../../../../types/TaskDisplayType.ts";
+import type { TaskDisplayType } from "@/types/TaskDisplayType.ts";
 
 export const UserProfile = () => {
     const navigate = useNavigate();

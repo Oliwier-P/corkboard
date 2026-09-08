@@ -1,10 +1,10 @@
-import { ClassNames } from "../../../global/utils.ts";
+import { ClassNames } from "@/global/utils.ts";
 import "./BoardColumn.scss";
-import { Button } from "../../ui/Button/Button.tsx";
+import { Button } from "@/components/ui/Button/Button.tsx";
 import * as _ from "lodash";
 import { type Dispatch, memo, type SetStateAction, useEffect, useRef, useState } from "react";
 import { TaskForm } from "../TaskForm/TaskForm.tsx";
-import { useReleaseBoardStore } from "../../../store/releaseBoardStore.ts";
+import { useReleaseBoardStore } from "@/store/releaseBoardStore.ts";
 import { Task } from "../Task/Task.tsx";
 import { useShallow } from "zustand/react/shallow";
 import { dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";

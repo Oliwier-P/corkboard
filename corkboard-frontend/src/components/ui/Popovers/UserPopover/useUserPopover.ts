@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import type { User } from "../../../../context/auth/types.ts";
-import { useWorkspaceStore } from "../../../../store/workspaceStore.ts";
-import { useReleaseBoardStore } from "../../../../store/releaseBoardStore.ts";
-import { api } from "../../../../api/api.ts";
+import type { User } from "@/context/auth/types.ts";
+import { useWorkspaceStore } from "@/store/workspaceStore.ts";
+import { useReleaseBoardStore } from "@/store/releaseBoardStore.ts";
+import { api } from "@/api";
 
 interface useUserPopoverProps {
     taskId: string;

@@ -1,8 +1,8 @@
 import "./TextColorPopover.scss";
-import Popover from "../../../Popover/Popover.tsx";
-import { Button } from "../../../Button/Button.tsx";
+import Popover from "@/ui/Popover/Popover.tsx";
+import { Button } from "@/ui/Button/Button.tsx";
+import { Icon } from "@/ui/Icons/Icon.tsx";
 import type { Editor } from "@tiptap/react";
-import { Icon } from "../../../Icons/Icon.tsx";
 
 interface TextColorPopoverProps {
     editor: Editor;

@@ -3,11 +3,11 @@ import DocumentsNav from "./DocumentsNav/DocumentsNav.tsx";
 import DocumentPage from "./DocumentPage.tsx";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useWorkspaceStore } from "../../../store/workspaceStore.ts";
-import { useDocumentsStore } from "../../../store/documentsStore.ts";
-import { useDocumentsSubscription } from "../../../store/documentsSubscription.ts";
-import { useAuth } from "../../../context/auth/useAuth.ts";
-import Loading from "../../ui/Loading/Loading.tsx";
+import { useWorkspaceStore } from "@/store/workspaceStore.ts";
+import { useDocumentsStore } from "@/store/documentsStore.ts";
+import { useDocumentsSubscription } from "@/store/documentsSubscription.ts";
+import { useAuth } from "@/context/auth/useAuth.ts";
+import Loading from "@/ui/Loading/Loading.tsx";
 
 export const Documents = () => {
     const { documentId } = useParams();

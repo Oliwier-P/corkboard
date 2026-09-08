@@ -1,6 +1,6 @@
 import "./TaskSidebar.scss";
 import classNames from "classnames";
-import { useTaskStore } from "../../../store/taskStore.ts";
+import { useTaskStore } from "@/store/taskStore.ts";
 import { TaskEditorContent } from "./TaskEditorContent.tsx";
 
 interface TaskSidebarProps {

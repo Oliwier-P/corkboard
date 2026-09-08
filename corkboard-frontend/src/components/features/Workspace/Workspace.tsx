@@ -1,6 +1,6 @@
 import './Workspace.scss';
 import { forwardRef } from 'react';
-import { useWorkspaceMenuStore } from '../../../store/workspaceMenuStore.ts';
+import { useWorkspaceMenuStore } from "@/store/workspaceMenuStore.ts";
 
 type WorkspaceProps = {
   name: string;

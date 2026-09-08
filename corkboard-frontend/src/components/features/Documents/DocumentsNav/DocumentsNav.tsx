@@ -1,12 +1,12 @@
 import "./DocumentsNav.scss";
-import SubNavbar from "../../../layout/SubNavbar/SubNavbar.tsx";
+import SubNavbar from "@/layout/SubNavbar/SubNavbar.tsx";
 import { NavLink, useNavigate } from "react-router-dom";
-import { Icon } from "../../../ui/Icons/Icon.tsx";
-import { Button } from "../../../ui/Button/Button.tsx";
-import { useWorkspaceStore } from "../../../../store/workspaceStore.ts";
-import { api } from "../../../../api/api.ts";
-import type { DocumentType } from "../../../../types/DocumentType.ts";
-import { useDocumentsStore } from "../../../../store/documentsStore.ts";
+import { Icon } from "@/ui/Icons/Icon.tsx";
+import { Button } from "@/ui/Button/Button.tsx";
+import { useWorkspaceStore } from "@/store/workspaceStore.ts";
+import { api } from "@/api";
+import type { DocumentType } from "@/types/DocumentType.ts";
+import { useDocumentsStore } from "@/store/documentsStore.ts";
 
 interface DocumentNavProps {
     documents: DocumentType[];

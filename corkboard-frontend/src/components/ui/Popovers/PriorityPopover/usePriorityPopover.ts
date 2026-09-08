@@ -1,4 +1,4 @@
-import { useReleaseBoardStore } from "../../../../store/releaseBoardStore.ts";
+import { useReleaseBoardStore } from "@/store/releaseBoardStore.ts";
 
 interface usePriorityPopoverProps {
     taskId: string;

@@ -1,10 +1,10 @@
-import { Release } from "../Release.tsx";
-import type { ReleaseType } from "../../../types/ReleaseType.ts";
 import "./ReleaseList.scss";
+import { Release } from "@/pages/ReleasesPage/Release.tsx";
+import type { ReleaseType } from "@/types/ReleaseType.ts";
 import { useEffect, useRef, useState } from "react";
 import { dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
-import { useReleasesStore } from "../../../store/releasesStore.ts";
-import { ClassNames } from "../../../global/utils.ts";
+import { useReleasesStore } from "@/store/releasesStore.ts";
+import { ClassNames } from "@/global/utils.ts";
 import { motion, LayoutGroup } from "framer-motion";
 
 type ReleaseListProps = {

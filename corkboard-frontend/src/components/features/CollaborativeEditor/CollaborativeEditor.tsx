@@ -1,16 +1,16 @@
-import type { User } from "../../../context/auth/types.ts";
-import { useCollaborativeEditor } from "../../../hooks/useCollaborativeEditor.ts";
+import type { User } from "@/context/auth/types.ts";
+import { useCollaborativeEditor } from "@/hooks/useCollaborativeEditor.ts";
 import { EditorContent } from "@tiptap/react";
 import "./CollaborativeEditor.scss";
 import { BubbleMenu } from "@tiptap/react/menus";
-import { Button } from "../../ui/Button/Button.tsx";
-import { Icon } from "../../ui/Icons/Icon.tsx";
+import { Button } from "@/ui/Button/Button.tsx";
+import { Icon } from "@/ui/Icons/Icon.tsx";
 import { CollaborativeEditorProvider } from "./CollaborativeEditorProvider.tsx";
 import { useEffect } from "react";
-import AlignPopover from "../../ui/Popovers/DocumentPopovers/AlignPopover/AlignPopover.tsx";
-import TextPopover from "../../ui/Popovers/DocumentPopovers/TextPopover/TextPopover.tsx";
-import ListPopover from "../../ui/Popovers/DocumentPopovers/ListPopover/ListPopover.tsx";
-import TextColorPopover from "../../ui/Popovers/DocumentPopovers/TextColorPopover/TextColorPopover.tsx";
+import AlignPopover from "@/ui/Popovers/DocumentPopovers/AlignPopover/AlignPopover.tsx";
+import TextPopover from "@/ui/Popovers/DocumentPopovers/TextPopover/TextPopover.tsx";
+import ListPopover from "@/ui/Popovers/DocumentPopovers/ListPopover/ListPopover.tsx";
+import TextColorPopover from "@/ui/Popovers/DocumentPopovers/TextColorPopover/TextColorPopover.tsx";
 
 type CollaborativeEditorProps = {
     documentId: string;

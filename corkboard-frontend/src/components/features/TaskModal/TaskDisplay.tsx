@@ -1,7 +1,7 @@
-import { useTaskStore } from "../../../store/taskStore.ts";
+import { useTaskStore } from "@/store/taskStore.ts";
 import TaskSidebar from "./TaskSidebar.tsx";
 import TaskModal from "./TaskModal.tsx";
-import { useAuth } from "../../../context/auth/useAuth.ts";
+import { useAuth } from "@/context/auth/useAuth.ts";
 
 const TaskDisplay = () => {
     const isOpen = useTaskStore((state) => state.isOpen);

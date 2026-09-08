@@ -1,7 +1,7 @@
-import type { TaskType } from "../types/ReleaseBoardTypes.ts";
+import type { TaskType } from "@/types/ReleaseBoardTypes.ts";
 import { useReleaseBoardStore } from "./releaseBoardStore.ts";
 import { useEffect } from "react";
-import { cable } from "../lib/cable.ts";
+import { cable } from "@/lib/cable.ts";
 
 type ReleaseEvent =
     | {

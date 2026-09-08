@@ -1,8 +1,8 @@
 import "./SettingsNav.scss";
 import { NavLink } from "react-router-dom";
-import { Icon } from "../../../ui/Icons/Icon.tsx";
-import { useWorkspaceStore } from "../../../../store/workspaceStore.ts";
-import SubNavbar from "../../../layout/SubNavbar/SubNavbar.tsx";
+import { Icon } from "@/ui/Icons/Icon.tsx";
+import { useWorkspaceStore } from "@/store/workspaceStore.ts";
+import SubNavbar from "@/layout/SubNavbar/SubNavbar.tsx";
 
 export const SettingsNav = () => {
     const workspace = useWorkspaceStore((state) => state.workspace);

@@ -1,13 +1,13 @@
 import "./WorkspaceList.scss";
 import { useEffect, useState } from "react";
-import type { WorkspaceType } from "../../../../types/WorkspaceType.ts";
-import { api } from "../../../../api/api.ts";
-import { Table } from "../../../ui/Table/Table.tsx";
-import { Button } from "../../../ui/Button/Button.tsx";
-import { useAuth } from "../../../../context/auth/useAuth.ts";
-import { WorkspaceDisplay } from "../../../ui/WorkspaceDisplay/WorkspaceDisplay.tsx";
+import type { WorkspaceType } from "@/types/WorkspaceType.ts";
+import { api } from "@/api";
+import { Table } from "@/ui/Table/Table.tsx";
+import { Button } from "@/ui/Button/Button.tsx";
+import { useAuth } from "@/context/auth/useAuth.ts";
+import { WorkspaceDisplay } from "@/ui/WorkspaceDisplay/WorkspaceDisplay.tsx";
 import { useNavigate } from "react-router-dom";
-import Loading from "../../../ui/Loading/Loading.tsx";
+import Loading from "@/ui/Loading/Loading.tsx";
 
 export const WorkspaceList = () => {
     const [workspaces, setWorkspaces] = useState<WorkspaceType[]>([]);

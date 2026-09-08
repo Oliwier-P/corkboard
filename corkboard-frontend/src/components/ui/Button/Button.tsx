@@ -1,6 +1,6 @@
 import "./Button.scss";
-import { ClassNames } from "../../../global/utils.ts";
-import { Icon, type IconNames } from "../Icons/Icon.tsx";
+import { ClassNames } from "@/global/utils.ts";
+import { Icon, type IconNames } from "@/ui/Icons/Icon.tsx";
 
 type ButtonProps = {
     onClick?: () => void;

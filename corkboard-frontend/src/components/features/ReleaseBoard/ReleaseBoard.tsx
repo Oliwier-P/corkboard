@@ -1,4 +1,4 @@
-import { useReleaseBoardStore } from "../../../store/releaseBoardStore.ts";
+import { useReleaseBoardStore } from "@/store/releaseBoardStore.ts";
 import { BoardColumn } from "../BoardColumn/BoardColumn.tsx";
 
 import "./ReleaseBoard.scss";

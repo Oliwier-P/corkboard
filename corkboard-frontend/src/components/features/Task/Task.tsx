@@ -1,16 +1,16 @@
 import "./Task.scss";
-import { Button } from "../../ui/Button/Button.tsx";
-import { EditableText } from "../../ui/EditableText/EditableText.tsx";
-import { useReleaseBoardStore } from "../../../store/releaseBoardStore.ts";
+import { Button } from "@/ui/Button/Button.tsx";
+import { EditableText } from "@/ui/EditableText/EditableText.tsx";
+import { useReleaseBoardStore } from "@/store/releaseBoardStore.ts";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
-import { ClassNames } from "../../../global/utils.ts";
+import { ClassNames } from "@/global/utils.ts";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
-import { ContextMenu, type ContextMenuItem } from "../../ui/ContextMenu/ContextMenu.tsx";
-import { useTaskStore } from "../../../store/taskStore.ts";
-import { Icon } from "../../ui/Icons/Icon.tsx";
-import UserPopover from "../../ui/Popovers/UserPopover/UserPopover.tsx";
-import Tag from "../../ui/Tag/Tag.tsx";
+import { ContextMenu, type ContextMenuItem } from "@/ui/ContextMenu/ContextMenu.tsx";
+import { useTaskStore } from "@/store/taskStore.ts";
+import { Icon } from "@/ui/Icons/Icon.tsx";
+import UserPopover from "@/ui/Popovers/UserPopover/UserPopover.tsx";
+import Tag from "@/ui/Tag/Tag.tsx";
 
 type TaskProps = {
     taskId: string;

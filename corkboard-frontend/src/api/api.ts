@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useToastStore } from "../store/toastStore.ts";
+import { useToastStore } from "@/store/toastStore.ts";
 
 const API_URL = import.meta.env.VITE_API_URL;
 

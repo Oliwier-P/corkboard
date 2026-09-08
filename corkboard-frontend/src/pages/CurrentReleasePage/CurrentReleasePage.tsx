@@ -1,17 +1,17 @@
 import "./CurrentReleasePage.scss";
-import { Button } from "../../components/ui/Button/Button.tsx";
+import { Button } from "@/ui/Button/Button.tsx";
 import { useEffect, useState } from "react";
-import { api } from "../../api/api.ts";
-import { ReleaseBoard } from "../../components/features/ReleaseBoard/ReleaseBoard.tsx";
-import type { ReleaseType } from "../../types/ReleaseType.ts";
-import { useWorkspaceStore } from "../../store/workspaceStore.ts";
-import { useReleasesStore } from "../../store/releasesStore.ts";
-import { Page } from "../../components/layout/Page/Page.tsx";
-import { useReleaseSubscription } from "../../store/useReleaseSubscription.ts";
-import { useAuth } from "../../context/auth/useAuth.ts";
-import Loading from "../../components/ui/Loading/Loading.tsx";
-import CreateModal from "../../components/ui/Modals/CreateModal.tsx";
-import ConfirmationModal from "../../components/ui/Modals/ConfirmationModal.tsx";
+import { api } from "@/api";
+import { ReleaseBoard } from "@/features/ReleaseBoard/ReleaseBoard.tsx";
+import type { ReleaseType } from "@/types/ReleaseType.ts";
+import { useWorkspaceStore } from "@/store/workspaceStore.ts";
+import { useReleasesStore } from "@/store/releasesStore.ts";
+import { Page } from "@/layout/Page/Page.tsx";
+import { useReleaseSubscription } from "@/store/useReleaseSubscription.ts";
+import { useAuth } from "@/context/auth/useAuth.ts";
+import Loading from "@/ui/Loading/Loading.tsx";
+import CreateModal from "@/ui/Modals/CreateModal.tsx";
+import ConfirmationModal from "@/ui/Modals/ConfirmationModal.tsx";
 
 export const CurrentReleasePage = () => {
     const [release, setRelease] = useState<ReleaseType | null>(null);

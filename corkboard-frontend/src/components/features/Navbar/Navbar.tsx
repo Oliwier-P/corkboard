@@ -1,17 +1,17 @@
 import "./Navbar.scss";
 import { NavbarItem } from "./NavbarItem.tsx";
-import { Icon } from "../../ui/Icons/Icon.tsx";
-import { useAuth } from "../../../context/auth/useAuth.ts";
+import { Icon } from "@/ui/Icons/Icon.tsx";
+import { useAuth } from "@/context/auth/useAuth.ts";
 import { Workspace } from "../Workspace/Workspace.tsx";
 import { WorkspaceMenu } from "../Workspace/WorkspaceMenu.tsx";
 import { useEffect, useRef, useState } from "react";
-import { api } from "../../../api/api.ts";
-import type { WorkspaceType } from "../../../types/WorkspaceType.ts";
-import { useWorkspaceStore } from "../../../store/workspaceStore.ts";
-import { useWorkspaceMenuStore } from "../../../store/workspaceMenuStore.ts";
+import { api } from "@/api";
+import type { WorkspaceType } from "@/types/WorkspaceType.ts";
+import { useWorkspaceStore } from "@/store/workspaceStore.ts";
+import { useWorkspaceMenuStore } from "@/store/workspaceMenuStore.ts";
 import { UserNotifications } from "../UserNotifications/UserNotifications.tsx";
-import ProfilePopover from "../../ui/Popovers/ProfilePopover/ProfilePopover.tsx";
-import CreateModal from "../../ui/Modals/CreateModal.tsx";
+import ProfilePopover from "@/ui/Popovers/ProfilePopover/ProfilePopover.tsx";
+import CreateModal from "@/ui/Modals/CreateModal.tsx";
 
 export const Navbar = () => {
     const { user } = useAuth();

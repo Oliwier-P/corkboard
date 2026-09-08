@@ -1,6 +1,6 @@
-import type { Column, TaskType } from "../types/ReleaseBoardTypes.ts";
+import type { Column, TaskType } from "@/types/ReleaseBoardTypes.ts";
 import { create } from "zustand";
-import { api } from "../api/api.ts";
+import { api } from "@/api";
 import { useWorkspaceStore } from "./workspaceStore.ts";
 import { insertTaskIntoColumn } from "./releaseBoardHelpers.ts";
 import { v4 as uuid } from "uuid";
