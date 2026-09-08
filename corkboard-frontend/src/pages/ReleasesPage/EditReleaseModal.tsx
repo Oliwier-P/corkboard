@@ -1,6 +1,6 @@
-import Modal from "../../components/ui/Modal/Modal";
-import { Button } from "../../components/ui/Button/Button.tsx";
-import { LabeledInput } from "../../components/ui/LabeledInput/LabeledInput.tsx";
+import Modal from "@/ui/Modal/Modal";
+import { Button } from "@/ui/Button/Button.tsx";
+import { LabeledInput } from "@/ui/LabeledInput/LabeledInput.tsx";
 import { type SubmitHandler, useForm } from "react-hook-form";
 
 type EditReleaseModalProps = {

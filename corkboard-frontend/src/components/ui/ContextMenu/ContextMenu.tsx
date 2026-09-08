@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
 import "./ContextMenu.scss";
-import { Icon, type IconNames } from "../Icons/Icon.tsx";
-import { ClassNames } from "../../../global/utils.ts";
+import { useEffect, useRef, useState } from "react";
+import { Icon, type IconNames } from "@/ui/Icons/Icon.tsx";
+import { ClassNames } from "@/global/utils.ts";
 
 export type ContextMenuItem =
     | {

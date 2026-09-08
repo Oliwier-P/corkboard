@@ -1,8 +1,8 @@
 import "./TagsPopover.scss";
-import Popover from "../../Popover/Popover.tsx";
+import Popover from "@/ui/Popover/Popover.tsx";
 import CreateTagModal from "./CreateTagModal.tsx";
-import { Icon } from "../../Icons/Icon.tsx";
-import { reverseColor } from "../../../../global/utils.ts";
+import { Icon } from "@/ui/Icons/Icon.tsx";
+import { reverseColor } from "@/global/utils.ts";
 import useTagsPopover from "./useTagsPopover.ts";
 
 interface TagsPopoverProps {

@@ -1,15 +1,14 @@
-import { Page } from "../../components/layout/Page/Page.tsx";
-import { BacklogColumn } from "./BacklogColumn/BacklogColumn.tsx";
-
 import "./BacklogPage.scss";
+import { Page } from "@/layout/Page/Page.tsx";
+import { BacklogColumn } from "@/pages/BacklogPage/BacklogColumn/BacklogColumn.tsx";
 import { useEffect, useState } from "react";
-import { api } from "../../api/api.ts";
-import { useWorkspaceStore } from "../../store/workspaceStore.ts";
-import { useReleaseBoardStore } from "../../store/releaseBoardStore.ts";
-import { BoardColumn } from "../../components/features/BoardColumn/BoardColumn.tsx";
+import { api } from "@/api";
+import { useWorkspaceStore } from "@/store/workspaceStore.ts";
+import { useReleaseBoardStore } from "@/store/releaseBoardStore.ts";
+import { BoardColumn } from "@/features/BoardColumn/BoardColumn.tsx";
 import { useShallow } from "zustand/react/shallow";
-import type { ReleaseType } from "../../types/ReleaseType.ts";
-import Loading from "../../components/ui/Loading/Loading.tsx";
+import type { ReleaseType } from "@/types/ReleaseType.ts";
+import Loading from "@/ui/Loading/Loading.tsx";
 
 export const BacklogPage = () => {
     const workspaceId = useWorkspaceStore((state) => state.workspace?.id);

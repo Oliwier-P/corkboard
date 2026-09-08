@@ -1,7 +1,7 @@
 import "./PriorityPopover.scss";
 import classNames from "classnames";
-import { Icon } from "../../Icons/Icon.tsx";
-import Popover from "../../Popover/Popover.tsx";
+import { Icon } from "@/ui/Icons/Icon.tsx";
+import Popover from "@/ui/Popover/Popover.tsx";
 import usePriorityPopover from "./usePriorityPopover.ts";
 
 interface PriorityPopoverProps {

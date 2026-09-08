@@ -1,7 +1,7 @@
 import "./UserDisplay.scss";
-import type { User } from "../../../context/auth/types.ts";
-import { UserAvatar } from "../UserAvatar/UserAvatar.tsx";
-import { useWorkspaceStore } from "../../../store/workspaceStore.ts";
+import type { User } from "@/context/auth/types.ts";
+import { UserAvatar } from "@/ui/UserAvatar/UserAvatar.tsx";
+import { useWorkspaceStore } from "@/store/workspaceStore.ts";
 
 type UserDisplayProps = {
     user: User;

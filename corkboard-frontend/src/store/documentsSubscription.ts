@@ -1,7 +1,7 @@
 import { useDocumentsStore } from "./documentsStore.ts";
 import { useEffect } from "react";
-import { cable } from "../lib/cable.ts";
-import type { DocumentType } from "../types/DocumentType.ts";
+import { cable } from "@/lib/cable.ts";
+import type { DocumentType } from "@/types/DocumentType.ts";
 
 type DocumentsEvent =
     | {

@@ -1,14 +1,14 @@
 import "./TagsManager.scss";
-import { Table } from "../../../ui/Table/Table.tsx";
+import { Table } from "@/ui/Table/Table.tsx";
 import { useEffect, useState } from "react";
-import type { TagType } from "../../../../types/TagType.ts";
-import { api } from "../../../../api/api.ts";
-import { useWorkspaceStore } from "../../../../store/workspaceStore.ts";
-import { Button } from "../../../ui/Button/Button.tsx";
-import { reverseColor } from "../../../../global/utils.ts";
-import ConfirmationModal from "../../../ui/Modals/ConfirmationModal.tsx";
-import CreateTagModal from "../../../ui/Popovers/TagsPopover/CreateTagModal.tsx";
-import Loading from "../../../ui/Loading/Loading.tsx";
+import type { TagType } from "@/types/TagType.ts";
+import { api } from "@/api";
+import { useWorkspaceStore } from "@/store/workspaceStore.ts";
+import { Button } from "@/ui/Button/Button.tsx";
+import { reverseColor } from "@/global/utils.ts";
+import ConfirmationModal from "@/ui/Modals/ConfirmationModal.tsx";
+import CreateTagModal from "@/ui/Popovers/TagsPopover/CreateTagModal.tsx";
+import Loading from "@/ui/Loading/Loading.tsx";
 
 const TagsManager = () => {
     const [tags, setTags] = useState<TagType[]>([]);

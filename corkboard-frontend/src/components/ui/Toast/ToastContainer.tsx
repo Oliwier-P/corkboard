@@ -1,7 +1,7 @@
 import React from "react";
-import { useToastStore } from "./../../../store/toastStore.ts";
+import { useToastStore } from "@/store/toastStore.ts";
 import "./ToastContainer.scss";
-import { Icon, type IconNames } from "../Icons/Icon.tsx";
+import { Icon, type IconNames } from "@/ui/Icons/Icon.tsx";
 
 const icons = {
     success: "success",

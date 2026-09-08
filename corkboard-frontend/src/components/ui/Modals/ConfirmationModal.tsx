@@ -1,8 +1,8 @@
 import "./ConfirmationModal.scss";
-import Modal from "../Modal/Modal.tsx";
-import { Button } from "../Button/Button.tsx";
+import Modal from "@/ui//Modal/Modal.tsx";
+import { Button } from "@/ui/Button/Button.tsx";
 import type { ReactNode } from "react";
-import type { ButtonColorsType } from "../../../types/ButtonColorsType.ts";
+import type { ButtonColorsType } from "@/types/ButtonColorsType.ts";
 
 type ConfirmationModalProps = {
     title: string;

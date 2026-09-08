@@ -1,6 +1,6 @@
 import "./TaskForm.scss";
-import { Input } from "../../ui/Input/Input.tsx";
-import { Button } from "../../ui/Button/Button.tsx";
+import { Input } from "@/ui/Input/Input.tsx";
+import { Button } from "@/ui/Button/Button.tsx";
 import { type SubmitHandler, useForm } from "react-hook-form";
 
 type EmptyTaskProps = {

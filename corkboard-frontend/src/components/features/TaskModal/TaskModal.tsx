@@ -1,6 +1,6 @@
 import "./TaskModal.scss";
-import Modal from "../../ui/Modal/Modal.tsx";
-import { useTaskStore } from "../../../store/taskStore.ts";
+import Modal from "@/ui/Modal/Modal.tsx";
+import { useTaskStore } from "@/store/taskStore.ts";
 import { TaskEditorContent } from "./TaskEditorContent.tsx";
 
 interface TaskModalProps {

@@ -1,7 +1,7 @@
-import { ClassNames } from "../../../global/utils.ts";
+import "./Icon.scss";
+import { ClassNames } from "@/global/utils.ts";
 import { createElement } from "react";
 import { icons } from "./Icons.ts";
-import "./Icon.scss";
 
 export type IconNames = keyof typeof icons;
 

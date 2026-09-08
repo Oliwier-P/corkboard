@@ -1,4 +1,4 @@
-import type { Column } from "../types/ReleaseBoardTypes.ts";
+import type { Column } from "@/types/ReleaseBoardTypes.ts";
 
 export const insertTaskIntoColumn = (columns: Column[], taskId: string, columnId: string, order?: number) => {
     return columns.map((col) => {

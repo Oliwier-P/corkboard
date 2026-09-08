@@ -1,11 +1,11 @@
 import "./WorkspaceMenu.scss";
 import { WorkspaceMenuItem } from "./WorkspaceMenuItem.tsx";
-import type { WorkspaceType } from "../../../types/WorkspaceType.ts";
+import type { WorkspaceType } from "@/types/WorkspaceType.ts";
 import { useNavigate } from "react-router-dom";
-import { useWorkspaceStore } from "../../../store/workspaceStore.ts";
-import { Button } from "../../ui/Button/Button.tsx";
+import { useWorkspaceStore } from "@/store/workspaceStore.ts";
+import { Button } from "@/ui/Button/Button.tsx";
 import { forwardRef } from "react";
-import { useWorkspaceMenuStore } from "../../../store/workspaceMenuStore.ts";
+import { useWorkspaceMenuStore } from "@/store/workspaceMenuStore.ts";
 import * as _ from "lodash";
 
 type WorkspaceMenuProps = {

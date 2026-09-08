@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useReleaseBoardStore } from "../../../store/releaseBoardStore.ts";
-import { api } from "../../../api/api.ts";
+import { useReleaseBoardStore } from "@/store/releaseBoardStore.ts";
+import { api } from "@/api";
 
 export const useTaskEditor = (taskId: string) => {
     const task = useReleaseBoardStore((state) => state.tasks[taskId]);

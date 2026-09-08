@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { api } from "../../../../api/api.ts";
-import type { TagType } from "../../../../types/TagType.ts";
-import { useReleaseBoardStore } from "../../../../store/releaseBoardStore.ts";
+import { api } from "@/api";
+import type { TagType } from "@/types/TagType.ts";
+import { useReleaseBoardStore } from "@/store/releaseBoardStore.ts";
 
 interface useTagsPopoverProps {
     taskId: string;

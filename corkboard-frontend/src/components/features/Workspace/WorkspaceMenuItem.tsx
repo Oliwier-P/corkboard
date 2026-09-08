@@ -1,8 +1,8 @@
 import "./WorkspaceMenuItem.scss";
-import { useWorkspaceStore } from "../../../store/workspaceStore.ts";
 import { useNavigate } from "react-router-dom";
-import { useWorkspaceMenuStore } from "../../../store/workspaceMenuStore.ts";
-import type { User } from "../../../context/auth/types.ts";
+import { useWorkspaceStore } from "@/store/workspaceStore.ts";
+import { useWorkspaceMenuStore } from "@/store/workspaceMenuStore.ts";
+import type { User } from "@/context/auth/types.ts";
 
 type WorkspaceMenuItemProps = {
     id: string;

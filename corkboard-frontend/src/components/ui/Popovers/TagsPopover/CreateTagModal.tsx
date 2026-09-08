@@ -1,11 +1,11 @@
 import "./CreateTagModal.scss";
-import Modal from "../../Modal/Modal.tsx";
-import { Button } from "../../Button/Button.tsx";
-import { LabeledInput } from "../../LabeledInput/LabeledInput.tsx";
+import Modal from "@/ui/Modal/Modal.tsx";
+import { Button } from "@/ui/Button/Button.tsx";
+import { LabeledInput } from "@/ui/LabeledInput/LabeledInput.tsx";
 import { type SubmitHandler, useForm } from "react-hook-form";
-import { api } from "../../../../api/api.ts";
-import { useWorkspaceStore } from "../../../../store/workspaceStore.ts";
-import type { TagType } from "../../../../types/TagType.ts";
+import { api } from "@/api";
+import { useWorkspaceStore } from "@/store/workspaceStore.ts";
+import type { TagType } from "@/types/TagType.ts";
 
 interface CreateTagModalProps {
     tag?: TagType;

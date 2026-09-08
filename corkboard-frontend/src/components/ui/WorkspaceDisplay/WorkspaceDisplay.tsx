@@ -1,15 +1,15 @@
-import "./WorkspaceDisplay.scss"
-import type {WorkspaceType} from "../../../types/WorkspaceType.ts";
-import {WorkspaceAvatar} from "../WorkspaceAvatar/WorkspaceAvatar.tsx";
+import "./WorkspaceDisplay.scss";
+import type { WorkspaceType } from "@/types/WorkspaceType.ts";
+import { WorkspaceAvatar } from "@/ui/WorkspaceAvatar/WorkspaceAvatar.tsx";
 
 type UserDisplayProps = {
-    workspace: WorkspaceType
-}
-export const WorkspaceDisplay = ({workspace}: UserDisplayProps) => {
+    workspace: WorkspaceType;
+};
+export const WorkspaceDisplay = ({ workspace }: UserDisplayProps) => {
     return (
         <div className="workspace-display">
-            <WorkspaceAvatar name={workspace.name}/>
+            <WorkspaceAvatar name={workspace.name} />
             <span>{workspace.name}</span>
         </div>
-    )
-}
+    );
+};

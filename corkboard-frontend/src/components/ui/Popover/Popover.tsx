@@ -1,8 +1,8 @@
 import "./Popover.scss";
 import React from "react";
 import usePopover from "./usePopover.ts";
-import { usePopoverStore } from "../../../store/popoverStore.ts";
-import { Button } from "../Button/Button.tsx";
+import { usePopoverStore } from "@/store/popoverStore.ts";
+import { Button } from "@/ui/Button/Button.tsx";
 import classNames from "classnames";
 
 interface TriggerProps {

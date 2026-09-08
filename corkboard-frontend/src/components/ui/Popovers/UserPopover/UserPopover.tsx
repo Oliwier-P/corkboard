@@ -1,8 +1,8 @@
 import "./UserPopover.scss";
-import { Button } from "../../Button/Button.tsx";
-import { UserAvatar } from "../../UserAvatar/UserAvatar.tsx";
-import type { User } from "../../../../context/auth/types.ts";
-import Popover from "../../Popover/Popover.tsx";
+import { Button } from "@/ui/Button/Button.tsx";
+import { UserAvatar } from "@/ui/UserAvatar/UserAvatar.tsx";
+import type { User } from "@/context/auth/types.ts";
+import Popover from "@/ui/Popover/Popover.tsx";
 import useUserPopover from "./useUserPopover.ts";
 
 interface UserSelectProps {

@@ -1,7 +1,7 @@
 import "./UserNotifications.scss";
-import { Button } from "../../ui/Button/Button.tsx";
-import { Icon } from "../../ui/Icons/Icon.tsx";
-import type { WorkspaceType } from "../../../types/WorkspaceType.ts";
+import { Button } from "@/ui/Button/Button.tsx";
+import { Icon } from "@/ui/Icons/Icon.tsx";
+import type { WorkspaceType } from "@/types/WorkspaceType.ts";
 import useUserNotification from "./useUserNotification.ts";
 
 interface UserNotificationsProps {

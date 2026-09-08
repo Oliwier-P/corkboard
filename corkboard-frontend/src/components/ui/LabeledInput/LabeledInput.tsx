@@ -1,7 +1,7 @@
-import { Input } from "../Input/Input.tsx";
 import "./LabeledInput.scss";
+import { Input } from "@/ui/Input/Input.tsx";
+import { ClassNames } from "@/global/utils.ts";
 import type { ComponentProps } from "react";
-import { ClassNames } from "../../../global/utils.ts";
 
 type LabeledInputProps = {
     label: string;

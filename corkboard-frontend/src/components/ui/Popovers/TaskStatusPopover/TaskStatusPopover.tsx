@@ -1,7 +1,7 @@
 import "./TaskStatusPopover.scss";
 import classNames from "classnames";
 import { upperCase } from "lodash";
-import Popover from "../../Popover/Popover.tsx";
+import Popover from "@/ui/Popover/Popover.tsx";
 import useTaskStatusPopover from "./useTaskStatusPopover.ts";
 
 interface TaskStatusPopoverProps {

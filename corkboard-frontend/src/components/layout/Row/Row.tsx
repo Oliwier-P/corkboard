@@ -1,5 +1,5 @@
 import "./Row.scss"
-import {ClassNames} from "../../../global/utils.ts";
+import { ClassNames } from "@/global/utils.ts";
 
 type RowProps = {
     children: React.ReactNode;

@@ -1,7 +1,7 @@
-import { ClassNames } from "../../../global/utils.ts";
 import "./Modal.scss";
-import { Button } from "../Button/Button.tsx";
-import { Icon } from "../Icons/Icon.tsx";
+import { ClassNames } from "@/global/utils.ts";
+import { Button } from "@/ui/Button/Button.tsx";
+import { Icon } from "@/ui/Icons/Icon.tsx";
 
 type ModalProps = {
     children: React.ReactNode;

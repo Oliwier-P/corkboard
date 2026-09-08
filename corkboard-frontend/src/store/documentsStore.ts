@@ -1,7 +1,7 @@
 import { create } from "zustand";
-import { api } from "../api/api.ts";
+import { api } from "@/api";
 import * as _ from "lodash";
-import type { DocumentType } from "../types/DocumentType.ts";
+import type { DocumentType } from "@/types/DocumentType.ts";
 
 interface DocumentsStore {
     documents: DocumentType[];

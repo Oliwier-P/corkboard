@@ -1,12 +1,12 @@
 import "./LoginPage.scss";
-import { Button } from "../../components/ui/./Button/Button.tsx";
-import { LabeledInput } from "../../components/ui/LabeledInput/LabeledInput.tsx";
+import { Button } from "@/ui/Button/Button.tsx";
+import { LabeledInput } from "@/ui/LabeledInput/LabeledInput.tsx";
 import { type SubmitHandler, useForm } from "react-hook-form";
-import { api } from "../../api/api.ts";
+import { api } from "@/api";
 import { useNavigate } from "react-router-dom";
-import { Icon } from "../../components/ui/Icons/Icon.tsx";
-import { useAuth } from "../../context/auth/useAuth.ts";
-import { useToast } from "../../hooks/useToast.ts";
+import { Icon } from "@/ui/Icons/Icon.tsx";
+import { useAuth } from "@/context/auth/useAuth.ts";
+import { useToast } from "@/hooks/useToast.ts";
 
 type Inputs = {
     username: string;

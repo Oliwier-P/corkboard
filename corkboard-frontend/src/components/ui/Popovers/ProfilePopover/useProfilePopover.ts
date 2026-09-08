@@ -1,7 +1,7 @@
-import { useAuth } from "../../../../context/auth/useAuth.ts";
-import { api } from "../../../../api/api.ts";
+import { useAuth } from "@/context/auth/useAuth.ts";
+import { api } from "@/api";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "../../../../hooks/useToast.ts";
+import { useToast } from "@/hooks/useToast.ts";
 
 const useProfilePopover = () => {
     const { user } = useAuth();

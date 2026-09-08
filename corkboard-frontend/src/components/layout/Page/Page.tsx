@@ -1,6 +1,6 @@
 import "./Page.scss"
-import {ClassNames} from "../../../global/utils.ts";
-import {Row} from "../Row/Row.tsx";
+import { ClassNames } from "@/global/utils.ts";
+import { Row } from "@/layout/Row/Row.tsx";
 
 type PageProps = {
     title: string

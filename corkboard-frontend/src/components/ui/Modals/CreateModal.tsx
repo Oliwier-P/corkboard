@@ -1,8 +1,8 @@
 import "./CreateModal.scss";
-import Modal from "../Modal/Modal.tsx";
-import { Button } from "../Button/Button.tsx";
+import Modal from "@/ui/Modal/Modal.tsx";
+import { Button } from "@/ui/Button/Button.tsx";
+import { LabeledInput } from "@/ui/LabeledInput/LabeledInput.tsx";
 import { type SubmitHandler, useForm } from "react-hook-form";
-import { LabeledInput } from "../LabeledInput/LabeledInput.tsx";
 
 type CreateModalProps = {
     title: string;

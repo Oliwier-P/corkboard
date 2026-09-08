@@ -1,14 +1,14 @@
 import "./WorkspaceGeneral.scss";
-import { Input } from "../../../ui/Input/Input.tsx";
+import { Input } from "@/ui/Input/Input.tsx";
 import { useNavigate, useParams } from "react-router-dom";
-import { api } from "../../../../api/api.ts";
-import { Button } from "../../../ui/Button/Button.tsx";
+import { api } from "@/api";
+import { Button } from "@/ui/Button/Button.tsx";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useAuth } from "../../../../context/auth/useAuth.ts";
-import { useWorkspaceStore } from "../../../../store/workspaceStore.ts";
-import Loading from "../../../ui/Loading/Loading.tsx";
+import { useAuth } from "@/context/auth/useAuth.ts";
+import { useWorkspaceStore } from "@/store/workspaceStore.ts";
+import Loading from "@/ui/Loading/Loading.tsx";
 
 const schema = yup
     .object({

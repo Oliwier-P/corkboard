@@ -1,4 +1,4 @@
-import { useToastStore } from "./../store/toastStore.ts";
+import { useToastStore } from "@/store/toastStore.ts";
 
 export const useToast = () => {
     const addToast = useToastStore((state) => state.addToast);

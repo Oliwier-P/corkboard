@@ -1,8 +1,8 @@
 import "./AlignPopover.scss";
-import Popover from "../../../Popover/Popover.tsx";
-import { Button } from "../../../Button/Button.tsx";
+import Popover from "@/ui/Popover/Popover.tsx";
+import { Button } from "@/ui/Button/Button.tsx";
+import { Icon, type IconNames } from "@/ui/Icons/Icon.tsx";
 import type { Editor } from "@tiptap/react";
-import { Icon, type IconNames } from "../../../Icons/Icon.tsx";
 
 interface AlignPopoverProps {
     editor: Editor;

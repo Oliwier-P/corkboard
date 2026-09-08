@@ -1,14 +1,14 @@
 import "./SuperAdminUser.scss";
-import { LabeledInput } from "../../../ui/LabeledInput/LabeledInput.tsx";
+import { LabeledInput } from "@/ui/LabeledInput/LabeledInput.tsx";
 import { useEffect, useState } from "react";
-import type { UserSettings } from "../../../../context/auth/types.ts";
-import { api } from "../../../../api/api.ts";
+import type { UserSettings } from "@/context/auth/types.ts";
+import { api } from "@/api";
 import { useNavigate, useParams } from "react-router-dom";
-import Loading from "../../../ui/Loading/Loading.tsx";
-import { Button } from "../../../ui/Button/Button.tsx";
+import Loading from "@/ui/Loading/Loading.tsx";
+import { Button } from "@/ui/Button/Button.tsx";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useToast } from "../../../../hooks/useToast.ts";
+import { useToast } from "@/hooks/useToast.ts";
 
 const validationSchema = Yup.object({
     username: Yup.string().trim().required("Username is required"),

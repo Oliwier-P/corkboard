@@ -1,13 +1,13 @@
 import "./DocumentPage.scss";
-import { UserAvatar } from "../../ui/UserAvatar/UserAvatar.tsx";
-import type { DocumentType } from "../../../types/DocumentType.ts";
-import { Input } from "../../ui/Input/Input.tsx";
-import { api } from "../../../api/api.ts";
+import { UserAvatar } from "@/ui/UserAvatar/UserAvatar.tsx";
+import type { DocumentType } from "@/types/DocumentType.ts";
+import { Input } from "@/ui/Input/Input.tsx";
+import { api } from "@/api";
 import { CollaborativeEditor } from "../CollaborativeEditor/CollaborativeEditor.tsx";
-import { useAuth } from "../../../context/auth/useAuth.ts";
-import { useDocumentsStore } from "../../../store/documentsStore.ts";
+import { useAuth } from "@/context/auth/useAuth.ts";
+import { useDocumentsStore } from "@/store/documentsStore.ts";
 import { useEffect, useState } from "react";
-import Loading from "../../ui/Loading/Loading.tsx";
+import Loading from "@/ui/Loading/Loading.tsx";
 import classNames from "classnames";
 
 interface DocumentPageProps {

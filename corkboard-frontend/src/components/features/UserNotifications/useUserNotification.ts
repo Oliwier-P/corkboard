@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { useToast } from "../../../hooks/useToast.ts";
-import { api } from "../../../api/api.ts";
-import { useWorkspaceStore } from "../../../store/workspaceStore.ts";
-import type { WorkspaceType } from "../../../types/WorkspaceType.ts";
+import { useToast } from "@/hooks/useToast.ts";
+import { api } from "@/api";
+import { useWorkspaceStore } from "@/store/workspaceStore.ts";
+import type { WorkspaceType } from "@/types/WorkspaceType.ts";
 
 type InvitationType = {
     invited_by: string;

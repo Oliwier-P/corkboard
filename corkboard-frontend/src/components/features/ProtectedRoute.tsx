@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../../context/auth/useAuth.ts";
-import { Navbar } from "./Navbar/Navbar.tsx";
-import Loading from "../ui/Loading/Loading.tsx";
+import { useAuth } from "@/context/auth/useAuth.ts";
+import { Navbar } from "@/features/Navbar/Navbar.tsx";
+import Loading from "@/ui/Loading/Loading.tsx";
 
 type ProtectedRouteProps = {
     role?: string;

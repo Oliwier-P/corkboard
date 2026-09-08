@@ -1,13 +1,13 @@
 import "./SuperAdminUsers.scss";
-import { Table } from "../../../ui/Table/Table.tsx";
-import { Button } from "../../../ui/Button/Button.tsx";
+import { Table } from "@/ui/Table/Table.tsx";
+import { Button } from "@/ui/Button/Button.tsx";
 import { useEffect, useMemo, useState } from "react";
-import type { UserSettings } from "../../../../context/auth/types.ts";
-import { api } from "../../../../api/api.ts";
-import Loading from "../../../ui/Loading/Loading.tsx";
-import Modal from "../../../ui/Modal/Modal.tsx";
+import type { UserSettings } from "@/context/auth/types.ts";
+import { api } from "@/api";
+import Loading from "@/ui/Loading/Loading.tsx";
+import Modal from "@/ui/Modal/Modal.tsx";
 import { useNavigate } from "react-router-dom";
-import { Input } from "../../../ui/Input/Input.tsx";
+import { Input } from "@/ui/Input/Input.tsx";
 
 const SuperAdminUsers = () => {
     const [users, setUsers] = useState<UserSettings[]>([]);

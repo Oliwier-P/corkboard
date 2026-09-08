@@ -1,6 +1,6 @@
-import type { ReleaseType } from "../types/ReleaseType.ts";
+import type { ReleaseType } from "@/types/ReleaseType.ts";
 import { create } from "zustand";
-import { api } from "../api/api.ts";
+import { api } from "@/api";
 
 interface ReleasesStore {
     releases: ReleaseType[];
