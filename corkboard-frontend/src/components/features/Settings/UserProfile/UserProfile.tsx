@@ -4,6 +4,7 @@ import DangerZoneSection from "@/features/Settings/UserProfile/Sections/DangerZo
 import TaskDisplaySection from "@/features/Settings/UserProfile/Sections/TaskDisplaySection.tsx";
 import SettingsSection from "@/features/Settings/SettingsSection.tsx";
 import ShowBoardTags from "@/features/Settings/UserProfile/Sections/ShowBoardTags.tsx";
+import SpellcheckSection from "@/features/Settings/UserProfile/Sections/SpellcheckSection.tsx";
 
 const UserProfile = () => {
     return (
@@ -20,6 +21,9 @@ const UserProfile = () => {
 
                 <SettingsSection.Info description="Show tags on board?" />
                 <SettingsSection.Content children={<ShowBoardTags />} />
+
+                <SettingsSection.Info description="Enable documents and inputs spellcheck" />
+                <SettingsSection.Content children={<SpellcheckSection />} />
             </SettingsSection>
 
             <SettingsSection>

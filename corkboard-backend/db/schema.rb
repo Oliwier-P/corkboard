@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_09_112515) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_09_153130) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -84,6 +84,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_09_112515) do
   create_table "user_preferences", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.boolean "show_board_tags", default: true
+    t.boolean "spellcheck", default: false
     t.string "task_display", default: "MODAL", null: false
     t.datetime "updated_at", null: false
     t.uuid "user_id", null: false

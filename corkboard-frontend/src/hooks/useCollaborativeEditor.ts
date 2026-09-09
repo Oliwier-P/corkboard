@@ -10,7 +10,7 @@ import TaskList from "@tiptap/extension-task-list";
 import CustomTaskItem from "@/features/CollaborativeEditor/Extensions/CustomTaskItem.tsx";
 import Color from "@tiptap/extension-color";
 import { TextStyle } from "@tiptap/extension-text-style";
-import type { User } from "@/context/auth/types.ts";
+import type { UserSettings } from "@/context/auth/types.ts";
 import { useHocuspocusProvider } from "@hocuspocus/provider-react";
 import { useEffect, useState } from "react";
 import { flushSync } from "react-dom";
@@ -18,7 +18,7 @@ import { flushSync } from "react-dom";
 type useCollaborativeEditorProps = {
     documentId: string;
     authToken: string;
-    user: User;
+    user: UserSettings;
 };
 
 export const useCollaborativeEditor = ({ user }: useCollaborativeEditorProps) => {
@@ -72,7 +72,7 @@ export const useCollaborativeEditor = ({ user }: useCollaborativeEditorProps) =>
         ],
         editorProps: {
             attributes: {
-                spellcheck: "false",
+                spellcheck: user.preferences.spellcheck.toString(),
             },
         },
     });

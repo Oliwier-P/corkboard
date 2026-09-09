@@ -12,6 +12,6 @@ class UserPreferencesController < ApplicationController
   private
 
   def user_preference_params
-    params.require(:user_preference).permit(:task_display, :show_board_tags)
+    params.require(:user_preference).permit(:task_display, :show_board_tags, :spellcheck)
   end
 end

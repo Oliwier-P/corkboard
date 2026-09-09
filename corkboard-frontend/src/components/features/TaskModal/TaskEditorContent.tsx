@@ -29,6 +29,7 @@ export const TaskEditorContent = ({ taskId, className }: TaskEditorContentProps)
                 <textarea
                     className="name"
                     value={taskName}
+                    spellCheck={user.preferences.spellcheck}
                     onChange={(e) => setTaskName(e.target.value)}
                     onBlur={(e) => handleNameBlur(e.target.value)}
                     onKeyDown={(e) => {

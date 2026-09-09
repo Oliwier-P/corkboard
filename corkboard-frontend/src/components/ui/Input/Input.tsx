@@ -2,6 +2,7 @@ import "./Input.scss";
 import { ClassNames } from "@/global/utils.ts";
 import type { UseFormRegisterReturn } from "react-hook-form";
 import type { DetailedHTMLProps, InputHTMLAttributes } from "react";
+import { useAuth } from "@/context/auth/useAuth.ts";
 
 type InputProps = {
     className?: string;
@@ -42,6 +43,8 @@ export const Input = ({
     autoFocus = true,
     style,
 }: InputProps) => {
+    const { user } = useAuth();
+
     return (
         <>
             <input
@@ -54,6 +57,7 @@ export const Input = ({
                 autoComplete={autoComplete}
                 autoFocus={autoFocus}
                 style={style}
+                spellCheck={user?.preferences.spellcheck}
                 placeholder={placeholder}
                 onKeyDown={(e) => onKeyDown && onKeyDown(e)}
                 onBlur={onBlur}

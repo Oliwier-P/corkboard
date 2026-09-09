@@ -1,4 +1,4 @@
-import type { User } from "@/context/auth/types.ts";
+import type { UserSettings } from "@/context/auth/types.ts";
 import { useCollaborativeEditor } from "@/hooks/useCollaborativeEditor.ts";
 import { EditorContent } from "@tiptap/react";
 import "./CollaborativeEditor.scss";
@@ -14,7 +14,7 @@ import TextColorPopover from "@/ui/Popovers/DocumentPopovers/TextColorPopover/Te
 
 type CollaborativeEditorProps = {
     documentId: string;
-    user: User;
+    user: UserSettings;
     authToken: string;
     onReadyChange?: (ready: boolean) => void;
 };

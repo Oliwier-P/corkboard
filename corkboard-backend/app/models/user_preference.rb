@@ -4,6 +4,7 @@
 #
 #  id              :uuid             not null, primary key
 #  show_board_tags :boolean          default(TRUE)
+#  spellcheck      :boolean          default(FALSE)
 #  task_display    :string           default(NULL), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null

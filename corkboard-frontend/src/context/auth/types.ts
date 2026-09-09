@@ -13,6 +13,7 @@ export type UserSettings = {
 export type UserPreferences = {
     task_display: "modal" | "sidebar";
     show_board_tags: boolean;
+    spellcheck: boolean;
 };
 
 export type AuthContextType = {
