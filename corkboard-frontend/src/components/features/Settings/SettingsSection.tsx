@@ -8,7 +8,7 @@ interface SettingsSectionProps {
 }
 
 const SettingsSection = ({ className, children }: SettingsSectionProps) => {
-    return <div className={classNames("section", className)}>{children}</div>;
+    return <div className={classNames("settings-section", className)}>{children}</div>;
 };
 
 interface SettingsSectionInfoProps {

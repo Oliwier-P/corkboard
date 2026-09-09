@@ -1,6 +1,6 @@
 @use "@/global/colors" as colors;
 
-.section {
+.settings-section {
   display: grid;
   grid-template-columns: minmax(200px, 1fr) minmax(200px, 4fr);
   border: 1px solid colors.$border-color;

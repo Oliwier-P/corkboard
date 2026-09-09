@@ -22,7 +22,7 @@ const TaskDisplaySection = () => {
                     checked={user?.preferences.task_display === "modal"}
                     onChange={() => handleChangeTaskDisplay("modal")}
                 />
-                <span className="icon modal">
+                <span className="icon icon-modal">
                     <span className="shape" />
                 </span>
                 <span className="label">Modal</span>
@@ -35,7 +35,7 @@ const TaskDisplaySection = () => {
                     checked={user?.preferences.task_display === "sidebar"}
                     onChange={() => handleChangeTaskDisplay("sidebar")}
                 />
-                <span className="icon sidebar">
+                <span className="icon icon-sidebar">
                     <span className="shape" />
                 </span>
                 <span className="label">Panel</span>

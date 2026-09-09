@@ -1,4 +1,4 @@
-.user-profile .section .content {
+.user-profile .settings-section .content {
   &.task-display {
     flex-direction: row;
     gap: 12px;
@@ -34,7 +34,7 @@
         overflow: hidden;
         position: relative;
 
-        &.modal {
+        &-modal {
           justify-content: center;
 
           .shape {
@@ -45,7 +45,7 @@
           }
         }
 
-        &.sidebar {
+        &-sidebar {
           justify-content: flex-end;
 
           .shape {
