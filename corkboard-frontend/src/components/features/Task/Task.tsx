@@ -11,6 +11,7 @@ import { useTaskStore } from "@/store/taskStore.ts";
 import { Icon } from "@/ui/Icons/Icon.tsx";
 import UserPopover from "@/ui/Popovers/UserPopover/UserPopover.tsx";
 import Tag from "@/ui/Tag/Tag.tsx";
+import { useAuth } from "@/context/auth/useAuth.ts";
 
 type TaskProps = {
     taskId: string;
@@ -26,6 +27,7 @@ export const Task = memo(({ taskId }: TaskProps) => {
     const ref = useRef<HTMLDivElement>(null);
     const headerRef = useRef<HTMLFormElement>(null);
     const { register, handleSubmit } = useForm<Inputs>();
+    const { user } = useAuth();
 
     const setIsOpen = useTaskStore((state) => state.setIsOpen);
     const setTaskId = useTaskStore((state) => state.setTaskId);
@@ -138,13 +140,17 @@ export const Task = memo(({ taskId }: TaskProps) => {
                 <div className="tags">
                     <UserPopover taskId={taskId} taskUser={task.user} />
 
-                    {task.tags.slice(0, 3).map((tag) => (
-                        <Tag tag={tag} />
-                    ))}
-                    {task.tags.length > 3 && (
-                        <div className="tag">
-                            <span>+{task.tags.length - 3}</span>
-                        </div>
+                    {user?.preferences.show_board_tags && (
+                        <>
+                            {task.tags.slice(0, 3).map((tag) => (
+                                <Tag tag={tag} />
+                            ))}
+                            {task.tags.length > 3 && (
+                                <div className="tag">
+                                    <span>+{task.tags.length - 3}</span>
+                                </div>
+                            )}
+                        </>
                     )}
                 </div>
                 {task.priority && <Icon className={`${task.priority} priority`} icon="priority" />}

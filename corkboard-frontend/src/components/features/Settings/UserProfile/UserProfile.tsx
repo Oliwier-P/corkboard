@@ -3,6 +3,7 @@ import ProfileSection from "./Sections/ProfileSection.tsx";
 import DangerZoneSection from "@/features/Settings/UserProfile/Sections/DangerZoneSection.tsx";
 import TaskDisplaySection from "@/features/Settings/UserProfile/Sections/TaskDisplaySection.tsx";
 import SettingsSection from "@/features/Settings/SettingsSection.tsx";
+import ShowBoardTags from "@/features/Settings/UserProfile/Sections/ShowBoardTags.tsx";
 
 const UserProfile = () => {
     return (
@@ -18,7 +19,7 @@ const UserProfile = () => {
                 <SettingsSection.Content className="task-display" children={<TaskDisplaySection />} />
 
                 <SettingsSection.Info description="Show tags on board?" />
-                <SettingsSection.Content children={<input type="checkbox" />} />
+                <SettingsSection.Content children={<ShowBoardTags />} />
             </SettingsSection>
 
             <SettingsSection>
