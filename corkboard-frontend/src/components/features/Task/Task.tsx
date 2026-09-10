@@ -123,7 +123,7 @@ export const Task = memo(({ taskId }: TaskProps) => {
                     setTaskId(taskId);
                 }}
             >
-                <form className="task__header" ref={headerRef} onSubmit={handleSubmit(onSubmit)}>
+                <form className="task__header" ref={headerRef} onClick={(e) => e.stopPropagation()} onSubmit={handleSubmit(onSubmit)}>
                     <EditableText
                         isEditable={isEditing}
                         value={task.name}
