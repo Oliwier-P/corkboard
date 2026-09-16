@@ -6,4 +6,6 @@ export type WorkspaceType = {
     logo: string;
     owner: User;
     number_of_members: number;
+    code_prefix: string;
+    code_prefix_enabled: boolean;
 };

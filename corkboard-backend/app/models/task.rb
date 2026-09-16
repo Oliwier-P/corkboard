@@ -3,6 +3,8 @@
 # Table name: tasks
 #
 #  id           :uuid             not null, primary key
+#  code_name    :string
+#  code_number  :integer
 #  name         :string
 #  order        :integer
 #  priority     :string
@@ -12,6 +14,10 @@
 #  release_id   :uuid
 #  user_id      :uuid
 #  workspace_id :uuid
+#
+# Indexes
+#
+#  index_tasks_on_workspace_id_and_code_name  (workspace_id,code_name) UNIQUE
 #
 # Foreign Keys
 #
@@ -32,6 +38,9 @@ class Task < ApplicationRecord
   has_many :tags, through: :tasks_tags
   has_one :document, :dependent => :destroy
 
+  validates :code_name, presence: true, uniqueness: { scope: :workspace_id }
+
+  before_validation :generate_code_name, on: :create
   before_save :clear_release_id_for_backlog
 
   enum :status, {
@@ -74,5 +83,16 @@ class Task < ApplicationRecord
         } : nil
       }
     }
+  end
+
+  private
+
+  def generate_code_name
+    prefix = workspace.code_prefix
+    last_number = workspace.tasks.maximum('code_number').to_i
+    new_number = last_number + 1
+
+    self.code_name = "#{prefix}-#{new_number.to_s.rjust(2, '0')}"
+    self.code_number = new_number
   end
 end

@@ -23,7 +23,9 @@ class WorkspacesController < ApplicationController
 
   def update
     @workspace = current_user.workspaces.find(params[:id])
+    code_prefix_changed = @workspace.code_prefix != params[:workspace][:code_prefix]
     @workspace&.update!(workspace_params)
+    @workspace.rebuild_task_codes! if code_prefix_changed
   end
 
   def collaborators
@@ -101,6 +103,6 @@ class WorkspacesController < ApplicationController
   private
 
   def workspace_params
-    params.require(:workspace).permit(:name)
+    params.require(:workspace).permit(:name, :code_prefix)
   end
 end

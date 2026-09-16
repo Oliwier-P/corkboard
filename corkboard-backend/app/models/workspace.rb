@@ -2,13 +2,15 @@
 #
 # Table name: workspaces
 #
-#  id         :uuid             not null, primary key
-#  current    :boolean          default(FALSE), not null
-#  name       :string           not null
-#  slug       :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  owner_id   :uuid
+#  id                  :uuid             not null, primary key
+#  code_prefix         :string(3)
+#  code_prefix_enabled :boolean          default(FALSE)
+#  current             :boolean          default(FALSE), not null
+#  name                :string           not null
+#  slug                :string
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  owner_id            :uuid
 #
 # Indexes
 #
@@ -32,6 +34,10 @@ class Workspace < ApplicationRecord
   has_and_belongs_to_many :users
   belongs_to :owner, class_name: "User", foreign_key: :owner_id
 
+  validates :code_prefix, presence: true, length: { minimum: 1, maximum: 3 },
+            format: { with: /\A[A-Z]+\z/, message: "only upper letters" }
+  before_create :generate_code_prefix
+
   def current_release
     self.releases.find_by(current: true)
   end
@@ -39,5 +45,30 @@ class Workspace < ApplicationRecord
   def next_release
     current_release = self.current_release
     self.releases.where(current: false, status: Release::QUEUED, order: current_release&.order..).order(:order).first
+  end
+
+  def generate_code_prefix
+    return if code_prefix.present?
+
+    words = name.split
+    prefix = words.map { |w| w[0]&.upcase }.compact.join
+
+    prefix = name[0..2].upcase if prefix.blank? || prefix.length > 3
+    self.code_prefix = prefix
+  end
+
+  def generate_code_prefix!
+    generate_code_prefix
+    save!
+  end
+
+  def rebuild_task_codes!
+    tasks.order(:created_at).each_with_index do |task, index|
+      number = index + 1
+      task.update_columns(
+        code_name: "#{code_prefix}-#{number.to_s.rjust(4, '0')}",
+        code_number: number
+      )
+    end
   end
 end

@@ -12,6 +12,7 @@ export type TaskType = {
     status: string;
     order: number;
     priority: string | null;
+    code_name: string;
     user: User | null;
     actor_id?: string;
     tags: TagType[];

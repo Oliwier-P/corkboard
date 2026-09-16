@@ -9,16 +9,18 @@ type WorkspaceMenuItemProps = {
     name: string;
     owner: User;
     number_of_members: number;
+    code_prefix: string;
+    code_prefix_enabled: boolean;
 };
 
-export const WorkspaceMenuItem = ({ id, name, owner, number_of_members }: WorkspaceMenuItemProps) => {
+export const WorkspaceMenuItem = ({ id, name, owner, number_of_members, code_prefix, code_prefix_enabled }: WorkspaceMenuItemProps) => {
     const setWorkspace = useWorkspaceStore((state) => state.setWorkspace);
     const setMenuOpen = useWorkspaceMenuStore((state) => state.setOpen);
     const navigate = useNavigate();
 
     const handleSwitchWorkspace = () => {
         localStorage.setItem("workspace_id", id);
-        setWorkspace({ id, name, logo: "", owner, number_of_members });
+        setWorkspace({ id, name, logo: "", owner, number_of_members, code_prefix, code_prefix_enabled });
         setMenuOpen(false);
         navigate(`/workspaces/${id}/current_release`);
     };

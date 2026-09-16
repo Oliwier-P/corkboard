@@ -15,6 +15,8 @@ type InputProps = {
     variant?: "no-border";
     defaultValue?: string | number;
     value?: string | number;
+    minLength?: number;
+    maxLength?: number;
     error?: string;
     autoComplete?: string;
     autoFocus?: boolean;
@@ -34,6 +36,8 @@ export const Input = ({
     isInvaild,
     variant,
     defaultValue,
+    minLength,
+    maxLength,
     value,
     error,
     onKeyDown,
@@ -54,6 +58,8 @@ export const Input = ({
                 type={type}
                 id={id}
                 name={name}
+                minLength={minLength}
+                maxLength={maxLength}
                 autoComplete={autoComplete}
                 autoFocus={autoFocus}
                 style={style}

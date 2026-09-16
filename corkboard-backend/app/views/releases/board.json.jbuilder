@@ -1,7 +1,7 @@
 json.tasks do
   @tasks.each do |task|
     json.set! task.id do
-      json.extract! task, :id, :name, :status, :priority
+      json.extract! task, :id, :name, :status, :priority, :code_name
       json.tags task.tags do |tag|
         json.partial! "tags/tag", tag: tag
       end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_09_153130) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_15_220944) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -60,6 +60,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_09_153130) do
   end
 
   create_table "tasks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "code_name"
+    t.integer "code_number"
     t.datetime "created_at", null: false
     t.string "name"
     t.integer "order"
@@ -69,6 +71,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_09_153130) do
     t.datetime "updated_at", null: false
     t.uuid "user_id"
     t.uuid "workspace_id"
+    t.index ["workspace_id", "code_name"], name: "index_tasks_on_workspace_id_and_code_name", unique: true
   end
 
   create_table "tasks_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -124,6 +127,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_09_153130) do
   end
 
   create_table "workspaces", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "code_prefix", limit: 3
+    t.boolean "code_prefix_enabled", default: false
     t.datetime "created_at", null: false
     t.boolean "current", default: false, null: false
     t.string "name", null: false

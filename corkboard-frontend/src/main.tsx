@@ -9,7 +9,7 @@ import { AuthProvider } from "@/context/auth/AuthProvider.tsx";
 import { SignUpPage } from "@/pages/SignUpPage/SignUpPage.tsx";
 import { ReleasesPage } from "@/pages/ReleasesPage/ReleasesPage.tsx";
 import { SettingsPage } from "@/pages/SettingsPage/SettingsPage.tsx";
-import { WorkspaceGeneral } from "@/features/Settings/WorkspaceGeneral/WorkspaceGeneral.tsx";
+import WorkspaceGeneral from "@/features/Settings/WorkspaceGeneral/WorkspaceGeneral.tsx";
 import WorkspaceUsers from "@/features/Settings/WorkspaceUsers/WorkspaceUsers.tsx";
 import UserProfile from "@/features/Settings/UserProfile/UserProfile.tsx";
 import { WorkspaceList } from "@/features/Settings/WorkspaceList/WorkspaceList.tsx";

@@ -3,6 +3,8 @@
 # Table name: tasks
 #
 #  id           :uuid             not null, primary key
+#  code_name    :string
+#  code_number  :integer
 #  name         :string
 #  order        :integer
 #  priority     :string
@@ -12,6 +14,10 @@
 #  release_id   :uuid
 #  user_id      :uuid
 #  workspace_id :uuid
+#
+# Indexes
+#
+#  index_tasks_on_workspace_id_and_code_name  (workspace_id,code_name) UNIQUE
 #
 # Foreign Keys
 #

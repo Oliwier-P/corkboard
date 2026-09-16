@@ -4,22 +4,33 @@ import { useNavigate, useParams } from "react-router-dom";
 import { api } from "@/api";
 import { Button } from "@/ui/Button/Button.tsx";
 import * as yup from "yup";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAuth } from "@/context/auth/useAuth.ts";
 import { useWorkspaceStore } from "@/store/workspaceStore.ts";
 import Loading from "@/ui/Loading/Loading.tsx";
+import Switch from "@/ui/Switch/Switch.tsx";
 
 const schema = yup
     .object({
-        id: yup.number(),
+        id: yup.string().required(),
         name: yup.string().required("You have to enter a workspace name!"),
+        code_prefix_enabled: yup.boolean().default(true),
+        code_prefix: yup
+            .string()
+            .max(3, "Max 3 characters")
+            .when("code_prefix_enabled", {
+                is: true,
+                then: (schema) => schema.required("Code prefix is required!"),
+                otherwise: (schema) => schema.optional(),
+            }),
+        owner: yup.object().optional(),
     })
     .required();
 
 type FormData = yup.InferType<typeof schema>;
 
-export const WorkspaceGeneral = () => {
+const WorkspaceGeneral = () => {
     const { workspaceId } = useParams();
     const { user } = useAuth();
     const navigate = useNavigate();
@@ -31,6 +42,8 @@ export const WorkspaceGeneral = () => {
         formState: { isDirty, isLoading },
         getValues,
         reset,
+        watch,
+        control,
     } = useForm({
         resolver: yupResolver(schema),
         defaultValues: async () => {
@@ -38,7 +51,6 @@ export const WorkspaceGeneral = () => {
             return await response.data;
         },
     });
-
     const workspaceOwner = getValues("owner")?.id === user?.id;
 
     const handleDeleteWorkspace = () => {
@@ -76,8 +88,30 @@ export const WorkspaceGeneral = () => {
 
                 <div className="workspace-general__setting">
                     <span className="workspace-general__label">Name</span>
-                    <Input defaultValue={!isLoading ? getValues("name") : ""} autoFocus={false} register={register("name")} />
+                    <Input register={register("name")} placeholder="Workspace name" />
                 </div>
+
+                <div className="workspace-general__setting">
+                    <span className="workspace-general__label">Enable code prefix</span>
+                    <Controller
+                        control={control}
+                        name="code_prefix_enabled"
+                        render={({ field }) => <Switch checked={field.value} onChange={field.onChange} />}
+                    />
+                </div>
+
+                {watch("code_prefix_enabled") && (
+                    <div className="workspace-general__setting">
+                        <span className="workspace-general__label">Tasks code prefix</span>
+                        <Input
+                            className="code-prefix"
+                            register={register("code_prefix", {
+                                setValueAs: (value) => value?.toUpperCase() || "",
+                            })}
+                            maxLength={3}
+                        />
+                    </div>
+                )}
             </div>
 
             {workspaceOwner && (
@@ -96,3 +130,5 @@ export const WorkspaceGeneral = () => {
         </div>
     );
 };
+
+export default WorkspaceGeneral;

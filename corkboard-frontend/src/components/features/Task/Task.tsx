@@ -12,6 +12,7 @@ import { Icon } from "@/ui/Icons/Icon.tsx";
 import UserPopover from "@/ui/Popovers/UserPopover/UserPopover.tsx";
 import Tag from "@/ui/Tag/Tag.tsx";
 import { useAuth } from "@/context/auth/useAuth.ts";
+import { useWorkspaceStore } from "@/store/workspaceStore.ts";
 
 type TaskProps = {
     taskId: string;
@@ -32,6 +33,7 @@ export const Task = memo(({ taskId }: TaskProps) => {
     const setIsOpen = useTaskStore((state) => state.setIsOpen);
     const setTaskId = useTaskStore((state) => state.setTaskId);
 
+    const workspace = useWorkspaceStore((state) => state.workspace);
     const task = useReleaseBoardStore((state) => state.tasks[taskId]);
     const updateTask = useReleaseBoardStore((state) => state.updateTask);
     const deleteTask = useReleaseBoardStore((state) => state.deleteTask);
@@ -153,6 +155,7 @@ export const Task = memo(({ taskId }: TaskProps) => {
                         </>
                     )}
                 </div>
+                {workspace?.code_prefix_enabled && task.code_name}
                 {task.priority && <Icon className={`${task.priority} priority`} icon="priority" />}
             </div>
         </ContextMenu>

@@ -72,6 +72,8 @@ export const WorkspaceMenu = forwardRef<HTMLDivElement, WorkspaceMenuProps>(({ w
                                                 name={workspace.name}
                                                 owner={workspace.owner}
                                                 number_of_members={workspace.number_of_members}
+                                                code_prefix={workspace.code_prefix}
+                                                code_prefix_enabled={workspace.code_prefix_enabled}
                                             />
                                         ))}
                                     </>
