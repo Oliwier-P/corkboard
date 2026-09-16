@@ -50,11 +50,15 @@ class Workspace < ApplicationRecord
   def generate_code_prefix
     return if code_prefix.present?
 
-    words = name.split
-    prefix = words.map { |w| w[0]&.upcase }.compact.join
+    words = name.to_s.split
+    prefix = words.filter_map { |w| w[/[A-Za-z]/] }.join.upcase
 
-    prefix = name[0..2].upcase if prefix.blank? || prefix.length > 3
-    self.code_prefix = prefix
+    if prefix.blank? || prefix.length > 3
+      letters_only = name.to_s.gsub(/[^A-Za-z]/, "")
+      prefix = letters_only[0, 3].upcase
+    end
+
+    self.code_prefix = prefix.presence || "TSK"
   end
 
   def generate_code_prefix!

@@ -125,7 +125,7 @@ export const Task = memo(({ taskId }: TaskProps) => {
                     setTaskId(taskId);
                 }}
             >
-                <form className="task__header" ref={headerRef} onClick={(e) => e.stopPropagation()} onSubmit={handleSubmit(onSubmit)}>
+                <form className="task__header" ref={headerRef} onClick={(e) => isEditing && e.stopPropagation()} onSubmit={handleSubmit(onSubmit)}>
                     <EditableText
                         isEditable={isEditing}
                         value={task.name}
@@ -155,7 +155,7 @@ export const Task = memo(({ taskId }: TaskProps) => {
                         </>
                     )}
                 </div>
-                {workspace?.code_prefix_enabled && task.code_name}
+                {workspace?.code_prefix_enabled && <div className="code-name">{task.code_name}</div>}
                 {task.priority && <Icon className={`${task.priority} priority`} icon="priority" />}
             </div>
         </ContextMenu>

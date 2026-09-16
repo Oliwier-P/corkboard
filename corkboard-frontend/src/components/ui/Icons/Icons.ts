@@ -25,6 +25,7 @@ import warning from "./svgs/warning.svg?react";
 import success from "./svgs/success.svg?react";
 import close from "./svgs/close.svg?react";
 import tag from "./svgs/tag.svg?react";
+import hash from "./svgs/hash.svg?react";
 
 import bold from "./svgs/bold.svg?react";
 import italic from "./svgs/italic.svg?react";
@@ -89,4 +90,5 @@ export const icons = {
     success,
     close,
     tag,
+    hash,
 };

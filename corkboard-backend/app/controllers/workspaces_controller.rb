@@ -103,6 +103,6 @@ class WorkspacesController < ApplicationController
   private
 
   def workspace_params
-    params.require(:workspace).permit(:name, :code_prefix)
+    params.require(:workspace).permit(:name, :code_prefix, :code_prefix_enabled)
   end
 end

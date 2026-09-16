@@ -5,6 +5,8 @@ import PriorityPopover from "@/ui/Popovers/PriorityPopover/PriorityPopover.tsx";
 import TaskStatusPopover from "@/ui/Popovers/TaskStatusPopover/TaskStatusPopover.tsx";
 import UserPopover from "@/ui/Popovers/UserPopover/UserPopover.tsx";
 import TagsPopover from "@/ui/Popovers/TagsPopover/TagsPopover.tsx";
+import { useToast } from "@/hooks/useToast.ts";
+import { useWorkspaceStore } from "@/store/workspaceStore.ts";
 
 interface TaskPropertiesProps {
     task: TaskType;
@@ -18,7 +20,22 @@ type ColumnType = {
 };
 
 const TaskProperties = ({ task }: TaskPropertiesProps) => {
+    const toast = useToast();
+    const workspace = useWorkspaceStore((state) => state.workspace);
+
+    const handleCopyTaskCodeName = () => {
+        navigator.clipboard.writeText(task.code_name).then(() => {
+            toast.success("Task code copied!", 2000);
+        });
+    };
+
     const columns: ColumnType[] = [
+        workspace?.code_prefix_enabled && {
+            id: "code_name",
+            name: "Code name",
+            icon: "hash",
+            component: <div onClick={handleCopyTaskCodeName}>{task.code_name}</div>,
+        },
         {
             id: "assign",
             name: "Assign",
@@ -43,7 +60,7 @@ const TaskProperties = ({ task }: TaskPropertiesProps) => {
             icon: "tag",
             component: <TagsPopover taskId={task.id} />,
         },
-    ];
+    ].filter(Boolean) as ColumnType[];
 
     return (
         <div className="task-properties">
