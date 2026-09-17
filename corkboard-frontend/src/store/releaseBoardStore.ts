@@ -143,6 +143,7 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
             user: null,
             priority: null,
             tags: [],
+            code_name: "",
         };
         set((state) => {
             return {
