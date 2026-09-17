@@ -70,7 +70,7 @@ class Workspace < ApplicationRecord
     tasks.order(:created_at).each_with_index do |task, index|
       number = index + 1
       task.update_columns(
-        code_name: "#{code_prefix}-#{number.to_s.rjust(4, '0')}",
+        code_name: "#{code_prefix}-#{number.to_s.rjust(2, '0')}",
         code_number: number
       )
     end
