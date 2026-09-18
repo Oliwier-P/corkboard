@@ -39,6 +39,7 @@ export const Task = memo(({ taskId }: TaskProps) => {
     const deleteTask = useReleaseBoardStore((state) => state.deleteTask);
     const moveToNextRelease = useReleaseBoardStore((state) => state.moveTaskToNextRelease);
     const moveToBacklog = useReleaseBoardStore((state) => state.moveToBacklog);
+    const moveTaskBetweenColumns = useReleaseBoardStore((state) => state.moveTaskBetweenColumns);
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         updateTask(taskId, { name: data.name });
@@ -73,45 +74,52 @@ export const Task = memo(({ taskId }: TaskProps) => {
     }, [isEditing]);
 
     const contextMenuOptions = useCallback(
-        (): ContextMenuItem[] => [
-            {
-                type: "button",
-                label: "Rename",
-                icon: "edit",
-                onClick: () => setIsEditing(true),
-            },
-            {
-                type: "button",
-                label: "Change Priority",
-                icon: "exclamationMark",
-                onClick: () => setIsEditing(true),
-            },
-            {
-                type: "hr",
-            },
-            {
-                type: "button",
-                label: "Move To Next Release",
-                icon: "boxArrowUp",
-                onClick: () => moveToNextRelease(taskId),
-            },
-            {
-                type: "button",
-                label: "Move To Backlog",
-                icon: "boxArrowDown",
-                onClick: () => moveToBacklog(taskId),
-            },
-            {
-                type: "hr",
-            },
-            {
-                type: "button",
-                label: "Delete",
-                color: "red",
-                icon: "trash",
-                onClick: () => deleteTask(taskId),
-            },
-        ],
+        (): ContextMenuItem[] =>
+            [
+                {
+                    type: "button",
+                    label: "Rename",
+                    icon: "edit",
+                    onClick: () => setIsEditing(true),
+                },
+                {
+                    type: "button",
+                    label: "Change Priority",
+                    icon: "exclamationMark",
+                    onClick: () => setIsEditing(true),
+                },
+                {
+                    type: "hr",
+                },
+                task.status === "backlog" && {
+                    type: "button",
+                    label: "Move To Current Release",
+                    icon: "boxArrowUp",
+                    onClick: () => moveTaskBetweenColumns(taskId, "backlog", "todo"),
+                },
+                {
+                    type: "button",
+                    label: "Move To Next Release",
+                    icon: "boxArrowUp",
+                    onClick: () => moveToNextRelease(taskId),
+                },
+                task.status !== "backlog" && {
+                    type: "button",
+                    label: "Move To Backlog",
+                    icon: "boxArrowDown",
+                    onClick: () => moveToBacklog(taskId),
+                },
+                {
+                    type: "hr",
+                },
+                {
+                    type: "button",
+                    label: "Delete",
+                    color: "red",
+                    icon: "trash",
+                    onClick: () => deleteTask(taskId),
+                },
+            ].filter(Boolean) as ContextMenuItem[],
         [deleteTask, moveToBacklog, moveToNextRelease, taskId],
     );
 
