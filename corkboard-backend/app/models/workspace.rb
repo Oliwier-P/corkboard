@@ -36,7 +36,7 @@ class Workspace < ApplicationRecord
 
   validates :code_prefix, presence: true, length: { minimum: 1, maximum: 3 },
             format: { with: /\A[A-Z]+\z/, message: "only upper letters" }
-  before_create :generate_code_prefix
+  before_validation :generate_code_prefix
 
   def current_release
     self.releases.find_by(current: true)

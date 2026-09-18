@@ -18,7 +18,7 @@ class WorkspacesController < ApplicationController
   end
 
   def create
-    @workspace = current_user.workspaces.create(name: params[:name], owner_id: current_user.id)
+    @workspace = current_user.workspaces.create!(name: params[:name], owner_id: current_user.id)
   end
 
   def update
