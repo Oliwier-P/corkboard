@@ -136,7 +136,6 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
             id: temporaryId,
             name,
             order,
-            description: "",
             release_id: columnId === "backlog" ? null : get().id,
             workspace_id: workspaceId || null,
             status: columnId,

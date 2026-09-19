@@ -40,4 +40,8 @@ group :development, :test do
   gem "mutex_m"
 
   gem "rubocop-rails-omakase", require: false
+
+  gem 'rspec-rails'
+  gem 'factory_bot_rails'
+  gem 'faker'
 end

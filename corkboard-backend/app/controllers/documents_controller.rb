@@ -1,4 +1,5 @@
 class DocumentsController < ApplicationController
+  load_and_authorize_resource except: [:ydoc, :update_ydoc, :show]
 
   def index
     @documents = Document.not_task_documents.where(workspace_id: params[:workspace_id])

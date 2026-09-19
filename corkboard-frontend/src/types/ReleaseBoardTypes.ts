@@ -6,7 +6,6 @@ export type Priority = "low" | "medium" | "high" | "urgent";
 export type TaskType = {
     id: string;
     name: string;
-    description: string;
     release_id: string | null;
     workspace_id: string | null;
     status: string;
