@@ -1,4 +1,5 @@
 class ReleasesController < ApplicationController
+  load_and_authorize_resource
   before_action :set_release, only: [:board, :all_tasks]
 
   def create
