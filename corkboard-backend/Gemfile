@@ -40,4 +40,7 @@ group :development, :test do
   gem "mutex_m"
 
   gem "rubocop-rails-omakase", require: false
+
+  gem 'rspec-rails', '~> 7.0'
+  gem 'rspec-snapshot'
 end

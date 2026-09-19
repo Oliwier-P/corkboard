@@ -1,0 +1,12 @@
+{
+  "id": "ANY",
+  "name": "New Space 2",
+  "owner_id": "ANY",
+  "code_prefix": "NS",
+  "code_prefix_enabled": false,
+  "owner": {
+    "id": "ANY",
+    "username": "john"
+  },
+  "number_of_members": 1
+}
