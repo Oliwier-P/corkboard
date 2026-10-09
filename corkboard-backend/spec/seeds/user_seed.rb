@@ -1,14 +1,10 @@
 require 'rails_helper'
 
 RSpec.shared_context 'user_seed' do
-  let(:superadmin) { create(:user, superadmin: true) }
-  let(:user1) { create(:user) }
-  let(:user2) { create(:user) }
-  let(:user4) { create(:user) }
-  let(:user5) { create(:user) }
-
-  let(:workspace) { create(:workspace) }
-
-  let!(:owner_membership)  { create(:workspace_membership, user: owner, workspace: workspace, role: 'owner') }
-  let!(:member_membership) { create(:workspace_membership, user: member, workspace: workspace, role: 'member') }
+  let!(:user1) { User.create!(username: "User1", password: "password123") }
+  let!(:user2) { User.create!(username: "User2", password: "password123") }
+  let!(:user3) { User.create!(username: "User3", password: "password123") }
+  let!(:user4) { User.create!(username: "User4", password: "password123") }
+  let!(:user5) { User.create!(username: "User5", password: "password123") }
+  let!(:superadmin) { User.create!(username: "superadmin", password: "password123", role: "superadmin") }
 end

@@ -1,7 +1,31 @@
 [
   {
     "id": "ANY",
-    "username": "user3",
+    "username": "User3",
+    "role": "user",
+    "created_at": "ANY",
+    "updated_at": "ANY",
+    "preferences": {
+      "task_display": "modal",
+      "show_board_tags": true,
+      "spellcheck": false
+    }
+  },
+  {
+    "id": "ANY",
+    "username": "User4",
+    "role": "user",
+    "created_at": "ANY",
+    "updated_at": "ANY",
+    "preferences": {
+      "task_display": "modal",
+      "show_board_tags": true,
+      "spellcheck": false
+    }
+  },
+  {
+    "id": "ANY",
+    "username": "User5",
     "role": "user",
     "created_at": "ANY",
     "updated_at": "ANY",

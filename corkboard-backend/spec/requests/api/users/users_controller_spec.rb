@@ -1,10 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'UsersController', type: :request do
-  let!(:user1) { User.create!(username: "user1", password: "password123") }
-  let!(:user2) { User.create!(username: "user2", password: "password123") }
-  let!(:user3) { User.create!(username: "user3", password: "password123") }
-  let!(:superadmin) { User.create!(username: "superadmin", password: "password123", role: "superadmin") }
+  include_context 'user_seed'
 
   context 'authorization' do
     it "token" do
