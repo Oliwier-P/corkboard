@@ -1,0 +1,26 @@
+[
+  {
+    "id": "ANY",
+    "username": "user2",
+    "role": "user",
+    "created_at": "ANY",
+    "updated_at": "ANY",
+    "preferences": {
+      "task_display": "modal",
+      "show_board_tags": true,
+      "spellcheck": false
+    }
+  },
+  {
+    "id": "ANY",
+    "username": "user3",
+    "role": "user",
+    "created_at": "ANY",
+    "updated_at": "ANY",
+    "preferences": {
+      "task_display": "modal",
+      "show_board_tags": true,
+      "spellcheck": false
+    }
+  }
+]

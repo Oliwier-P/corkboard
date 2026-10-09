@@ -15,6 +15,7 @@ class Ability
       can :manage, Release, workspace_id: workspace_ids
       can :manage, Tag, workspace_id: workspace_ids
       can :manage, Task, workspace_id: workspace_ids
+      can :create, Workspace
       can :manage, Workspace, id: workspace_ids
       can :manage, WorkspaceInvitation do |invitation|
         invitation.invited_by_user_id == @user.id || invitation.invited_user_id == @user.id

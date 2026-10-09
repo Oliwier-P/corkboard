@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  load_and_authorize_resource
   before_action :authenticate_user!
+  load_and_authorize_resource
 
   def me
     @user = current_user
@@ -30,7 +30,9 @@ class UsersController < ApplicationController
 
   private
 
+  ALLOWED_PARAMS = [:username, :password, :password_confirmation]
+
   def user_params
-    params.require(:user).permit(:username, :password, :password_confirmation)
+    params.require(:user).permit(ALLOWED_PARAMS)
   end
 end

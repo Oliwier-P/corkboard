@@ -11,4 +11,8 @@ class ApplicationController < ActionController::API
 
     devise_parameter_sanitizer.permit(:account_update, keys: [:username, :email, :password, :password_confirmation])
   end
+
+  rescue_from CanCan::AccessDenied do
+    render json: { error: "Forbidden" }, status: :forbidden
+  end
 end

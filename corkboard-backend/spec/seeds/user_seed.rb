@@ -2,8 +2,10 @@ require 'rails_helper'
 
 RSpec.shared_context 'user_seed' do
   let(:superadmin) { create(:user, superadmin: true) }
-  let(:owner) { create(:user) }
-  let(:member) { create(:user) }
+  let(:user1) { create(:user) }
+  let(:user2) { create(:user) }
+  let(:user4) { create(:user) }
+  let(:user5) { create(:user) }
 
   let(:workspace) { create(:workspace) }
 
