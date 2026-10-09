@@ -1,4 +1,5 @@
 class UserPreferencesController < ApplicationController
+  before_action :authenticate_user!
   load_and_authorize_resource
 
   def update
@@ -13,7 +14,9 @@ class UserPreferencesController < ApplicationController
 
   private
 
+  ALLOWED_PARAMS = [:task_display, :show_board_tags, :spellcheck]
+
   def user_preference_params
-    params.require(:user_preference).permit(:task_display, :show_board_tags, :spellcheck)
+    params.require(:user_preference).permit(ALLOWED_PARAMS)
   end
 end

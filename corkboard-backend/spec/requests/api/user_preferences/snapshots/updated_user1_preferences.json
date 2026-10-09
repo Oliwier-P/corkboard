@@ -1,0 +1,12 @@
+{
+  "id": "ANY",
+  "username": "User1",
+  "role": "user",
+  "created_at": "ANY",
+  "updated_at": "ANY",
+  "preferences": {
+    "task_display": "sidebar",
+    "show_board_tags": false,
+    "spellcheck": true
+  }
+}
