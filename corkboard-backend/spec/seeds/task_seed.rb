@@ -15,7 +15,7 @@ RSpec.shared_context 'task_seed' do
   end
   let!(:user1_workspace_backlog_task) do
     Task.create!(name: "User1 Backlog Task", workspace: user1_workspace, release: nil,
-                 user: nil, order: 0, status: "todo", priority: "high")
+                 user: nil, order: 0, status: "backlog", priority: "high")
   end
 
   let!(:user2_workspace_task) do
