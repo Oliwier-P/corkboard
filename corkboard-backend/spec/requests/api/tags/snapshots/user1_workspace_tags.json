@@ -1,0 +1,20 @@
+{
+  "tags": [
+    {
+      "id": "ANY",
+      "name": "Bug",
+      "color": "#ef4444"
+    },
+    {
+      "id": "ANY",
+      "name": "Feature",
+      "color": "#22c55e"
+    },
+    {
+      "id": "ANY",
+      "name": "Docs",
+      "color": "#3b82f6"
+    }
+  ],
+  "task_tags": []
+}

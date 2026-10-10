@@ -1,9 +1,11 @@
 class TagsController < ApplicationController
+  before_action :authenticate_user!
   load_and_authorize_resource
 
   def index
     if params[:task_id].present?
       task = Task.find(params[:task_id])
+      authorize! :read, Tag.new(workspace_id: params[:workspace_id])
 
       @tags = Tag.where(workspace_id: task.workspace_id)
                  .where.not(id: task.tags.select(:id))
@@ -12,6 +14,7 @@ class TagsController < ApplicationController
     end
 
     if params[:workspace_id].present?
+      authorize! :read, Tag.new(workspace_id: params[:workspace_id])
       @tags = Tag.where(workspace_id: params[:workspace_id])
     end
   end
@@ -22,7 +25,7 @@ class TagsController < ApplicationController
   end
 
   def create
-    @tag = Tag.create!(tag_params)
+    @tag = Tag.create!(tag_params.to_h)
   end
 
   def destroy
@@ -47,7 +50,9 @@ class TagsController < ApplicationController
 
   private
 
+  ALLOWED_PARAMS = [:name, :color, :workspace_id]
+
   def tag_params
-    params.permit(:name, :color, :workspace_id)
+    params.require(:tag).permit(ALLOWED_PARAMS)
   end
 end

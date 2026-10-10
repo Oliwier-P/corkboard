@@ -1,6 +1,11 @@
 RSpec::Matchers.define :match_json_snapshot do |snapshot_name|
-  UUID_REGEX = /\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/i
-  TIMESTAMP_REGEX = /\A\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})?\z/
+  def uuid_regex
+    /\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/i
+  end
+
+  def timestamp_regex
+    /\A\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})?\z/
+  end
 
   match do |actual|
     actual = JSON.parse(actual) if actual.is_a?(String)
@@ -30,7 +35,7 @@ RSpec::Matchers.define :match_json_snapshot do |snapshot_name|
     when Array
       value.map { |v| auto_any(v) }
     when String
-      (value.match?(UUID_REGEX) || value.match?(TIMESTAMP_REGEX)) ? "ANY" : value
+      (value.match?(uuid_regex) || value.match?(timestamp_regex)) ? "ANY" : value
     else
       value
     end
