@@ -1,0 +1,10 @@
+{
+  "id": "ANY",
+  "name": "New Release",
+  "order": 2,
+  "status": "NOT_QUEUED",
+  "progress": {
+    "tasks": 0,
+    "accepted_tasks": 0
+  }
+}

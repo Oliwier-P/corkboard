@@ -1,0 +1,52 @@
+{
+  "tasks": {
+    "7f2acb59-184e-47a1-883c-589e63735079": {
+      "id": "ANY",
+      "name": "Task 2",
+      "status": "todo",
+      "priority": null,
+      "code_name": "UW-02",
+      "tags": [],
+      "user": null
+    },
+    "9c9fabca-df78-4770-bb5d-dfa10846ad61": {
+      "id": "ANY",
+      "name": "Task 3",
+      "status": "testing",
+      "priority": null,
+      "code_name": "UW-03",
+      "tags": [],
+      "user": null
+    }
+  },
+  "columns": [
+    {
+      "id": "adjustments",
+      "taskIds": []
+    },
+    {
+      "id": "todo",
+      "taskIds": [
+        "ANY"
+      ]
+    },
+    {
+      "id": "in_progress",
+      "taskIds": []
+    },
+    {
+      "id": "review_pending",
+      "taskIds": []
+    },
+    {
+      "id": "testing",
+      "taskIds": [
+        "ANY"
+      ]
+    },
+    {
+      "id": "accepted",
+      "taskIds": []
+    }
+  ]
+}

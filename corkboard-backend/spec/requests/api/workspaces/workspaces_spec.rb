@@ -71,19 +71,19 @@ RSpec.describe "Workspaces", type: :request do
     end
 
     it "fetch" do
-      # user can get workspaces
+      # user can fetch workspaces
       get "/workspaces", headers: auth_headers(user1)
       expect(response.body).to match_json_snapshot("user1_workspaces")
 
-      # user can get workspace
+      # user can fetch workspace
       get "/workspaces/#{user1_workspace.id}", headers: auth_headers(user1)
       expect(response.body).to match_json_snapshot("user1_workspace")
 
-      # user can get releases
+      # user can fetch releases
       get "/workspaces/#{user1_workspace.id}/releases", headers: auth_headers(user1)
       expect(response.body).to match_json_snapshot("user1_workspace_releases")
 
-      # user can get current release
+      # user can fetch current release
       get "/workspaces/#{user1_workspace.id}/current_release", headers: auth_headers(user1)
       expect(response.body).to match_json_snapshot("user1_workspace_current_release")
     end

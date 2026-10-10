@@ -1,0 +1,13 @@
+[
+  {
+    "id": "ANY",
+    "completed": false,
+    "created_at": "ANY",
+    "current": true,
+    "name": "Update Release",
+    "order": 0,
+    "status": "NOT_QUEUED",
+    "updated_at": "ANY",
+    "workspace_id": "ANY"
+  }
+]
