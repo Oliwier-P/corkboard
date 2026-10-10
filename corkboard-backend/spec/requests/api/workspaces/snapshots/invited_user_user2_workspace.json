@@ -1,0 +1,9 @@
+{
+  "message": "User User3 was successfully invited",
+  "status": "success",
+  "user": {
+    "id": "ANY",
+    "username": "User3",
+    "role": "user"
+  }
+}

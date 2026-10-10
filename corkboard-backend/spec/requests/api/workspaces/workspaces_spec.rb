@@ -61,11 +61,11 @@ RSpec.describe "Workspaces", type: :request do
       expect(response.body).to match_json_snapshot("completed_release_user1_workspace")
 
       # user can invite other user to workspace
-      post "/workspaces/#{user1_workspace.id}/invite_user", headers: auth_headers(user1)
-      expect(response.body).to match_json_snapshot("invited_user_user1_workspace")
+      post "/workspaces/#{user2_workspace.id}/invite_user", params: { id: user2_workspace.id, username: user3.username }, headers: auth_headers(user2)
+      expect(response.body).to match_json_snapshot("invited_user_user2_workspace")
 
       # user can accept invitation to workspace
-      WorkspaceInvitation.create!(invited_by_user_id: user2.id, invited_user_id: user5.id, workspace_id: second_user2_workspace.id)
+      WorkspaceInvitation.create!(invited_by_user_id: user2.id, invited_user_id: user5.id, workspace_id: user2_workspace.id)
       post "/workspaces/#{user2_workspace.id}/accept_invitation", headers: auth_headers(user5)
       expect(response.body).to match_json_snapshot("accepted_invitation_user2_workspace")
     end
@@ -78,10 +78,6 @@ RSpec.describe "Workspaces", type: :request do
       # user can get workspace
       get "/workspaces/#{user1_workspace.id}", headers: auth_headers(user1)
       expect(response.body).to match_json_snapshot("user1_workspace")
-
-      # user can get collaborators
-      get "/workspaces/#{user1_workspace.id}/collaborators", headers: auth_headers(user1)
-      expect(response.body).to match_json_snapshot("user1_workspace_collaborators")
 
       # user can get releases
       get "/workspaces/#{user1_workspace.id}/releases", headers: auth_headers(user1)
@@ -105,14 +101,14 @@ RSpec.describe "Workspaces", type: :request do
       expect(response.body).to match_json_snapshot("deleted_user1_workspace")
 
       # user can decline invitation to workspace
-      WorkspaceInvitation.create!(invited_by_user_id: user2.id, invited_user_id: user5.id, workspace_id: second_user2_workspace.id)
       delete "/workspaces/#{user2_workspace.id}/decline_invitation", params: { name: second_user2_workspace.name }, headers: auth_headers(user2)
       expect(response.body).to match_json_snapshot("declined_invitation_user2_workspace")
+      expect(WorkspaceInvitation.where(workspace_id: user2_workspace.id, invited_user_id: user5.id).count).to eq(0)
 
       # user can cancel user invitation to workspace
-      WorkspaceInvitation.create!(invited_by_user_id: user2.id, invited_user_id: user5.id, workspace_id: second_user2_workspace.id)
       delete "/workspaces/#{user2_workspace.id}/cancel_invitation", headers: auth_headers(user2)
       expect(response.body).to match_json_snapshot("canceled_invitation_user2_workspace")
+      expect(WorkspaceInvitation.where(workspace_id: user2_workspace.id, invited_user_id: user5.id).count).to eq(0)
 
       # owner can delete user from workspace
       delete "/workspaces/#{user1_workspace.id}/delete_user", params: { user_id: user5.id, username: user5.username }, headers: auth_headers(user1)

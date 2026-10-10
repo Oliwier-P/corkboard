@@ -14,6 +14,10 @@ development:
 test:
   <<: *default
   database: corkboard_test
+  username: <%= ENV["DATABASE_USERNAME"] %>
+  password: <%= ENV["DATABASE_PASSWORD"] %>
+  host: <%= ENV["DATABASE_HOST"] %>
+  port: <%= ENV["DATABASE_PORT"] %>
 
 production:
   primary:

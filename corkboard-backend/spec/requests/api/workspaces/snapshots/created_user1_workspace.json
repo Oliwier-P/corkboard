@@ -1,0 +1,12 @@
+{
+  "id": "ANY",
+  "name": "New Workspace",
+  "owner_id": "ANY",
+  "code_prefix": "NW",
+  "code_prefix_enabled": false,
+  "owner": {
+    "id": "ANY",
+    "username": "User1"
+  },
+  "number_of_members": 1
+}

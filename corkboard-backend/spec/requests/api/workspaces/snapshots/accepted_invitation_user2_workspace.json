@@ -1,0 +1,15 @@
+{
+  "message": "Accept invitation",
+  "workspace": {
+    "id": "ANY",
+    "name": "User2's Workspace",
+    "owner_id": "ANY",
+    "code_prefix": "UW",
+    "code_prefix_enabled": false,
+    "owner": {
+      "id": "ANY",
+      "username": "User2"
+    },
+    "number_of_members": 2
+  }
+}

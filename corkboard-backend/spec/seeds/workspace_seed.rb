@@ -11,8 +11,8 @@ RSpec.shared_context 'workspace_seed' do
   let!(:second_user3_workspace) { Workspace.create!(name: "User3 Workspace Two", owner: user3) }
 
   before do
-    second_user1_workspace.users << [user2, user3, user4, user5]
-    second_user2_workspace.users << [user1]
-    second_user3_workspace.users << [user4, user5]
+    second_user1_workspace.users << [user1, user2, user3, user4, user5]
+    second_user2_workspace.users << [user1, user2]
+    second_user3_workspace.users << [user3, user4, user5]
   end
 end

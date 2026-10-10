@@ -1,0 +1,26 @@
+{
+  "releases": [
+    {
+      "id": "ANY",
+      "name": "User1 Workspace Release",
+      "progress": {
+        "tasks": 0,
+        "accepted_tasks": 0
+      },
+      "order": 0,
+      "status": "QUEUED"
+    },
+    {
+      "id": "ANY",
+      "name": "User1 Workspace Release Two",
+      "progress": {
+        "tasks": 0,
+        "accepted_tasks": 0
+      },
+      "order": 1,
+      "status": "QUEUED"
+    }
+  ],
+  "current_release_id": "ANY",
+  "next_release_id": "ANY"
+}

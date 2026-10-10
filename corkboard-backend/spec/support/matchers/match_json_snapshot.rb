@@ -17,10 +17,7 @@ RSpec::Matchers.define :match_json_snapshot do |snapshot_name|
       next true
     end
 
-    raw = File.read(path)
-    expected = JSON.parse(raw)
-    @snapshot_path = path
-    @snapshot_lines = raw.lines
+    expected = JSON.parse(File.read(path))
     @diff_expected = expected
     @diff_actual = actual
     json_match?(expected, actual)
@@ -53,73 +50,20 @@ RSpec::Matchers.define :match_json_snapshot do |snapshot_name|
     end
   end
 
-  def collect_diffs(expected, actual, path = "")
-    diffs = []
-    return diffs if expected == "ANY"
+  def mask_any(expected, actual)
+    return "ANY" if expected == "ANY"
 
     if expected.is_a?(Hash) && actual.is_a?(Hash)
-      all_keys = (expected.keys + actual.keys).uniq
-      all_keys.each do |key|
-        new_path = path.empty? ? key : "#{path}.#{key}"
-        if !expected.key?(key)
-          diffs << [new_path, "(missing key)", actual[key]]
-        elsif !actual.key?(key)
-          diffs << [new_path, expected[key], "(missing key)"]
-        else
-          diffs.concat(collect_diffs(expected[key], actual[key], new_path))
-        end
-      end
+      actual.to_h { |k, v| [k, expected.key?(k) ? mask_any(expected[k], v) : v] }
     elsif expected.is_a?(Array) && actual.is_a?(Array)
-      if expected.size != actual.size
-        diffs << ["#{path} (size)", expected.size, actual.size]
-      else
-        expected.each_with_index do |e, i|
-          diffs.concat(collect_diffs(e, actual[i], "#{path}[#{i}]"))
-        end
-      end
-    elsif expected != actual
-      diffs << [path, expected, actual]
+      actual.each_with_index.map { |a, i| i < expected.size ? mask_any(expected[i], a) : a }
+    else
+      actual
     end
-
-    diffs
   end
 
-  def find_line_number(path)
-    return nil unless @snapshot_lines
-
-    key = path.split(/\.|\[\d+\]\.?/).last
-    return nil if key.nil? || key.empty?
-
-    @search_cursor ||= 0
-    pattern = /"#{Regexp.escape(key)}"\s*:/
-
-    @snapshot_lines.each_with_index do |line, idx|
-      next if idx < @search_cursor
-      if line.match?(pattern)
-        @search_cursor = idx + 1
-        return idx + 1
-      end
-    end
-
-    nil
-  end
-
-  failure_message do |actual|
-    actual = JSON.parse(actual) if actual.is_a?(String)
-    @search_cursor = 0
-    diffs = collect_diffs(@diff_expected, @diff_actual)
-
-    diff_lines = diffs.map do |path, exp, act|
-      line_num = find_line_number(path)
-      line_info = line_num ? "\n    line: #{line_num}" : ""
-      "  #{path}:\n    expected: #{exp.inspect}\n    got:      #{act.inspect}#{line_info}"
-    end.join("\n\n")
-
-    spec_file = RSpec.current_example.metadata[:file_path]
-
-    "Snapshot mismatch for #{snapshot_name} (#{@snapshot_path})\n\n" \
-      "Differences:\n#{diff_lines}\n\n" \
-      "If this change is intentional, run:\n" \
-      "  UPDATE_SNAPSHOTS=true bundle exec rspec #{spec_file}"
+  failure_message do
+    "expected:\n#{JSON.pretty_generate(@diff_expected)}\n\n" \
+      "got:\n#{JSON.pretty_generate(mask_any(@diff_expected, @diff_actual))}"
   end
 end

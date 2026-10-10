@@ -1,6 +1,6 @@
 class WorkspacesController < ApplicationController
   before_action :authenticate_user!
-  load_and_authorize_resource
+  load_and_authorize_resource :workspace, except: :accept_invitation
 
   def index
     @workspaces = current_user.workspaces
@@ -57,10 +57,12 @@ class WorkspacesController < ApplicationController
   end
 
   def accept_invitation
-    @workspace = Workspace.find(params[:id])
     invitation = WorkspaceInvitation.find_by(invited_user_id: current_user.id, workspace_id: params[:id])
+    authorize! :accept, invitation
+
     invitation.destroy! if invitation
     UsersWorkspaces.create!(workspace_id: params[:id], user_id: current_user.id)
+    @workspace = invitation&.workspace
   end
 
   def decline_invitation
