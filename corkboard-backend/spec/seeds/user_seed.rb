@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 RSpec.shared_context 'user_seed' do
   let!(:user1) { User.create!(username: "User1", password: "password123") }
   let!(:user2) { User.create!(username: "User2", password: "password123") }

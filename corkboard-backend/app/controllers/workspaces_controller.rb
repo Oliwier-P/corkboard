@@ -1,4 +1,5 @@
 class WorkspacesController < ApplicationController
+  before_action :authenticate_user!
   load_and_authorize_resource
 
   def index
@@ -20,7 +21,7 @@ class WorkspacesController < ApplicationController
   end
 
   def create
-    @workspace = current_user.workspaces.create!(name: params[:name], owner_id: current_user.id)
+    @workspace = current_user.workspaces.create!(workspace_params.merge(owner_id: current_user.id))
   end
 
   def update
@@ -104,7 +105,9 @@ class WorkspacesController < ApplicationController
 
   private
 
+  ALLOWED_PARAMS = [:name, :code_prefix, :code_prefix_enabled]
+
   def workspace_params
-    params.require(:workspace).permit(:name, :code_prefix, :code_prefix_enabled)
+    params.require(:workspace).permit(ALLOWED_PARAMS)
   end
 end

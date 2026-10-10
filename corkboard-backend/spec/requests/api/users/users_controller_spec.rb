@@ -24,19 +24,19 @@ RSpec.describe 'UsersController', type: :request do
 
   context "functionality" do
     it "fetch" do
-      # should get user data
+      # can get user data
       get "/users/me", headers: auth_headers(user1)
       expect(response.body).to match_json_snapshot("me_user1")
 
-      # should get user data
+      # can get user data
       get "/users/#{user1.id}", headers: auth_headers(user1)
       expect(response.body).to match_json_snapshot("get_user1")
 
-      # should get other user data
+      # can get other user data
       get "/users/#{user1.id}", headers: auth_headers(user2)
       expect(response.body).to match_json_snapshot("get_user1")
 
-      # should get array of users
+      # can get array of users
       get "/users", headers: auth_headers(user1)
       expect(response.body).to match_json_snapshot("get_users")
     end
