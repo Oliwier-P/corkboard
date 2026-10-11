@@ -56,8 +56,10 @@ class DocumentsController < ApplicationController
 
   private
 
+  ALLOWED_PARAMS = [:name, content: {}]
+
   def document_params
-    params.permit(:name, content: {})
+    params.permit(ALLOWED_PARAMS)
   end
 
   def verify_internal_token!

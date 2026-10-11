@@ -1,4 +1,5 @@
 class TasksController < ApplicationController
+  before_action :authenticate_user!
   load_and_authorize_resource except: [ :create, :update ]
 
   def index
@@ -30,7 +31,7 @@ class TasksController < ApplicationController
 
       max_order = locked_orders.max || -1
 
-      @task = Task.create!(tasks_params.except(:order).merge(order: max_order + 1))
+      @task = Task.create!(tasks_params.to_h.except(:order).merge(order: max_order + 1))
       Document.create!(task: @task, owner: current_user, workspace_id: workspace_id)
     end
 
@@ -112,7 +113,9 @@ class TasksController < ApplicationController
 
   private
 
+  ALLOWED_PARAMS = [:name, :status, :priority, :order, :user_id, :release_id, :workspace_id]
+
   def tasks_params
-    params.require(:task).permit(:name, :release_id, :status, :priority, :order, :user_id, :workspace_id)
+    params.require(:task).permit(ALLOWED_PARAMS)
   end
 end
