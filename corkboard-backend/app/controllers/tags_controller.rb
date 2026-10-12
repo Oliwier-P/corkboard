@@ -5,7 +5,7 @@ class TagsController < ApplicationController
   def index
     if params[:task_id].present?
       task = Task.find(params[:task_id])
-      authorize! :read, Tag.new(workspace_id: params[:workspace_id])
+      authorize! :read, Tag.new(workspace_id: task.workspace_id)
 
       @tags = Tag.where(workspace_id: task.workspace_id)
                  .where.not(id: task.tags.select(:id))

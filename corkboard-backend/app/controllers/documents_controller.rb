@@ -1,17 +1,34 @@
 class DocumentsController < ApplicationController
-  load_and_authorize_resource except: [:ydoc, :update_ydoc, :show]
+  before_action :authenticate_user!, except: [:ydoc, :update_ydoc]
+  load_and_authorize_resource only: [:update, :destroy]
 
   def index
+    authorize! :index, Document.new(workspace_id: params[:workspace_id])
     @documents = Document.not_task_documents.where(workspace_id: params[:workspace_id])
   end
 
   def show
     @document = Document.find_by!(task_id: params[:task_id])
+    authorize! :read, @document
   end
 
   def create
+    authorize! :create, Document.new(workspace_id: params[:workspace_id])
+
     @document = Document.create!(name: "Untilted", owner_id: current_user.id, workspace_id: params[:workspace_id])
     @document.broadcast("document_created", current_user)
+  end
+
+  def update
+    @document.update!(document_params)
+    @document.broadcast("document_updated", current_user)
+    render json: { message: "Successfully updated!" }
+  end
+
+  def destroy
+    @document.broadcast("document_destroyed", current_user)
+    @document.destroy!
+    render json: { message: "Successfully deleted!" }
   end
 
   def ydoc
@@ -37,21 +54,6 @@ class DocumentsController < ApplicationController
     document = Document.find(params[:id])
     document.update!(yjs_state: body)
     head :ok
-  end
-
-  def update
-    @document = Document.find(params[:id])
-    @document.update(document_params)
-    @document.broadcast("document_updated", current_user)
-    render json: { message: "Successfully updated!" }
-  end
-
-  def destroy
-    @document = Document.find(params[:id])
-    @document.broadcast("document_destroyed", current_user)
-    @document.destroy
-
-    render json: { message: "Successfully deleted!" }
   end
 
   private

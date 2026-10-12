@@ -1,0 +1,17 @@
+[
+  {
+    "id": "ANY",
+    "name": "User1 Document",
+    "content": {
+      "type": "doc",
+      "content": []
+    },
+    "workspace_id": "ANY",
+    "created_at": "ANY",
+    "updated_at": "ANY",
+    "owner": {
+      "id": "ANY",
+      "username": "User1"
+    }
+  }
+]

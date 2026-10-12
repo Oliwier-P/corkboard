@@ -15,13 +15,11 @@ class Ability
       can :manage, Release, workspace_id: workspace_ids
       can :manage, Tag, workspace_id: workspace_ids
       can :manage, Task, workspace_id: workspace_ids
+      can :manage, Document, workspace_id: workspace_ids
       can :create, Workspace
       can :manage, Workspace, id: workspace_ids
       can :manage, WorkspaceInvitation do |invitation|
         invitation.invited_by_user_id == @user.id || invitation.invited_user_id == @user.id
-      end
-      can :manage, Document do |document|
-        document.workspace_id.in?(workspace_ids) || document.task&.workspace_id.in?(workspace_ids)
       end
     else
       can :read, User
