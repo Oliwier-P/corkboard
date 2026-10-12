@@ -11,7 +11,7 @@ const ProfileSection = () => {
     const handleChangeUsername = (value: string) => {
         if (!user || user.username === value) return;
 
-        api.put(`/users/${user.id}`, { user: { username: value } }).then((response) => {
+        api.put(`/users/${user.id}`, { username: value }).then((response) => {
             setUser(response.data);
         });
     };

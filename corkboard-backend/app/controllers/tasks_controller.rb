@@ -111,6 +111,6 @@ class TasksController < ApplicationController
   ALLOWED_PARAMS = [:name, :status, :priority, :order, :user_id, :release_id, :workspace_id]
 
   def tasks_params
-    params.require(:task).permit(ALLOWED_PARAMS)
+    params.permit(ALLOWED_PARAMS)
   end
 end

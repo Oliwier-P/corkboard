@@ -17,6 +17,6 @@ class UserPreferencesController < ApplicationController
   ALLOWED_PARAMS = [:task_display, :show_board_tags, :spellcheck]
 
   def user_preference_params
-    params.require(:user_preference).permit(ALLOWED_PARAMS)
+    params.permit(ALLOWED_PARAMS)
   end
 end

@@ -5,7 +5,7 @@ import { api } from "@/api";
 const ShowBoardTags = () => {
     const { user, setUser } = useAuth();
     const handleChangeShowBoardTags = (value: boolean) => {
-        api.put("user_preferences", { user_preference: { show_board_tags: value } }).then((response) => {
+        api.put("/user_preferences", { show_board_tags: value }).then((response) => {
             setUser(response.data);
         });
     };

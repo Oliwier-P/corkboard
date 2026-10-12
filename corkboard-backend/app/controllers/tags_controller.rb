@@ -53,6 +53,6 @@ class TagsController < ApplicationController
   ALLOWED_PARAMS = [:name, :color, :workspace_id]
 
   def tag_params
-    params.require(:tag).permit(ALLOWED_PARAMS)
+    params.permit(ALLOWED_PARAMS)
   end
 end

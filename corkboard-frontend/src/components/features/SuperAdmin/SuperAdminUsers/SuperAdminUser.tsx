@@ -73,7 +73,7 @@ const SuperAdminUser = () => {
             setSaving(true);
 
             try {
-                api.put(`/users/${id}`, { user: payload }).then(() => {
+                api.put(`/users/${id}`, { ...payload }).then(() => {
                     navigate("/superadmin/users");
                 });
             } catch {

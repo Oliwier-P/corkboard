@@ -106,7 +106,7 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
             };
         });
 
-        api.put(`/tasks/${activeId}`, { task: { status: toColumnId, order: insertAt, release_id: get().id } }).then(() => {
+        api.put(`/tasks/${activeId}`, { status: toColumnId, order: insertAt, release_id: get().id }).then(() => {
             get().updateTask(activeId, { status: toColumnId, order: insertAt, release_id: get().id });
         });
     },
@@ -120,7 +120,7 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
             }),
         }));
 
-        api.put(`/tasks/${activeId}`, { task: { order: insertAt } });
+        api.put(`/tasks/${activeId}`, { order: insertAt });
     },
     addTask: (columnId, name) => {
         const temporaryId = uuid();
@@ -160,7 +160,7 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
                 ),
             };
         });
-        api.post("/tasks", { task: newTask }).then((res) => {
+        api.post("/tasks", { ...newTask }).then((res) => {
             set((state) => {
                 const tasks = { ...state.tasks };
                 const savedTask = res.data;

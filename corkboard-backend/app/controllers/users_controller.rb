@@ -33,6 +33,6 @@ class UsersController < ApplicationController
   ALLOWED_PARAMS = [:username, :password, :password_confirmation]
 
   def user_params
-    params.require(:user).permit(ALLOWED_PARAMS)
+    params.permit(ALLOWED_PARAMS)
   end
 end

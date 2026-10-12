@@ -6,7 +6,7 @@ const SpellcheckSection = () => {
     const { user, setUser } = useAuth();
 
     const handleChangeSpellcheck = (value: boolean) => {
-        api.put("user_preferences", { user_preference: { spellcheck: value } }).then((response) => {
+        api.put("user_preferences", { spellcheck: value }).then((response) => {
             setUser(response.data);
         });
     };

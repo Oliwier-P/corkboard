@@ -7,7 +7,7 @@ const TaskDisplaySection = () => {
     const { user, setUser } = useAuth();
 
     const handleChangeTaskDisplay = (value: TaskDisplayType) => {
-        api.put("user_preferences", { user_preference: { task_display: value } }).then((response) => {
+        api.put("user_preferences", { task_display: value }).then((response) => {
             setUser(response.data);
         });
     };
