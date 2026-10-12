@@ -38,7 +38,13 @@ const Editor = ({ documentId, user, authToken, onReadyChange }: CollaborativeEdi
     return (
         <div className="collaborative-editor">
             <EditorContent editor={editor} />
-            <BubbleMenu editor={editor}>
+            <BubbleMenu
+                editor={editor}
+                shouldShow={({ editor, state }) => {
+                    if (editor.isActive("image")) return false;
+                    return !state.selection.empty;
+                }}
+            >
                 <div className="bubble-menu">
                     <ListPopover editor={editor} />
                     <TextPopover editor={editor} />
