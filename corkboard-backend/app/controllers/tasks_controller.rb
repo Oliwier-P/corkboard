@@ -1,37 +1,32 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
-  load_and_authorize_resource except: [ :create, :update ]
+  load_and_authorize_resource except: [ :index, :create, :update ]
 
   def index
-    if params[:release_id]
-      @tasks = Release.find(params[:release_id]).tasks
-    else
-      render json: {}, status: :bad_request
-    end
+    return render json: {}, status: :bad_request unless params[:release_id]
 
-    @tasks
+    release = Release.find(params[:release_id])
+    authorize! :index, Task.new(workspace_id: release.workspace_id)
+
+    @tasks = release.tasks
   end
 
   def create
-    if tasks_params[:release_id]
-      release = Release.find(tasks_params[:release_id])
-    else
-      tasks_params[:status] = Task.statuses[:backlog]
-    end
+    release = Release.find(tasks_params[:release_id]) if tasks_params[:release_id].present?
+    workspace_id = release ? release.workspace_id : tasks_params[:workspace_id]
+    authorize! :create, Task.new(workspace_id: workspace_id)
 
-    workspace_id = release.present? ? release.workspace_id : tasks_params[:workspace_id]
-    authorize! :create, Task
+    attrs = tasks_params.to_h.except(:order).merge(workspace_id: workspace_id)
+    attrs[:status] = Task.statuses[:backlog] unless release
 
     ActiveRecord::Base.transaction do
       locked_orders = Task.where(
         workspace_id: workspace_id,
-        status: tasks_params[:status],
-        release_id: tasks_params[:release_id]
+        status: attrs[:status],
+        release_id: attrs[:release_id]
       ).lock.pluck(:order)
 
-      max_order = locked_orders.max || -1
-
-      @task = Task.create!(tasks_params.to_h.except(:order).merge(order: max_order + 1))
+      @task = Task.create!(attrs.merge(order: (locked_orders.max || -1) + 1))
       Document.create!(task: @task, owner: current_user, workspace_id: workspace_id)
     end
 
@@ -41,7 +36,7 @@ class TasksController < ApplicationController
 
   def update
     @task = Task.includes(:user).find(params[:id])
-    authorize! :update, Task
+    authorize! :update, @task
 
     ActiveRecord::Base.transaction do
       if tasks_params[:order].present?

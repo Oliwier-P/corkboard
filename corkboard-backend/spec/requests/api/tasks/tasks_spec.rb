@@ -16,10 +16,10 @@ describe "Tasks", type: :request do
       [user5, superadmin].each do |user|
         aggregate_failures("as #{user.username}") do
           check_permission(:post, "/tasks", user, { name: "New Task", release_id: user2_workspace_release.id, workspace_id: user2_workspace.id })
-          # check_permission(:get, "/tasks", user)
-          # check_permission(:put, "/tasks/#{user2_workspace_task.id}", user, { name: "Update Name", status: "in_progress", priority: "high", order: 2, user_id: user2.id })
-          # check_permission(:put, "/tasks/#{user2_workspace_task.id}/move_to_next_release", user)
-          # check_permission(:delete, "/tasks/#{user2_workspace_task.id}", user)
+          check_permission(:get, "/tasks", user, { release_id: user2_workspace_release.id })
+          check_permission(:put, "/tasks/#{user2_workspace_task.id}", user, { name: "Update Name", status: "in_progress", priority: "high", order: 2, user_id: user2.id })
+          check_permission(:put, "/tasks/#{user2_workspace_task.id}/move_to_next_release", user)
+          check_permission(:delete, "/tasks/#{user2_workspace_task.id}", user)
         end
       end
     end

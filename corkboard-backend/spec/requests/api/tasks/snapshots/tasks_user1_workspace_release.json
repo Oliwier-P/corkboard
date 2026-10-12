@@ -1,0 +1,20 @@
+{
+  "adjustments": [],
+  "todo": [
+    {
+      "id": "ANY",
+      "name": "User1 Task One",
+      "status": "todo"
+    }
+  ],
+  "in_progress": [
+    {
+      "id": "ANY",
+      "name": "User1 Task Two",
+      "status": "in_progress"
+    }
+  ],
+  "review_pending": [],
+  "testing": [],
+  "accepted": []
+}

@@ -1,0 +1,9 @@
+[
+  "name",
+  "status",
+  "priority",
+  "order",
+  "user_id",
+  "release_id",
+  "workspace_id"
+]
