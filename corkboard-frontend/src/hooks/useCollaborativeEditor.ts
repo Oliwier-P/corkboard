@@ -7,6 +7,7 @@ import TextAlign from "@tiptap/extension-text-align";
 import BulletList from "@tiptap/extension-bullet-list";
 import OrderedList from "@tiptap/extension-ordered-list";
 import TaskList from "@tiptap/extension-task-list";
+import Image from "@tiptap/extension-image";
 import CustomTaskItem from "@/features/CollaborativeEditor/Extensions/CustomTaskItem.tsx";
 import Color from "@tiptap/extension-color";
 import { TextStyle } from "@tiptap/extension-text-style";
@@ -51,6 +52,15 @@ export const useCollaborativeEditor = ({ user }: useCollaborativeEditorProps) =>
             BulletList,
             OrderedList,
             TaskList,
+            Image.configure({
+                resize: {
+                    enabled: true,
+                    directions: ['top', 'bottom', 'left', 'right'],
+                    minWidth: 50,
+                    minHeight: 50,
+                    alwaysPreserveAspectRatio: true,
+                },
+            }),
             CustomTaskItem.configure({ nested: true }),
             TextAlign.configure({
                 types: ["heading", "paragraph"],
