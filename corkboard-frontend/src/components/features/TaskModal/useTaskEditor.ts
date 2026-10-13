@@ -18,7 +18,7 @@ export const useTaskEditor = (taskId: string) => {
 
     const handleUpdateTaskName = (value: string) => {
         if (task.name !== value) {
-            api.patch(`tasks/${taskId}`, { name: value }).then(() => {
+            api.put(`tasks/${taskId}`, { name: value }).then(() => {
                 updateTask(taskId, { name: value });
             });
         }
