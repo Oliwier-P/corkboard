@@ -73,7 +73,11 @@ class TasksController < ApplicationController
               .update_all("\"order\" = \"order\" + 1")
         end
 
-        @task.update!(order: new_order, status: new_status)
+        if tasks_params[:status] == "in_progress" && @task.status == "todo" && @task.user_id == nil && @task.workspace.auto_assign
+          @task.update!(order: new_order, status: new_status, user: current_user)
+        else
+          @task.update!(order: new_order, status: new_status)
+        end
       elsif tasks_params[:status].present? && tasks_params[:status] != @task.status
         @task.update!(status: tasks_params[:status])
       end

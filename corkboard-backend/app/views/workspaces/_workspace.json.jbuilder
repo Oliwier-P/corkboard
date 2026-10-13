@@ -1,4 +1,4 @@
-json.extract! workspace, :id, :name, :owner_id, :code_prefix, :code_prefix_enabled
+json.extract! workspace, :id, :name, :owner_id, :code_prefix, :code_prefix_enabled, :auto_assign
 json.owner do
   json.extract! workspace.owner, :id, :username
 end

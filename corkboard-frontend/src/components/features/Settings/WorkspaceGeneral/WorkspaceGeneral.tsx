@@ -15,15 +15,17 @@ const schema = yup
     .object({
         id: yup.string().required(),
         name: yup.string().required("You have to enter a workspace name!"),
-        code_prefix_enabled: yup.boolean().default(true),
+        code_prefix_enabled: yup.boolean().nullable().default(true),
         code_prefix: yup
             .string()
+            .nullable()
             .max(3, "Max 3 characters")
             .when("code_prefix_enabled", {
                 is: true,
                 then: (schema) => schema.required("Code prefix is required!"),
                 otherwise: (schema) => schema.optional(),
             }),
+        auto_assign: yup.boolean().nullable().default(false),
         owner: yup.object().optional(),
     })
     .required();
@@ -53,14 +55,14 @@ const WorkspaceGeneral = () => {
     });
     const workspaceOwner = getValues("owner")?.id === user?.id;
 
-    const handleDeleteWorkspace = () => {
-        const workspaceId = getValues("id");
-        api.delete(`/workspaces/${workspaceId}`);
-        navigate(`/workspaces/${workspaceId}/current_release`);
+    const handleDeleteWorkspace = async () => {
+        api.delete(`/workspaces/${getValues("id")}`).then(() => {
+            navigate("/workspaces");
+        });
     };
 
-    const onSubmit = (workspace: FormData) => {
-        api.put(`/workspaces/${workspace.id}`, { workspace }).then((res) => {
+    const onSubmit = ({ id, name, code_prefix_enabled, code_prefix, auto_assign }: FormData) => {
+        api.put(`/workspaces/${id}`, { name, code_prefix_enabled, code_prefix, auto_assign }).then((res) => {
             reset(res.data);
             setWorkspace(res.data);
         });
@@ -83,7 +85,7 @@ const WorkspaceGeneral = () => {
             <div className="workspace-general__section">
                 <div className="workspace-general__setting">
                     <span className="workspace-general__label">Avatar</span>
-                    <div className="workspace-general__logo">{!isLoading && getValues("name")[0]?.toUpperCase()}</div>
+                    <div className="workspace-general__logo">{getValues("name")?.[0]?.toUpperCase()}</div>
                 </div>
 
                 <div className="workspace-general__setting">
@@ -96,7 +98,7 @@ const WorkspaceGeneral = () => {
                     <Controller
                         control={control}
                         name="code_prefix_enabled"
-                        render={({ field }) => <Switch checked={field.value} onChange={field.onChange} />}
+                        render={({ field }) => <Switch checked={!!field.value} onChange={(checked) => field.onChange(checked)} />}
                     />
                 </div>
 
@@ -112,6 +114,15 @@ const WorkspaceGeneral = () => {
                         />
                     </div>
                 )}
+
+                <div className="workspace-general__setting">
+                    <span className="workspace-general__label">Auto assign</span>
+                    <Controller
+                        control={control}
+                        name="auto_assign"
+                        render={({ field }) => <Switch checked={!!field.value} onChange={(checked) => field.onChange(checked)} />}
+                    />
+                </div>
             </div>
 
             {workspaceOwner && (
