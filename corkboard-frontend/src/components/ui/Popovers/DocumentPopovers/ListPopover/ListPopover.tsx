@@ -10,8 +10,8 @@ interface ListPopoverProps {
 
 const ListPopover = ({ editor }: ListPopoverProps) => {
     const items = [
-        { label: "Bulleted List", value: "bulletList", icon: "bulletedList" },
-        { label: "Numbered List", value: "orderedList", icon: "numberedList" },
+        { label: "Bulleted", value: "bulletList", icon: "bulletedList" },
+        { label: "Numbered", value: "orderedList", icon: "numberedList" },
         { label: "Checklist", value: "taskList", icon: "checklist" },
     ];
 
@@ -41,7 +41,7 @@ const ListPopover = ({ editor }: ListPopoverProps) => {
                 }
             >
                 {items.map((item) => (
-                    <Popover.PopoverItem icon={<Icon icon={item.icon as IconNames} />} value={item.value} onSelect={handleList} />
+                    <Popover.PopoverItem icon={<Icon icon={item.icon as IconNames} />} label={item.label} value={item.value} onSelect={handleList} />
                 ))}
             </Popover>
         </div>
