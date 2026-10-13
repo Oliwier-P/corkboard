@@ -26,7 +26,7 @@ class WorkspacesController < ApplicationController
 
   def update
     @workspace = current_user.workspaces.find(params[:id])
-    code_prefix_changed = @workspace.code_prefix != params[:workspace][:code_prefix]
+    code_prefix_changed = @workspace.code_prefix != params[:code_prefix]
     @workspace&.update!(workspace_params)
     @workspace.rebuild_task_codes! if code_prefix_changed
   end
@@ -107,7 +107,7 @@ class WorkspacesController < ApplicationController
 
   private
 
-  ALLOWED_PARAMS = [:name, :code_prefix, :code_prefix_enabled]
+  ALLOWED_PARAMS = [:name, :code_prefix, :code_prefix_enabled, :auto_assign]
 
   def workspace_params
     params.permit(ALLOWED_PARAMS)
