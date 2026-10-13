@@ -22,7 +22,7 @@ const DocumentPage = ({ document }: DocumentPageProps) => {
 
     const handleUpdateDocumentName = (value: string) => {
         if (document.name !== value) {
-            api.patch(`documents/${document.id}`, { name: value }).then(() => {
+            api.put(`documents/${document.id}`, { name: value }).then(() => {
                 updateDocument({ ...document, name: value });
             });
         }
