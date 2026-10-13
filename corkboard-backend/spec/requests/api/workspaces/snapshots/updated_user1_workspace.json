@@ -4,6 +4,7 @@
   "owner_id": "ANY",
   "code_prefix": "XX",
   "code_prefix_enabled": true,
+  "auto_assign": false,
   "owner": {
     "id": "ANY",
     "username": "User1"

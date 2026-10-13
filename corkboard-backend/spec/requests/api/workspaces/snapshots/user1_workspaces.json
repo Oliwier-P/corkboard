@@ -5,6 +5,7 @@
     "owner_id": "ANY",
     "code_prefix": "UW",
     "code_prefix_enabled": false,
+    "auto_assign": false,
     "owner": {
       "id": "ANY",
       "username": "User1"
@@ -17,6 +18,7 @@
     "owner_id": "ANY",
     "code_prefix": "UWT",
     "code_prefix_enabled": false,
+    "auto_assign": false,
     "owner": {
       "id": "ANY",
       "username": "User1"
@@ -29,6 +31,7 @@
     "owner_id": "ANY",
     "code_prefix": "UWT",
     "code_prefix_enabled": false,
+    "auto_assign": false,
     "owner": {
       "id": "ANY",
       "username": "User2"
