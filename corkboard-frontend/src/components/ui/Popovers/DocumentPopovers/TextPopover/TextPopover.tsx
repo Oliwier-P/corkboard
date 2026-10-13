@@ -29,6 +29,7 @@ const TextPopover = ({ editor }: TextPopoverProps) => {
     return (
         <div className="text-popover">
             <Popover
+                tooltip="Text"
                 trigger={
                     <Button className="bubble-item">
                         <Icon icon="text" />

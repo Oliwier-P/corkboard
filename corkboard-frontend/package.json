@@ -16,6 +16,7 @@
     "@hocuspocus/provider": "^4.1.0",
     "@hocuspocus/provider-react": "^4.1.0",
     "@hookform/resolvers": "^5.2.2",
+    "@radix-ui/react-tooltip": "^1.4.1",
     "@rails/actioncable": "^8.1.300",
     "@tiptap/extension-collaboration": "^3.23.6",
     "@tiptap/extension-collaboration-caret": "^3.23.6",

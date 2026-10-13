@@ -27,6 +27,7 @@ const TextColorPopover = ({ editor }: TextColorPopoverProps) => {
     return (
         <div className="text-color-popover">
             <Popover
+                tooltip="Text color"
                 trigger={
                     <Button className="bubble-item">
                         <Icon icon="textColor" />

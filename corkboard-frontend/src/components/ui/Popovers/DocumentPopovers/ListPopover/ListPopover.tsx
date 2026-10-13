@@ -34,6 +34,7 @@ const ListPopover = ({ editor }: ListPopoverProps) => {
     return (
         <div className="list-popover">
             <Popover
+                tooltip="Lists"
                 trigger={
                     <Button className="bubble-item">
                         <Icon icon="bulletedList" />

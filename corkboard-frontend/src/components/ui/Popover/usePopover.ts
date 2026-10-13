@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { v4 as uuid } from "uuid";
-import { usePopoverStore } from "../../../store/popoverStore.ts";
+import { usePopoverStore } from "@/store/popoverStore.ts";
 
 interface TriggerProps {
     ref?: React.Ref<HTMLElement>;

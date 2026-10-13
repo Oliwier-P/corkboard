@@ -4,13 +4,14 @@ import { EditorContent } from "@tiptap/react";
 import "./CollaborativeEditor.scss";
 import { BubbleMenu } from "@tiptap/react/menus";
 import { Button } from "@/ui/Button/Button.tsx";
-import { Icon } from "@/ui/Icons/Icon.tsx";
+import { Icon, type IconNames } from "@/ui/Icons/Icon.tsx";
 import { CollaborativeEditorProvider } from "./CollaborativeEditorProvider.tsx";
 import { useEffect } from "react";
 import AlignPopover from "@/ui/Popovers/DocumentPopovers/AlignPopover/AlignPopover.tsx";
 import TextPopover from "@/ui/Popovers/DocumentPopovers/TextPopover/TextPopover.tsx";
 import ListPopover from "@/ui/Popovers/DocumentPopovers/ListPopover/ListPopover.tsx";
 import TextColorPopover from "@/ui/Popovers/DocumentPopovers/TextColorPopover/TextColorPopover.tsx";
+import Tooltip from "@/ui/Tooltip/Tooltip.tsx";
 
 type CollaborativeEditorProps = {
     documentId: string;
@@ -35,6 +36,18 @@ const Editor = ({ documentId, user, authToken, onReadyChange }: CollaborativeEdi
 
     if (!editor || isLoading) return null;
 
+    const options = [
+        { component: <ListPopover editor={editor} /> },
+        { component: <TextPopover editor={editor} /> },
+        { component: <TextColorPopover editor={editor} /> },
+        { icon: "bold", onClick: () => editor.chain().focus().toggleBold().run(), tooltip: "Bold" },
+        { icon: "italic", onClick: () => editor.chain().focus().toggleItalic().run(), tooltip: "Italic" },
+        { icon: "underline", onClick: () => editor.chain().focus().toggleUnderline().run(), tooltip: "Underline" },
+        { icon: "strike", onClick: () => editor.chain().focus().toggleStrike().run(), tooltip: "Strike" },
+        { icon: "code", onClick: () => editor.chain().focus().toggleCode().run(), tooltip: "Code" },
+        { component: <AlignPopover editor={editor} /> },
+    ];
+
     return (
         <div className="collaborative-editor">
             <EditorContent editor={editor} />
@@ -46,25 +59,19 @@ const Editor = ({ documentId, user, authToken, onReadyChange }: CollaborativeEdi
                 }}
             >
                 <div className="bubble-menu">
-                    <ListPopover editor={editor} />
-                    <TextPopover editor={editor} />
-                    <TextColorPopover editor={editor} />
-                    <Button className="bubble-item" onClick={() => editor.chain().focus().toggleBold().run()}>
-                        <Icon icon="bold" />
-                    </Button>
-                    <Button className="bubble-item" onClick={() => editor.chain().focus().toggleItalic().run()}>
-                        <Icon icon="italic" />
-                    </Button>
-                    <Button className="bubble-item" onClick={() => editor.chain().focus().toggleUnderline().run()}>
-                        <Icon icon="underline" />
-                    </Button>
-                    <Button className="bubble-item" onClick={() => editor.chain().focus().toggleStrike().run()}>
-                        <Icon icon="strike" />
-                    </Button>
-                    <Button className="bubble-item" onClick={() => editor.chain().focus().toggleCode().run()}>
-                        <Icon icon="code" />
-                    </Button>
-                    <AlignPopover editor={editor} />
+                    {options.map((option) => (
+                        <>
+                            {option.icon ? (
+                                <Tooltip text={option.tooltip}>
+                                    <Button className="bubble-item" onClick={option.onClick}>
+                                        <Icon icon={option.icon as IconNames} />
+                                    </Button>
+                                </Tooltip>
+                            ) : (
+                                option.component
+                            )}
+                        </>
+                    ))}
                 </div>
             </BubbleMenu>
         </div>

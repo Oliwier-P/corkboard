@@ -4,6 +4,7 @@ import usePopover from "./usePopover.ts";
 import { usePopoverStore } from "@/store/popoverStore.ts";
 import { Button } from "@/ui/Button/Button.tsx";
 import classNames from "classnames";
+import Tooltip from "@/ui/Tooltip/Tooltip.tsx";
 
 interface TriggerProps {
     ref?: React.Ref<HTMLElement>;
@@ -13,17 +14,18 @@ interface TriggerProps {
 
 interface PopoverProps {
     className?: string;
+    tooltip?: string;
     trigger: React.ReactElement<TriggerProps>;
     children: React.ReactNode;
     offset?: number;
 }
 
-const Popover = ({ className, trigger, children, offset }: PopoverProps) => {
+const Popover = ({ className, tooltip, trigger, children, offset }: PopoverProps) => {
     const { triggerWithProps, panelRef, coords, open, placement } = usePopover({ trigger, offset });
 
     return (
         <div className="popover">
-            {triggerWithProps}
+            {tooltip ? <Tooltip text={tooltip}>{triggerWithProps}</Tooltip> : triggerWithProps}
             {open && (
                 <div
                     ref={panelRef}

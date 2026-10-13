@@ -22,6 +22,7 @@ const AlignPopover = ({ editor }: AlignPopoverProps) => {
     return (
         <div className="align-popover">
             <Popover
+                tooltip="Alignment"
                 trigger={
                     <Button className="bubble-item">
                         <Icon icon="alignLeft" />
