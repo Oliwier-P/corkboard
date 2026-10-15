@@ -45,7 +45,7 @@ class Workspace < ApplicationRecord
 
   def next_release
     current_release = self.current_release
-    self.releases.where(current: false, status: Release::QUEUED, order: current_release&.order..).order(:order).first
+    self.releases.where(current: false, status: Release::QUEUED, position: current_release&.position..).order(:position).first
   end
 
   def generate_code_prefix

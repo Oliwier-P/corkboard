@@ -12,14 +12,12 @@ export const documentsApi = {
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
-    update: (documentId: string, params: Partial<DocumentType>, onSuccess: (response: DocumentType) => void, onError?: (error: unknown) => void) => {
-        api.put<DocumentType>(`/documents/${documentId}`, params)
+    update: (documentId: string, data: Partial<DocumentType>, onSuccess: (response: DocumentType) => void, onError?: (error: unknown) => void) => {
+        api.put<DocumentType>(`/documents/${documentId}`, data)
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
-    delete: (documentId: string, onSuccess: (response: DocumentType) => void, onError?: (error: unknown) => void) => {
-        api.delete<DocumentType>(`/documents/${documentId}`)
-            .then((response) => onSuccess(response.data))
-            .catch(onError);
+    delete: (documentId: string, onSuccess: () => void, onError?: (error: unknown) => void) => {
+        api.delete(`/documents/${documentId}`).then(onSuccess).catch(onError);
     },
 };

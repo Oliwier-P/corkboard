@@ -36,7 +36,7 @@ class Task < ApplicationRecord
   belongs_to :user, optional: true
   has_many :tasks_tags, dependent: :destroy
   has_many :tags, through: :tasks_tags
-  has_one :document, :dependent => :destroy
+  has_one :document, dependent: :destroy
 
   validates :code_name, presence: true, uniqueness: { scope: :workspace_id }
 

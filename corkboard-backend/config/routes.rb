@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   resources :releases do
     member do
       get "board"
+      put "move"
     end
   end
 
@@ -48,7 +49,6 @@ Rails.application.routes.draw do
     member do
       get :collaborators
       get :current_release
-      get :releases
       post :invite_user
       post :accept_invitation
       delete :decline_invitation

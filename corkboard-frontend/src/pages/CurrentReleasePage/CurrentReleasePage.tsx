@@ -5,20 +5,19 @@ import { api } from "@/api";
 import { ReleaseBoard } from "@/features/ReleaseBoard/ReleaseBoard.tsx";
 import type { ReleaseType } from "@/types/ReleaseType.ts";
 import { useWorkspaceStore } from "@/store/workspaceStore.ts";
-import { useReleasesStore } from "@/store/releasesStore.ts";
 import { Page } from "@/layout/Page/Page.tsx";
 import { useReleaseSubscription } from "@/store/useReleaseSubscription.ts";
 import { useAuth } from "@/context/auth/useAuth.ts";
 import Loading from "@/ui/Loading/Loading.tsx";
 import CreateModal from "@/ui/Modals/CreateModal.tsx";
 import ConfirmationModal from "@/ui/Modals/ConfirmationModal.tsx";
+import { releasesApi } from "@/api/releases.ts";
 
 export const CurrentReleasePage = () => {
     const [release, setRelease] = useState<ReleaseType | null>(null);
     const workspaceId = useWorkspaceStore((state) => state.workspace?.id);
     const [showCreateReleaseModal, setShowCreateReleaseModal] = useState(false);
     const [showCompleteReleaseModal, setShowCompleteReleaseModal] = useState(false);
-    const addRelease = useReleasesStore((state) => state.addRelease);
     const [loading, setLoading] = useState<boolean>(true);
     const { user } = useAuth();
 
@@ -34,8 +33,11 @@ export const CurrentReleasePage = () => {
     }, [workspaceId]);
 
     const handleCreateRelease = (data: { name: string }) => {
-        addRelease(data.name, workspaceId!, "QUEUED", (release: ReleaseType) => setRelease(release));
-        setShowCreateReleaseModal(false);
+        if (!workspaceId) return;
+        releasesApi.create({ name: data.name, workspace_id: workspaceId, status: "QUEUED" }, (response) => {
+            setRelease(response);
+            setShowCreateReleaseModal(false);
+        });
     };
 
     const handleCompleteRelease = () => {

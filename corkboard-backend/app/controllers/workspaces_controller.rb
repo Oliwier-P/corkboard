@@ -99,12 +99,6 @@ class WorkspacesController < ApplicationController
     @next_release.update!(current: true) if @next_release
   end
 
-  def releases
-    workspace = Workspace.find(params[:id])
-    @releases = workspace.releases&.order("releases.order ASC") || []
-    @current_release = @releases.find_by(current: true)
-  end
-
   private
 
   ALLOWED_PARAMS = [:name, :code_prefix, :code_prefix_enabled, :auto_assign]
