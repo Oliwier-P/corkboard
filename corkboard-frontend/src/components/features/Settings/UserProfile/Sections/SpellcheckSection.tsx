@@ -1,13 +1,13 @@
 import Switch from "@/ui/Switch/Switch.tsx";
 import { useAuth } from "@/context/auth/useAuth.ts";
-import { api } from "@/api";
+import usersApi from "@/api/users.ts";
 
 const SpellcheckSection = () => {
     const { user, setUser } = useAuth();
 
     const handleChangeSpellcheck = (value: boolean) => {
-        api.put("user_preferences", { spellcheck: value }).then((response) => {
-            setUser(response.data);
+        usersApi.updatePreferences({ spellcheck: value }, (response) => {
+            setUser(response);
         });
     };
 

@@ -1,5 +1,5 @@
 import { api } from "@/api";
-import type { UserSettings } from "@/context/auth/types.ts";
+import type { UserPreferences, UserSettings } from "@/context/auth/types.ts";
 
 const usersApi = {
     getAll: (onSuccess: (response: UserSettings[]) => void, onError?: (error: unknown) => void) => {
@@ -27,6 +27,11 @@ const usersApi = {
     },
     me: (onSuccess: (response: UserSettings) => void, onError?: (error: unknown) => void) => {
         api.get<UserSettings>(`/users/me`)
+            .then((response) => onSuccess(response.data))
+            .catch(onError);
+    },
+    updatePreferences: (data: Partial<UserPreferences>, onSuccess: (response: UserSettings) => void, onError?: (error: unknown) => void) => {
+        api.put<UserSettings>(`/user_preferences`, data)
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
