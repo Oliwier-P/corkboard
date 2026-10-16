@@ -1,7 +1,7 @@
-import { type SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import type { UserSettings } from "./types.ts";
-import { api } from "@/api";
 import { AuthContext } from "./AuthContext.ts";
+import usersApi from "@/api/users.ts";
 
 type AuthProviderProps = {
     children: React.ReactNode;
@@ -15,13 +15,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     useEffect(() => {
         const localStorageToken = localStorage.getItem("token");
         if (localStorageToken) {
-            api.get("/users/me")
-                .then((res: { data: SetStateAction<UserSettings | null> }) => {
-                    setUser(res.data);
+            usersApi.me(
+                (response) => {
+                    setUser(response);
                     setToken(localStorageToken);
-                })
-                .catch(() => localStorage.removeItem("token"))
-                .finally(() => setLoading(false));
+                    setLoading(false);
+                },
+                () => {
+                    localStorage.removeItem("token");
+                    setLoading(false);
+                },
+            );
         }
     }, [token]);
 

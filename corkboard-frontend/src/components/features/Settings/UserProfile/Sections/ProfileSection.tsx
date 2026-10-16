@@ -1,8 +1,8 @@
 import "./ProfileSection.scss";
 import { LabeledInput } from "@/ui/LabeledInput/LabeledInput.tsx";
-import { api } from "@/api";
 import { useState } from "react";
 import { useAuth } from "@/context/auth/useAuth.ts";
+import usersApi from "@/api/users.ts";
 
 const ProfileSection = () => {
     const { user, setUser } = useAuth();
@@ -11,8 +11,8 @@ const ProfileSection = () => {
     const handleChangeUsername = (value: string) => {
         if (!user || user.username === value) return;
 
-        api.put(`/users/${user.id}`, { username: value }).then((response) => {
-            setUser(response.data);
+        usersApi.update(user.id, { username: value }, (response) => {
+            setUser(response);
         });
     };
 
