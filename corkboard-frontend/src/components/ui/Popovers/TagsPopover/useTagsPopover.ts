@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { api } from "@/api";
 import type { TagType } from "@/types/TagType.ts";
 import { useReleaseBoardStore } from "@/store/releaseBoardStore.ts";
+import { tagsApi } from "@/api/tags.ts";
 
 interface useTagsPopoverProps {
     taskId: string;
@@ -14,25 +14,25 @@ const useTagsPopover = ({ taskId }: useTagsPopoverProps) => {
     const updateTask = useReleaseBoardStore((state) => state.updateTask);
 
     const handleAddTagToTask = (tagId: string) => {
-        api.post(`/tasks/${taskId}/tags/${tagId}/assign`).then((response) => {
-            setTags((prev) => prev.filter((t) => t.id !== response.data.id));
-            taskTags.push(response.data);
+        tagsApi.assign(taskId, tagId, (response) => {
+            setTags((prev) => prev.filter((t) => t.id !== response.id));
+            taskTags.push(response);
             updateTask(taskId, { tags: taskTags });
         });
     };
 
     const handleRemoveTagFromTask = (tagId: string) => {
-        api.delete(`/tasks/${taskId}/tags/${tagId}/unassign`).then((response) => {
-            setTaskTags((prev) => prev.filter((t) => t.id !== response.data.id));
-            tags.push(response.data);
+        tagsApi.unassign(taskId, tagId, (response) => {
+            setTaskTags((prev) => prev.filter((t) => t.id !== response.id));
+            tags.push(response);
             updateTask(taskId, { tags: taskTags });
         });
     };
 
     useEffect(() => {
-        api.get("/tags", { params: { task_id: taskId } }).then((response) => {
-            setTags(response.data.tags);
-            setTaskTags(response.data.task_tags);
+        tagsApi.getAll({ task_id: taskId }, (response) => {
+            setTags(response.tags);
+            setTaskTags(response.task_tags);
         });
     }, [taskId]);
 
