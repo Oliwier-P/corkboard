@@ -8,7 +8,7 @@ import { useDocumentsSubscription } from "@/features/Documents/useDocumentsSubsc
 import { useAuth } from "@/context/auth/useAuth.ts";
 import Loading from "@/ui/Loading/Loading.tsx";
 import type { DocumentType } from "@/types/DocumentType.ts";
-import { documentsApi } from "@/api/documents.ts";
+import documentsApi from "@/api/documents.ts";
 
 export const Documents = () => {
     const { documentId } = useParams();

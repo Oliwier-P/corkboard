@@ -11,7 +11,7 @@ import { useAuth } from "@/context/auth/useAuth.ts";
 import Loading from "@/ui/Loading/Loading.tsx";
 import CreateModal from "@/ui/Modals/CreateModal.tsx";
 import ConfirmationModal from "@/ui/Modals/ConfirmationModal.tsx";
-import { releasesApi } from "@/api/releases.ts";
+import releasesApi from "@/api/releases.ts";
 
 export const CurrentReleasePage = () => {
     const [release, setRelease] = useState<ReleaseType | null>(null);

@@ -8,7 +8,7 @@ import { reverseColor } from "@/global/utils.ts";
 import ConfirmationModal from "@/ui/Modals/ConfirmationModal.tsx";
 import CreateTagModal from "@/ui/Popovers/TagsPopover/CreateTagModal.tsx";
 import Loading from "@/ui/Loading/Loading.tsx";
-import { tagsApi } from "@/api/tags.ts";
+import tagsApi from "@/api/tags.ts";
 
 const TagsManager = () => {
     const [tags, setTags] = useState<TagType[]>([]);

@@ -10,7 +10,7 @@ import Loading from "@/ui/Loading/Loading.tsx";
 import ConfirmationModal from "@/ui/Modals/ConfirmationModal.tsx";
 import CreateModal from "@/ui/Modals/CreateModal.tsx";
 import { EditReleaseModal } from "./EditReleaseModal.tsx";
-import { releasesApi } from "@/api/releases.ts";
+import releasesApi from "@/api/releases.ts";
 import { cable } from "@/lib/cable.ts";
 import { useAuth } from "@/context/auth/useAuth.ts";
 

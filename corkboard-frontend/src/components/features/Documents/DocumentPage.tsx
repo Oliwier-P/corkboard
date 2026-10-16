@@ -7,7 +7,7 @@ import { useAuth } from "@/context/auth/useAuth.ts";
 import { useEffect, useState } from "react";
 import Loading from "@/ui/Loading/Loading.tsx";
 import classNames from "classnames";
-import { documentsApi } from "@/api/documents.ts";
+import documentsApi from "@/api/documents.ts";
 
 interface DocumentPageProps {
     document: DocumentType;

@@ -1,20 +1,18 @@
 import { Button } from "@/ui/Button/Button.tsx";
-import { api } from "@/api";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/useToast.ts";
+import sessionApi from "@/api/session.ts";
 
 const DangerZoneSection = () => {
     const navigate = useNavigate();
     const toast = useToast();
 
     const handleLogout = () => {
-        api.delete("/logout").then((response) => {
+        sessionApi.logout((response) => {
             localStorage.setItem("token", "");
             navigate("/");
-            toast.success(response.data.message);
+            toast.success(response.message);
         });
-        localStorage.setItem("token", "");
-        navigate("/");
     };
 
     return (

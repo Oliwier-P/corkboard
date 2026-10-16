@@ -1,7 +1,7 @@
 import { api } from "@/api";
 import type { ReleaseType } from "@/types/ReleaseType.ts";
 
-export const releasesApi = {
+const releasesApi = {
     getAll: (workspaceId: string, onSuccess: (response: ReleaseType[]) => void, onError?: (error: unknown) => void) => {
         api.get<ReleaseType[]>(`/releases`, { params: { workspace_id: workspaceId } })
             .then((response) => onSuccess(response.data))
@@ -26,3 +26,5 @@ export const releasesApi = {
             .catch(onError);
     },
 };
+
+export default releasesApi;

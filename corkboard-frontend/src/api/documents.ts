@@ -1,7 +1,7 @@
 import { api } from "@/api";
 import type { DocumentType } from "@/types/DocumentType.ts";
 
-export const documentsApi = {
+const documentsApi = {
     getAll: (workspaceId: string, onSuccess: (response: DocumentType[]) => void, onError?: (error: unknown) => void) => {
         api.get<DocumentType[]>("/documents", { params: { workspace_id: workspaceId } })
             .then((response) => onSuccess(response.data))
@@ -21,3 +21,5 @@ export const documentsApi = {
         api.delete(`/documents/${documentId}`).then(onSuccess).catch(onError);
     },
 };
+
+export default documentsApi;

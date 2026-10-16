@@ -1,7 +1,7 @@
 import { useAuth } from "@/context/auth/useAuth.ts";
-import { api } from "@/api";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/useToast.ts";
+import sessionApi from "@/api/session.ts";
 
 const useProfilePopover = () => {
     const { user } = useAuth();
@@ -13,10 +13,10 @@ const useProfilePopover = () => {
     };
 
     const handleLogout = () => {
-        api.delete("/logout").then((response) => {
+        sessionApi.logout((response) => {
             localStorage.setItem("token", "");
             navigate("/");
-            toast.success(response.data.message);
+            toast.success(response.message);
         });
     };
 

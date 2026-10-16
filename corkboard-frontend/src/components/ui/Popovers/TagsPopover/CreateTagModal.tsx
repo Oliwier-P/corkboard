@@ -5,7 +5,7 @@ import { LabeledInput } from "@/ui/LabeledInput/LabeledInput.tsx";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { useWorkspaceStore } from "@/store/workspaceStore.ts";
 import type { TagType } from "@/types/TagType.ts";
-import { tagsApi } from "@/api/tags.ts";
+import tagsApi from "@/api/tags.ts";
 
 interface CreateTagModalProps {
     tag?: TagType;

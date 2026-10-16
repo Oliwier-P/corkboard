@@ -1,7 +1,7 @@
 import { api } from "@/api";
 import type { TagType } from "@/types/TagType.ts";
 
-export const tagsApi = {
+const tagsApi = {
     getAll: (
         data: { workspace_id: string } | { task_id: string },
         onSuccess: (response: { tags: TagType[]; task_tags: TagType[] }) => void,
@@ -35,3 +35,5 @@ export const tagsApi = {
             .catch(onError);
     },
 };
+
+export default tagsApi;

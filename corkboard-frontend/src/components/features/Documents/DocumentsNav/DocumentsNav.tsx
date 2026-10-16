@@ -5,7 +5,7 @@ import { Icon } from "@/ui/Icons/Icon.tsx";
 import { Button } from "@/ui/Button/Button.tsx";
 import { useWorkspaceStore } from "@/store/workspaceStore.ts";
 import type { DocumentType } from "@/types/DocumentType.ts";
-import { documentsApi } from "@/api/documents.ts";
+import documentsApi from "@/api/documents.ts";
 
 interface DocumentNavProps {
     documents: DocumentType[];

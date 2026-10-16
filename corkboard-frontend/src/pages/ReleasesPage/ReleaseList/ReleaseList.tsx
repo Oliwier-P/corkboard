@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { ClassNames } from "@/global/utils.ts";
 import { motion, LayoutGroup } from "framer-motion";
-import { releasesApi } from "@/api/releases.ts";
+import releasesApi from "@/api/releases.ts";
 import { useWorkspaceStore } from "@/store/workspaceStore.ts";
 
 type ReleaseListProps = {
