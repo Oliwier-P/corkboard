@@ -1,13 +1,13 @@
 import "./WorkspaceList.scss";
 import { useEffect, useState } from "react";
 import type { WorkspaceType } from "@/types/WorkspaceType.ts";
-import { api } from "@/api";
 import { Table } from "@/ui/Table/Table.tsx";
 import { Button } from "@/ui/Button/Button.tsx";
 import { useAuth } from "@/context/auth/useAuth.ts";
 import { WorkspaceDisplay } from "@/ui/WorkspaceDisplay/WorkspaceDisplay.tsx";
 import { useNavigate } from "react-router-dom";
 import Loading from "@/ui/Loading/Loading.tsx";
+import workspacesApi from "@/api/workspaces.ts";
 
 export const WorkspaceList = () => {
     const [workspaces, setWorkspaces] = useState<WorkspaceType[]>([]);
@@ -20,8 +20,8 @@ export const WorkspaceList = () => {
     };
 
     useEffect(() => {
-        api.get("/workspaces").then((res) => {
-            setWorkspaces(res.data);
+        workspacesApi.getAll((response) => {
+            setWorkspaces(response);
             setLoading(false);
         });
     }, []);

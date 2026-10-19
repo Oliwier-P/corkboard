@@ -2,7 +2,6 @@ import "./WorkspaceUsers.scss";
 import { WorkspaceUser } from "./WorkspaceUser.tsx";
 import { useEffect, useState } from "react";
 import { Button } from "@/ui/Button/Button.tsx";
-import { api } from "@/api";
 import { useParams } from "react-router-dom";
 import { Table } from "@/ui/Table/Table.tsx";
 import { UserDisplay } from "@/ui/UserDisplay/UserDisplay.tsx";
@@ -13,6 +12,7 @@ import { useAuth } from "@/context/auth/useAuth.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import CreateModal from "@/ui/Modals/CreateModal.tsx";
 import ConfirmationModal from "@/ui/Modals/ConfirmationModal.tsx";
+import workspacesApi from "@/api/workspaces.ts";
 
 const WorkspaceUsers = () => {
     const [users, setUsers] = useState<User[]>([]);
@@ -26,32 +26,36 @@ const WorkspaceUsers = () => {
     const toast = useToast();
 
     const handleDeleteWorkspaceUser = () => {
-        if (!userToDelete) return;
+        if (!workspaceId || !userToDelete) return;
 
-        api.delete(`/workspaces/${workspaceId}/delete_user`, { data: { user_id: userToDelete.id, username: userToDelete.username } }).then((response) => {
-            toast.success(response.data.message);
+        workspacesApi.deleteUser(workspaceId, { user_id: userToDelete.id, username: userToDelete.username }, (response) => {
             setUserToDelete(null);
             setUsers((prev) => prev.filter((u) => u.id !== userToDelete.id));
+            toast.success(response.message);
         });
     };
 
     const handleInviteUser = (data: { name: string }) => {
-        api.post(`workspaces/${workspaceId}/invite_user`, { username: data.name.toLowerCase() }).then((response) => {
-            if (response.data.status === "success") {
-                toast.success(response.data.message);
-                invitedUsers.push(response.data.user);
+        if (!workspaceId) return;
+
+        workspacesApi.inviteUser(workspaceId, { username: data.name.toLowerCase() }, (response) => {
+            if (response.status === "success") {
+                toast.success(response.message);
+                invitedUsers.push(response.user);
                 setShowInviteModal(false);
             } else {
-                toast.warning(response.data.message);
+                toast.warning(response.message);
                 setShowInviteModal(false);
             }
         });
     };
 
     useEffect(() => {
-        api.get(`workspaces/${workspaceId}/collaborators`).then((response) => {
-            setUsers(response.data.collaborators);
-            setInvitedUsers(response.data.invited_users);
+        if (!workspaceId) return;
+
+        workspacesApi.getCollaborators(workspaceId, (response) => {
+            setUsers(response.collaborators);
+            setInvitedUsers(response.invited_users);
             setLoading(false);
         });
     }, [workspaceId]);

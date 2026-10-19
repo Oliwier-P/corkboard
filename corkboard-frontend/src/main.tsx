@@ -45,6 +45,14 @@ createRoot(document.getElementById("root")!).render(
                         }
                     />
                     <Route
+                        path="/workspaces/:workspaceId/backlog/:releaseId?"
+                        element={
+                            <ProtectedRoute>
+                                <BacklogPage />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
                         path="/settings"
                         element={
                             <ProtectedRoute>
@@ -60,15 +68,6 @@ createRoot(document.getElementById("root")!).render(
                         <Route path="user/profile" element={<UserProfile />} />
                         <Route path="user/workspaces" element={<WorkspaceList />} />
                     </Route>
-
-                    <Route
-                        path="/backlog/:releaseId?"
-                        element={
-                            <ProtectedRoute>
-                                <BacklogPage />
-                            </ProtectedRoute>
-                        }
-                    />
 
                     <Route
                         path="workspaces/:workspaceId/documents/:documentId?"

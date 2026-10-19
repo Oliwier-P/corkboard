@@ -1,7 +1,6 @@
 import "./CurrentReleasePage.scss";
 import { Button } from "@/ui/Button/Button.tsx";
 import { useEffect, useState } from "react";
-import { api } from "@/api";
 import { ReleaseBoard } from "@/features/ReleaseBoard/ReleaseBoard.tsx";
 import type { ReleaseType } from "@/types/ReleaseType.ts";
 import { useWorkspaceStore } from "@/store/workspaceStore.ts";
@@ -12,6 +11,7 @@ import Loading from "@/ui/Loading/Loading.tsx";
 import CreateModal from "@/ui/Modals/CreateModal.tsx";
 import ConfirmationModal from "@/ui/Modals/ConfirmationModal.tsx";
 import releasesApi from "@/api/releases.ts";
+import workspacesApi from "@/api/workspaces.ts";
 
 export const CurrentReleasePage = () => {
     const [release, setRelease] = useState<ReleaseType | null>(null);
@@ -24,16 +24,17 @@ export const CurrentReleasePage = () => {
     useReleaseSubscription(release ? release.id : null, user ? user.id : null);
 
     useEffect(() => {
-        if (workspaceId) {
-            api.get(`/workspaces/${workspaceId}/current_release`).then((res) => {
-                setRelease(res.data);
-                setLoading(false);
-            });
-        }
+        if (!workspaceId) return;
+
+        workspacesApi.getCurrentRelease(workspaceId, (response) => {
+            setRelease(response);
+            setLoading(false);
+        });
     }, [workspaceId]);
 
     const handleCreateRelease = (data: { name: string }) => {
         if (!workspaceId) return;
+
         releasesApi.create({ name: data.name, workspace_id: workspaceId, status: "QUEUED" }, (response) => {
             setRelease(response);
             setShowCreateReleaseModal(false);
@@ -41,8 +42,10 @@ export const CurrentReleasePage = () => {
     };
 
     const handleCompleteRelease = () => {
-        api.post(`/workspaces/${workspaceId}/complete_release`).then((res) => {
-            setRelease(res.data || null);
+        if (!workspaceId) return;
+
+        workspacesApi.completeRelease(workspaceId, (response) => {
+            setRelease(response || null);
             setShowCompleteReleaseModal(false);
         });
     };

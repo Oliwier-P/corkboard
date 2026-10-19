@@ -20,6 +20,11 @@ const releasesApi = {
     delete: (releaseId: string, onSuccess: () => void, onError?: (error: unknown) => void) => {
         api.delete(`/releases/${releaseId}`).then(onSuccess).catch(onError);
     },
+    getBoard: (releaseId: string, onSuccess: (response: any) => void, onError?: (error: unknown) => void) => {
+        api.get(`/releases/${releaseId}/board`)
+            .then((response) => onSuccess(response.data))
+            .catch(onError);
+    },
     move: (releaseId: string, data: any, onSuccess: (response: ReleaseType[]) => void, onError?: (error: unknown) => void) => {
         api.put<ReleaseType[]>(`/releases/${releaseId}/move`, data)
             .then((response) => onSuccess(response.data))

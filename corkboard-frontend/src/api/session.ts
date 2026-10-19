@@ -1,5 +1,21 @@
 import { api } from "@/api";
-import type { LoginResponse, SignupResponse, LogoutResponse } from "@/types/SessionTypes.ts";
+import type { UserSettings } from "@/context/auth/types.ts";
+
+type LoginResponse = {
+    message: string;
+    token: string;
+    user: UserSettings;
+    workspace_id: string;
+};
+
+type SignupResponse = {
+    message: string;
+    token: string;
+};
+
+type LogoutResponse = {
+    message: string;
+};
 
 const sessionApi = {
     login: (data: { username: string; password: string }, onSuccess: (response: LoginResponse) => void, onError?: (error: unknown) => void) => {

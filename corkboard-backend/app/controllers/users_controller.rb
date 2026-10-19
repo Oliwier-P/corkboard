@@ -4,6 +4,8 @@ class UsersController < ApplicationController
 
   def me
     @user = current_user
+    @workspace = @user.last_workspace
+    @release = @workspace.current_release
   end
 
   def index

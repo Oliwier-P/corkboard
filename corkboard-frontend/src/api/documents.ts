@@ -7,6 +7,11 @@ const documentsApi = {
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
+    get: (taskId: string, onSuccess: (response: DocumentType) => void, onError?: (error: unknown) => void) => {
+        api.get<DocumentType>("/documents", { params: { task_id: taskId } })
+            .then((response) => onSuccess(response.data))
+            .catch(onError);
+    },
     create: (workspaceId: string, onSuccess: (response: DocumentType) => void, onError?: (error: unknown) => void) => {
         api.post<DocumentType>(`/documents`, { workspace_id: workspaceId })
             .then((response) => onSuccess(response.data))

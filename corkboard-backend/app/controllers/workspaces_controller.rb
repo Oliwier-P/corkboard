@@ -6,6 +6,17 @@ class WorkspacesController < ApplicationController
     @workspaces = current_user.workspaces
   end
 
+  def create
+    @workspace = current_user.workspaces.create!(workspace_params.merge(owner_id: current_user.id))
+  end
+
+  def update
+    @workspace = current_user.workspaces.find(params[:id])
+    code_prefix_changed = @workspace.code_prefix != params[:code_prefix]
+    @workspace&.update!(workspace_params)
+    @workspace.rebuild_task_codes! if code_prefix_changed
+  end
+
   def show
     @workspace = Workspace.find(params[:id])
   end
@@ -18,17 +29,6 @@ class WorkspacesController < ApplicationController
     end
 
     workspace.destroy
-  end
-
-  def create
-    @workspace = current_user.workspaces.create!(workspace_params.merge(owner_id: current_user.id))
-  end
-
-  def update
-    @workspace = current_user.workspaces.find(params[:id])
-    code_prefix_changed = @workspace.code_prefix != params[:code_prefix]
-    @workspace&.update!(workspace_params)
-    @workspace.rebuild_task_codes! if code_prefix_changed
   end
 
   def collaborators
@@ -49,11 +49,20 @@ class WorkspacesController < ApplicationController
     already_invited = WorkspaceInvitation.find_by(invited_user_id: @user&.id, workspace_id: params[:id])
     return render json: { message: "User #{username} is already invited!" } if already_invited
 
-    WorkspaceInvitation.create!(invited_user_id: @user&.id, workspace_id: params[:id], invited_by_user_id: current_user.id)
+    WorkspaceInvitation.create!(invited_user_id: @user&.id, workspace_id: params[:id], invited_by_user_id: current_user.id, status: "PENDING")
   end
 
   def invitation
     @invitation = WorkspaceInvitation.where(invited_user_id: current_user.id)
+  end
+
+  def backlog
+    current_release = @workspace.current_release
+    @backlog_tasks = Task.where(workspace_id: @workspace.id, status: :backlog, release_id: nil)
+    @release_tasks = Task.where(workspace_id: @workspace.id)
+                         .where.not(status: :backlog)
+                         .where(release_id: current_release&.id)
+                         .group_by(&:status)
   end
 
   def accept_invitation

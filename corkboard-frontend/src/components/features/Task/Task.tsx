@@ -13,16 +13,19 @@ import UserPopover from "@/ui/Popovers/UserPopover/UserPopover.tsx";
 import Tag from "@/ui/Tag/Tag.tsx";
 import { useAuth } from "@/context/auth/useAuth.ts";
 import { useWorkspaceStore } from "@/store/workspaceStore.ts";
+import type { TaskType } from "@/types/ReleaseBoardTypes.ts";
+import tasksApi from "@/api/tasks.ts";
 
 type TaskProps = {
-    taskId: string;
+    task: TaskType;
+    onDelete: (task: TaskType) => void;
 };
 
 type Inputs = {
     name: string;
 };
 
-export const Task = memo(({ taskId }: TaskProps) => {
+export const Task = memo(({ task, onDelete }: TaskProps) => {
     const [isEditing, setIsEditing] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
@@ -34,15 +37,10 @@ export const Task = memo(({ taskId }: TaskProps) => {
     const setTaskId = useTaskStore((state) => state.setTaskId);
 
     const workspace = useWorkspaceStore((state) => state.workspace);
-    const task = useReleaseBoardStore((state) => state.tasks[taskId]);
-    const updateTask = useReleaseBoardStore((state) => state.updateTask);
-    const deleteTask = useReleaseBoardStore((state) => state.deleteTask);
-    const moveToNextRelease = useReleaseBoardStore((state) => state.moveTaskToNextRelease);
-    const moveToBacklog = useReleaseBoardStore((state) => state.moveToBacklog);
     const moveTaskBetweenColumns = useReleaseBoardStore((state) => state.moveTaskBetweenColumns);
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        updateTask(taskId, { name: data.name });
+        tasksApi.update(task.id, { name: data.name }, (response) => {});
         setIsEditing(false);
     };
 
@@ -51,11 +49,11 @@ export const Task = memo(({ taskId }: TaskProps) => {
 
         return draggable({
             element: ref.current,
-            getInitialData: () => ({ type: "task", taskId }),
+            getInitialData: () => ({ type: "task", task_id: task.id }),
             onDragStart: () => setIsDragging(true),
             onDrop: () => setIsDragging(false),
         });
-    }, [taskId]);
+    }, [task]);
 
     useEffect(() => {
         if (isDragging) {
@@ -95,19 +93,19 @@ export const Task = memo(({ taskId }: TaskProps) => {
                     type: "button",
                     label: "Move To Current Release",
                     icon: "boxArrowUp",
-                    onClick: () => moveTaskBetweenColumns(taskId, "backlog", "todo"),
+                    onClick: () => moveTaskBetweenColumns(task.id, "backlog", "todo"),
                 },
                 {
                     type: "button",
                     label: "Move To Next Release",
                     icon: "boxArrowUp",
-                    onClick: () => moveToNextRelease(taskId),
+                    onClick: () => tasksApi.moveToNextRelease(task.id, () => onDelete(task)),
                 },
                 task.status !== "backlog" && {
                     type: "button",
                     label: "Move To Backlog",
                     icon: "boxArrowDown",
-                    onClick: () => moveToBacklog(taskId),
+                    onClick: () => tasksApi.update(task.id, { release_id: null, status: "backlog" }, (response) => {}),
                 },
                 {
                     type: "hr",
@@ -117,10 +115,10 @@ export const Task = memo(({ taskId }: TaskProps) => {
                     label: "Delete",
                     color: "red",
                     icon: "trash",
-                    onClick: () => deleteTask(taskId),
+                    onClick: () => tasksApi.delete(task.id, () => onDelete(task)),
                 },
             ].filter(Boolean) as ContextMenuItem[],
-        [deleteTask, moveToBacklog, moveToNextRelease, taskId],
+        [moveTaskBetweenColumns, onDelete, task],
     );
 
     return (
@@ -130,7 +128,7 @@ export const Task = memo(({ taskId }: TaskProps) => {
                 ref={ref}
                 onClick={() => {
                     setIsOpen(true);
-                    setTaskId(taskId);
+                    setTaskId(task.id);
                 }}
             >
                 <form className="task__header" ref={headerRef} onClick={(e) => isEditing && e.stopPropagation()} onSubmit={handleSubmit(onSubmit)}>
@@ -148,7 +146,7 @@ export const Task = memo(({ taskId }: TaskProps) => {
                     )}
                 </form>
                 <div className="tags">
-                    <UserPopover taskId={taskId} taskUser={task.user} />
+                    <UserPopover taskId={task.id} taskUser={task.user} />
 
                     {user?.preferences.show_board_tags && (
                         <>

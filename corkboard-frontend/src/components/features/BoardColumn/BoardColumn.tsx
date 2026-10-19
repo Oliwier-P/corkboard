@@ -5,30 +5,38 @@ import * as _ from "lodash";
 import { type Dispatch, memo, type SetStateAction, useEffect, useRef, useState } from "react";
 import { TaskForm } from "../TaskForm/TaskForm.tsx";
 import { useReleaseBoardStore } from "@/store/releaseBoardStore.ts";
-import { Task } from "../Task/Task.tsx";
-import { useShallow } from "zustand/react/shallow";
 import { dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
+import type { TaskStatus, TaskType } from "@/types/ReleaseBoardTypes.ts";
+import { Task } from "@/features/Task/Task.tsx";
+import tasksApi from "@/api/tasks.ts";
+import { useWorkspaceStore } from "@/store/workspaceStore.ts";
 
 type BoardColumnProps = {
-    columnId: string;
+    columnId: TaskStatus | "backlog";
+    tasks: TaskType[];
+    onTaskCreate: (response: TaskType) => void;
+    onTaskDelete: (task: TaskType) => void;
     isCreateTaskOpen: boolean;
     setIsCreateTaskOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-export const BoardColumn = memo(({ columnId, isCreateTaskOpen, setIsCreateTaskOpen }: BoardColumnProps) => {
+export const BoardColumn = memo(({ columnId, tasks, onTaskCreate, onTaskDelete, isCreateTaskOpen, setIsCreateTaskOpen }: BoardColumnProps) => {
     const [showCreateTask, setShowCreateTask] = useState(false);
+    const [isDragOver, setIsDragOver] = useState(false);
+    const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
     const newTaskRef = useRef<HTMLDivElement>(null);
     const ref = useRef<HTMLDivElement>(null);
     const tasksContainerRef = useRef<HTMLDivElement>(null);
-    const [isDragOver, setIsDragOver] = useState(false);
-    const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
-
-    const taskIds = useReleaseBoardStore(useShallow((state) => state.columns.find((col) => col.id === columnId)?.taskIds ?? []));
-    const addTask = useReleaseBoardStore((state) => state.addTask);
+    const workspace = useWorkspaceStore((state) => state.workspace);
+    const releaseId = useWorkspaceStore((state) => state.currentRelease?.id);
 
     const handleTaskAdd = (name: string) => {
-        if (name.trim()) {
-            addTask(columnId, name.trim());
+        const trimmedName = name.trim();
+
+        if (trimmedName && workspace) {
+            tasksApi.create({ name: trimmedName, status: columnId, workspace_id: workspace.id, release_id: releaseId }, (response) => {
+                onTaskCreate(response);
+            });
         }
 
         setIsCreateTaskOpen(false);
@@ -58,12 +66,12 @@ export const BoardColumn = memo(({ columnId, isCreateTaskOpen, setIsCreateTaskOp
                 if (!taskElements) return;
 
                 const y = location.current.input.clientY;
-                let index = taskIds.length;
+                let index = tasks.length;
 
                 taskElements.forEach((element, i) => {
                     const rect = element.getBoundingClientRect();
                     const middle = rect.top + rect.height / 2;
-                    if (y < middle && index === taskIds.length) {
+                    if (y < middle && index === tasks.length) {
                         index = i;
                     }
                 });
@@ -84,12 +92,12 @@ export const BoardColumn = memo(({ columnId, isCreateTaskOpen, setIsCreateTaskOp
                 const taskElements = ref.current?.querySelectorAll(".task:not(.dragging)");
 
                 const y = location.current.input.clientY;
-                let index = taskIds.length;
+                let index = tasks.length;
 
                 taskElements?.forEach((element, i) => {
                     const rect = element.getBoundingClientRect();
                     const middle = rect.top + rect.height / 2;
-                    if (y < middle && index === taskIds.length) {
+                    if (y < middle && index === tasks.length) {
                         index = i;
                     }
                 });
@@ -101,7 +109,7 @@ export const BoardColumn = memo(({ columnId, isCreateTaskOpen, setIsCreateTaskOp
                 }
             },
         });
-    }, [columnId, taskIds]);
+    }, [columnId, tasks]);
 
     useEffect(() => {
         if (!isCreateTaskOpen) return;
@@ -133,13 +141,13 @@ export const BoardColumn = memo(({ columnId, isCreateTaskOpen, setIsCreateTaskOp
                 {_.upperCase(columnId as string)}
             </div>
             <div ref={tasksContainerRef} className="board-column__tasks">
-                {taskIds.map((taskId, index) => (
+                {tasks.map((task, index) => (
                     <>
                         {dragOverIndex === index && <div className="board-column__placeholder" />}
-                        <Task key={taskId} taskId={taskId} />
+                        <Task key={task.id} task={task} onDelete={onTaskDelete} />
                     </>
                 ))}
-                {dragOverIndex === taskIds.length && <div className="board-column__placeholder" />}
+                {dragOverIndex === tasks.length && <div className="board-column__placeholder" />}
                 {showCreateTask && <TaskForm onSave={handleTaskAdd} ref={newTaskRef} />}
             </div>
             <div className="board-column__footer">

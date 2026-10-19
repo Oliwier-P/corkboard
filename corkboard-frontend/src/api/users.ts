@@ -1,5 +1,13 @@
 import { api } from "@/api";
 import type { UserPreferences, UserSettings } from "@/context/auth/types.ts";
+import type { WorkspaceType } from "@/types/WorkspaceType.ts";
+import type { ReleaseType } from "@/types/ReleaseType.ts";
+
+type MeResponse = {
+    user: UserSettings;
+    workspace: WorkspaceType;
+    release: ReleaseType;
+};
 
 const usersApi = {
     getAll: (onSuccess: (response: UserSettings[]) => void, onError?: (error: unknown) => void) => {
@@ -25,8 +33,8 @@ const usersApi = {
     delete: (userId: string, onSuccess: () => void, onError?: (error: unknown) => void) => {
         api.delete(`/users/${userId}`).then(onSuccess).catch(onError);
     },
-    me: (onSuccess: (response: UserSettings) => void, onError?: (error: unknown) => void) => {
-        api.get<UserSettings>(`/users/me`)
+    me: (onSuccess: (response: MeResponse) => void, onError?: (error: unknown) => void) => {
+        api.get<MeResponse>(`/users/me`)
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },

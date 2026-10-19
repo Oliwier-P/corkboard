@@ -1,5 +1,4 @@
 import type { TaskType } from "@/types/ReleaseBoardTypes.ts";
-import { useReleaseBoardStore } from "./releaseBoardStore.ts";
 import { useEffect } from "react";
 import { cable } from "@/lib/cable.ts";
 
@@ -18,9 +17,9 @@ type ReleaseEvent =
       };
 
 export const useReleaseSubscription = (releaseId: string | null, userId: string | null) => {
-    const applyTaskCreated = useReleaseBoardStore((state) => state.applyTaskCreated);
-    const applyTaskDestroyed = useReleaseBoardStore((state) => state.applyTaskDestroyed);
-    const applyTaskUpdated = useReleaseBoardStore((state) => state.applyTaskUpdated);
+    // const applyTaskCreated = useReleaseBoardStore((state) => state.applyTaskCreated);
+    // const applyTaskDestroyed = useReleaseBoardStore((state) => state.applyTaskDestroyed);
+    // const applyTaskUpdated = useReleaseBoardStore((state) => state.applyTaskUpdated);
 
     useEffect(() => {
         if (!releaseId) return;
@@ -41,13 +40,13 @@ export const useReleaseSubscription = (releaseId: string | null, userId: string 
                     if (event.task.actor_id !== userId) {
                         switch (event.type) {
                             case "task_created":
-                                applyTaskCreated(event.task);
+                                //applyTaskCreated(event.task);
                                 break;
                             case "task_destroyed":
-                                applyTaskDestroyed(event.task.id);
+                                //applyTaskDestroyed(event.task.id);
                                 break;
                             case "task_updated":
-                                applyTaskUpdated(event.task);
+                                //applyTaskUpdated(event.task);
                                 break;
                             default:
                                 console.error(event);
@@ -60,5 +59,5 @@ export const useReleaseSubscription = (releaseId: string | null, userId: string 
         return () => {
             subscription.unsubscribe();
         };
-    }, [releaseId, applyTaskCreated]);
+    }, [releaseId, userId]);
 };

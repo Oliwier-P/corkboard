@@ -29,8 +29,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :backlog
-
   resources :tasks do
     member do
       put :move_to_next_release
@@ -47,6 +45,7 @@ Rails.application.routes.draw do
 
   resources :workspaces do
     member do
+      get :backlog
       get :collaborators
       get :current_release
       post :invite_user

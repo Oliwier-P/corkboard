@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import type { TaskStatus } from "@/types/ReleaseBoardTypes.ts";
 
 type Modifier = string | false | null | undefined;
 type ConditionalModifiers = Record<string, boolean | undefined | null>;
@@ -36,3 +37,5 @@ export const reverseColor = (color: string) => {
     const yiq = (r * 299 + g * 587 + b * 114) / 1000;
     return yiq >= 128 ? "#000000" : "#ffffff";
 };
+
+export const BOARD_COLUMNS: TaskStatus[] = ["todo", "in_progress", "review_pending", "testing", "adjustments", "accepted"];
