@@ -1,19 +1,20 @@
 import { create } from "zustand";
+import type { TaskType } from "@/types/ReleaseBoardTypes.ts";
 
 interface TaskStore {
     isOpen: boolean;
     setIsOpen: (value: boolean) => void;
-    taskId: string | null;
-    setTaskId: (value: string) => void;
+    task: TaskType | null;
+    setTask: (value: TaskType | null) => void;
 }
 
 export const useTaskStore = create<TaskStore>((set) => ({
     isOpen: false,
-    taskId: null,
+    task: null,
     setIsOpen: (value) => {
         set({ isOpen: value });
     },
-    setTaskId: (value) => {
-        set({ taskId: value });
+    setTask: (value) => {
+        set({ task: value });
     },
 }));

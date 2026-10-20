@@ -5,15 +5,16 @@ import { useTaskEditor } from "./useTaskEditor.ts";
 import { CollaborativeEditor } from "../CollaborativeEditor/CollaborativeEditor.tsx";
 import Loading from "@/ui/Loading/Loading.tsx";
 import TaskProperties from "../TaskProperties/TaskProperties.tsx";
+import type { TaskType } from "@/types/ReleaseBoardTypes.ts";
 
 interface TaskEditorContentProps {
-    taskId: string;
+    task: TaskType;
     className?: string;
 }
 
-export const TaskEditorContent = ({ taskId, className }: TaskEditorContentProps) => {
+export const TaskEditorContent = ({ task, className }: TaskEditorContentProps) => {
     const { user, token } = useAuth();
-    const { task, taskName, setTaskName, documentId, isDocumentReady, setIsDocumentReady, handleNameBlur } = useTaskEditor(taskId);
+    const { taskName, setTaskName, documentId, isDocumentReady, setIsDocumentReady, handleNameBlur } = useTaskEditor(task);
 
     if (!task) return null;
 

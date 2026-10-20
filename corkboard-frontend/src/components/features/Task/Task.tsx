@@ -34,7 +34,7 @@ export const Task = memo(({ task, onDelete }: TaskProps) => {
     const { user } = useAuth();
 
     const setIsOpen = useTaskStore((state) => state.setIsOpen);
-    const setTaskId = useTaskStore((state) => state.setTaskId);
+    const setTask = useTaskStore((state) => state.setTask);
 
     const workspace = useWorkspaceStore((state) => state.workspace);
     const moveTaskBetweenColumns = useReleaseBoardStore((state) => state.moveTaskBetweenColumns);
@@ -128,7 +128,7 @@ export const Task = memo(({ task, onDelete }: TaskProps) => {
                 ref={ref}
                 onClick={() => {
                     setIsOpen(true);
-                    setTaskId(task.id);
+                    setTask(task);
                 }}
             >
                 <form className="task__header" ref={headerRef} onClick={(e) => isEditing && e.stopPropagation()} onSubmit={handleSubmit(onSubmit)}>
