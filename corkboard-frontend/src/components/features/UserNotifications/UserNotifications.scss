@@ -11,9 +11,9 @@
     width: max-content;
 
     background: #0c0c0c;
-    position: absolute;
-    right: -5px;
-    bottom: calc(100% + 1rem);
+    position: fixed;
+    left: 10px;
+    bottom: 60px;
 
     border: 1px solid colors.$border-color;
     border-radius: 0.25rem;
