@@ -2,13 +2,12 @@ import "./TaskSidebar.scss";
 import classNames from "classnames";
 import { useTaskStore } from "@/store/taskStore.ts";
 import { TaskEditorContent } from "./TaskEditorContent.tsx";
-import type { TaskType } from "@/types/ReleaseBoardTypes.ts";
 
 interface TaskSidebarProps {
-    task: TaskType;
+    taskId: string;
 }
 
-const TaskSidebar = ({ task }: TaskSidebarProps) => {
+const TaskSidebar = ({ taskId }: TaskSidebarProps) => {
     const isOpen = useTaskStore((state) => state.isOpen);
     const setIsOpen = useTaskStore((state) => state.setIsOpen);
 
@@ -19,8 +18,8 @@ const TaskSidebar = ({ task }: TaskSidebarProps) => {
                 if (e.target === e.currentTarget) setIsOpen(false);
             }}
         >
-            <div key={task.id} className={classNames("task-sidebar", { closing: !isOpen })}>
-                <TaskEditorContent key={task.id} task={task} />
+            <div key={taskId} className={classNames("task-sidebar", { closing: !isOpen })}>
+                <TaskEditorContent key={taskId} taskId={taskId} />
             </div>
         </div>
     );

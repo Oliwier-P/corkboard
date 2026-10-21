@@ -1,11 +1,20 @@
-json.backlog_tasks do
-  json.array! @backlog_tasks, partial: "tasks/task", as: :task
-end
-json.release_tasks do
-  Task.statuses.keys.excluding("backlog").each do |status|
-    json.set! status do
-      json.array! @release_tasks.fetch(status, []), partial: "tasks/task", as: :task
+json.taskIds @tasks.order("tasks.position ASC").map { |task| task.id }
+
+json.tasks do
+  @tasks.each do |task|
+    json.set! task.id do
+      json.extract! task, :id, :name, :status, :priority, :position, :code_name
+      json.tags task.tags do |tag|
+        json.partial! "tags/tag", tag: tag
+      end
+
+      json.user do
+        if task.user
+          json.extract! task.user, :id, :username
+        else
+          json.nil!
+        end
+      end
     end
   end
 end
-json.release_name @workspace.current_release&.name

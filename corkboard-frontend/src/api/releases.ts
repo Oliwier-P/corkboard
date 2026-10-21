@@ -1,5 +1,6 @@
 import { api } from "@/api";
 import type { ReleaseType } from "@/types/ReleaseType.ts";
+import type { ReleaseTasks } from "@/types/ReleaseBoardTypes.ts";
 
 const releasesApi = {
     getAll: (workspaceId: string, onSuccess: (response: ReleaseType[]) => void, onError?: (error: unknown) => void) => {
@@ -20,7 +21,7 @@ const releasesApi = {
     delete: (releaseId: string, onSuccess: () => void, onError?: (error: unknown) => void) => {
         api.delete(`/releases/${releaseId}`).then(onSuccess).catch(onError);
     },
-    getBoard: (releaseId: string, onSuccess: (response: any) => void, onError?: (error: unknown) => void) => {
+    getBoard: (releaseId: string, onSuccess: (response: ReleaseTasks) => void, onError?: (error: unknown) => void) => {
         api.get(`/releases/${releaseId}/board`)
             .then((response) => onSuccess(response.data))
             .catch(onError);

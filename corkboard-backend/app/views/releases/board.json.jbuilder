@@ -1,13 +1,25 @@
-Task.statuses.keys.excluding("backlog").each do |status|
-  json.set! status do
-    json.array! @tasks.fetch(status, []) do |task|
-      json.extract! task, :id, :name, :status, :priority, :code_name, :order
-
+json.tasks do
+  @tasks.each do |task|
+    json.set! task.id do
+      json.extract! task, :id, :name, :status, :priority, :code_name
       json.tags task.tags do |tag|
         json.partial! "tags/tag", tag: tag
       end
 
-      json.user task.user ? { id: task.user.id, username: task.user.username } : nil
+      json.user do
+        if task.user
+          json.extract! task.user, :id, :username
+        else
+          json.nil!
+        end
+      end
     end
+  end
+end
+
+json.columns do
+  json.array!(Task.statuses.keys.select{|key| key != Task.statuses[:backlog]}) do |status|
+    json.id status
+    json.taskIds @tasks.order("tasks.position ASC").select { |task| task.status == status }.map { |task| task.id }
   end
 end

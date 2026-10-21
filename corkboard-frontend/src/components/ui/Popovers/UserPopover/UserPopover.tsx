@@ -30,15 +30,19 @@ const UserPopover = ({ taskId, taskUser, variant = "task" }: UserSelectProps) =>
                     </div>
                 }
             >
-                {users.map((user) => (
-                    <Popover.PopoverItem
-                        icon={<UserAvatar username={user.username} />}
-                        label={user.username}
-                        value={user.id}
-                        selected={user.id === taskUser?.id}
-                        onSelect={handleAssignUserToTask}
-                    />
-                ))}
+                {users.length > 0 ? (
+                    users.map((user) => (
+                        <Popover.PopoverItem
+                            icon={<UserAvatar username={user.username} />}
+                            label={user.username}
+                            value={user.id}
+                            selected={user.id === taskUser?.id}
+                            onSelect={handleAssignUserToTask}
+                        />
+                    ))
+                ) : (
+                    <>No users found</>
+                )}
             </Popover>
         </div>
     );

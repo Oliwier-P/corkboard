@@ -6,7 +6,7 @@
 #  code_name    :string
 #  code_number  :integer
 #  name         :string
-#  order        :integer
+#  position     :integer
 #  priority     :string
 #  status       :string
 #  created_at   :datetime         not null
@@ -17,7 +17,8 @@
 #
 # Indexes
 #
-#  index_tasks_on_workspace_id_and_code_name  (workspace_id,code_name) UNIQUE
+#  index_tasks_on_release_id_and_status_and_position  (release_id,status,position)
+#  index_tasks_on_workspace_id_and_code_name          (workspace_id,code_name) UNIQUE
 #
 # Foreign Keys
 #
@@ -59,6 +60,8 @@ class Task < ApplicationRecord
     urgent: "urgent",
   }
 
+  acts_as_list scope: [:release_id, :status], column: :position
+
   def clear_release_id_for_backlog
     # TODO: Add status_changed? when we are sure that the update is called only once
     if self.status == "backlog"
@@ -69,14 +72,14 @@ class Task < ApplicationRecord
   def broadcast_to_release(type, current_user)
     ActionCable.server.broadcast "release_#{self.release_id}", {
       type: type,
+      actor_id: current_user.id,
       task: {
         id: self.id,
         name: self.name,
         status: self.status,
-        order: self.order,
+        position: self.position,
         release_id: self.release_id,
         workspace_id: self.workspace_id,
-        actor_id: current_user.id,
         user: self.user ? {
           id: self.user.id,
           username: self.user.username,

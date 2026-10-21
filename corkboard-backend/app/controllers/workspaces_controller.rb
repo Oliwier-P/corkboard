@@ -57,12 +57,7 @@ class WorkspacesController < ApplicationController
   end
 
   def backlog
-    current_release = @workspace.current_release
-    @backlog_tasks = Task.where(workspace_id: @workspace.id, status: :backlog, release_id: nil)
-    @release_tasks = Task.where(workspace_id: @workspace.id)
-                         .where.not(status: :backlog)
-                         .where(release_id: current_release&.id)
-                         .group_by(&:status)
+    @tasks = Task.where(workspace_id: @workspace.id, status: Task.statuses[:backlog], release_id: nil)
   end
 
   def accept_invitation

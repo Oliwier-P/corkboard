@@ -9,7 +9,7 @@ export type TaskType = {
     release_id: string | null;
     workspace_id: string | null;
     status: TaskStatus;
-    order: number;
+    position: number;
     priority: string | null;
     code_name: string;
     user: User | null;
@@ -18,7 +18,7 @@ export type TaskType = {
 };
 
 export type Column = {
-    id: string;
+    id: TaskStatus;
     taskIds: string[];
 };
 

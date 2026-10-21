@@ -1,22 +1,26 @@
 import { useEffect, useState } from "react";
+import { useReleaseBoardStore } from "@/store/releaseBoardStore.ts";
 import { api } from "@/api";
-import tasksApi from "@/api/tasks.ts";
-import type { TaskType } from "@/types/ReleaseBoardTypes.ts";
 
-export const useTaskEditor = (task: TaskType) => {
+export const useTaskEditor = (taskId: string) => {
+    const task = useReleaseBoardStore((state) => state.tasks[taskId]);
+    const updateTask = useReleaseBoardStore((state) => state.updateTask);
+
     const [taskName, setTaskName] = useState<string>(task?.name ?? "");
     const [documentId, setDocumentId] = useState<string | null>(null);
     const [isDocumentReady, setIsDocumentReady] = useState(false);
 
     useEffect(() => {
-        api.get(`/tasks/${task.id}/document`).then((response) => {
+        api.get(`/tasks/${taskId}/document`).then((response) => {
             setDocumentId(response.data.id);
         });
-    }, [task.id]);
+    }, [taskId]);
 
     const handleUpdateTaskName = (value: string) => {
         if (task.name !== value) {
-            tasksApi.update(task.id, { name: value }, (response) => {});
+            api.put(`tasks/${taskId}`, { name: value }).then(() => {
+                updateTask(taskId, { name: value });
+            });
         }
     };
 

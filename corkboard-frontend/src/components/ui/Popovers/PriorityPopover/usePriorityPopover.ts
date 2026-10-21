@@ -1,4 +1,4 @@
-import tasksApi from "@/api/tasks.ts";
+import { useReleaseBoardStore } from "@/store/releaseBoardStore.ts";
 
 interface usePriorityPopoverProps {
     taskId: string;
@@ -6,10 +6,14 @@ interface usePriorityPopoverProps {
 }
 
 const usePriorityPopover = ({ taskId, taskPriority }: usePriorityPopoverProps) => {
-    const handleUpdateTaskStatus = (priority: string) => {
-        const newPriority = taskPriority === priority ? null : priority;
+    const updateTask = useReleaseBoardStore((state) => state.updateTask);
 
-        tasksApi.update(taskId, { priority: newPriority }, (response) => {});
+    const handleUpdateTaskStatus = (priority: string) => {
+        if (taskPriority === priority) {
+            updateTask(taskId, { priority: null });
+        } else {
+            updateTask(taskId, { priority: priority });
+        }
     };
 
     return { handleUpdateTaskStatus };

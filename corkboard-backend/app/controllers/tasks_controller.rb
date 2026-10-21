@@ -16,17 +16,17 @@ class TasksController < ApplicationController
     workspace_id = release ? release.workspace_id : tasks_params[:workspace_id]
     authorize! :create, Task.new(workspace_id: workspace_id)
 
-    attrs = tasks_params.to_h.except(:order).merge(workspace_id: workspace_id)
+    attrs = tasks_params.to_h.except(:position).merge(workspace_id: workspace_id)
     attrs[:status] = Task.statuses[:backlog] unless release
 
     ActiveRecord::Base.transaction do
-      locked_orders = Task.where(
+      locked_positions = Task.where(
         workspace_id: workspace_id,
         status: attrs[:status],
         release_id: attrs[:release_id]
-      ).lock.pluck(:order)
+      ).lock.pluck(:position)
 
-      @task = Task.create!(attrs.merge(order: (locked_orders.max || -1) + 1))
+      @task = Task.create!(attrs.merge(position: (locked_positions.max || -1) + 1))
       Document.create!(task: @task, name: @task.code_name, owner: current_user, workspace_id: workspace_id)
     end
 
@@ -39,51 +39,51 @@ class TasksController < ApplicationController
     authorize! :update, @task
 
     ActiveRecord::Base.transaction do
-      if tasks_params[:order].present?
+      if tasks_params[:position].present?
         old_status = @task.status
-        old_order  = @task.order
+        old_position  = @task.position
         new_status = tasks_params[:status] || old_status
-        new_order  = tasks_params[:order]
+        new_position  = tasks_params[:position]
 
         if old_status == new_status
-          if new_order != old_order
-            if new_order < old_order
+          if new_position != old_position
+            if new_position < old_position
               @task.workspace.tasks
                   .where(status: old_status, release_id: @task.release_id)
-                  .where("\"order\" >= ? AND \"order\" < ?", new_order, old_order)
+                  .where("\"position\" >= ? AND \"position\" < ?", new_position, old_position)
                   .where.not(id: @task.id)
-                  .update_all("\"order\" = \"order\" + 1")
+                  .update_all("\"position\" = \"position\" + 1")
             else
               @task.workspace.tasks
                   .where(status: old_status, release_id: @task.release_id)
-                  .where("\"order\" > ? AND \"order\" <= ?", old_order, new_order)
+                  .where("\"position\" > ? AND \"position\" <= ?", old_position, new_position)
                   .where.not(id: @task.id)
-                  .update_all("\"order\" = \"order\" - 1")
+                  .update_all("\"position\" = \"position\" - 1")
             end
           end
         else
           @task.workspace.tasks
               .where(status: old_status, release_id: @task.release_id)
-              .where("\"order\" > ?", old_order)
-              .update_all("\"order\" = \"order\" - 1")
+              .where("\"position\" > ?", old_position)
+              .update_all("\"position\" = \"position\" - 1")
 
           @task.workspace.tasks
               .where(status: new_status, release_id: @task.release_id)
-              .where("\"order\" >= ?", new_order)
-              .update_all("\"order\" = \"order\" + 1")
+              .where("\"position\" >= ?", new_position)
+              .update_all("\"position\" = \"position\" + 1")
         end
 
         if tasks_params[:status] == "in_progress" && @task.status == "todo" && @task.user_id == nil && @task.workspace.auto_assign
-          @task.update!(order: new_order, status: new_status, user: current_user)
+          @task.update!(position: new_position, status: new_status, user: current_user)
         else
-          @task.update!(order: new_order, status: new_status)
+          @task.update!(position: new_position, status: new_status)
         end
       elsif tasks_params[:status].present? && tasks_params[:status] != @task.status
         @task.update!(status: tasks_params[:status])
       end
     end
 
-    attrs = tasks_params.to_h.except(:order, :status)
+    attrs = tasks_params.to_h.except(:position, :status)
 
     if attrs[:user_id].present?
       attrs[:user_id] = nil if attrs[:user_id].to_i == @task.user_id
@@ -112,7 +112,7 @@ class TasksController < ApplicationController
 
   private
 
-  ALLOWED_PARAMS = [:name, :status, :priority, :order, :user_id, :release_id, :workspace_id]
+  ALLOWED_PARAMS = [:name, :status, :priority, :position, :user_id, :release_id, :workspace_id]
 
   def tasks_params
     params.permit(ALLOWED_PARAMS)

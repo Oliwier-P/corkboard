@@ -2,19 +2,18 @@ import "./TaskModal.scss";
 import Modal from "@/ui/Modal/Modal.tsx";
 import { useTaskStore } from "@/store/taskStore.ts";
 import { TaskEditorContent } from "./TaskEditorContent.tsx";
-import type { TaskType } from "@/types/ReleaseBoardTypes.ts";
 
 interface TaskModalProps {
-    task: TaskType;
+    taskId: string;
 }
 
-const TaskModal = ({ task }: TaskModalProps) => {
+const TaskModal = ({ taskId }: TaskModalProps) => {
     const setIsOpen = useTaskStore((state) => state.setIsOpen);
 
     return (
         <Modal className="task-modal" onClose={() => setIsOpen(false)}>
             <Modal.Body>
-                <TaskEditorContent key={task.id} task={task} />
+                <TaskEditorContent key={taskId} taskId={taskId} />
             </Modal.Body>
         </Modal>
     );
