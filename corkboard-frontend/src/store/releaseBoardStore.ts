@@ -4,6 +4,8 @@ import { api } from "@/api";
 import { useWorkspaceStore } from "./workspaceStore.ts";
 import { insertTaskIntoColumn } from "./releaseBoardHelpers.ts";
 import { v4 as uuid } from "uuid";
+import tagsApi from "@/api/tags.ts";
+import type { TagType } from "@/types/TagType.ts";
 
 const INITIAL_STATE = {
     id: "",
@@ -41,6 +43,8 @@ interface ReleaseBoardStore {
     updateTaskUser: (taskId: string, userId: string) => void;
     moveToBacklog: (taskId: string) => void;
     deleteTask: (taskId: string) => void;
+    addTagToTask: (taskId: string, tagId: string, callback?: (response: TagType) => void) => void;
+    removeTagFromTask: (taskId: string, tagId: string, callback?: (response: TagType) => void) => void;
     moveTaskToNextRelease: (taskId: string) => void;
 
     getColumn: (id: string) => Column | undefined;
@@ -189,6 +193,43 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
             };
         });
         api.put(`tasks/${taskId}`, { ...task });
+    },
+    addTagToTask: (taskId, tagId, callback) => {
+        tagsApi.assign(taskId, tagId, (response) => {
+            set((state) => {
+                const task = state.tasks[taskId];
+                if (!task) return state;
+
+                return {
+                    tasks: {
+                        ...state.tasks,
+                        [taskId]: { ...task, tags: [...task.tags, response] },
+                    },
+                };
+            });
+
+            callback?.(response);
+        });
+    },
+    removeTagFromTask: (taskId, tagId, callback) => {
+        tagsApi.unassign(taskId, tagId, (response) => {
+            set((state) => {
+                const task = state.tasks[taskId];
+                if (!task) return state;
+
+                return {
+                    tasks: {
+                        ...state.tasks,
+                        [taskId]: {
+                            ...task,
+                            tags: (task.tags ?? []).filter((t) => t.id !== tagId),
+                        },
+                    },
+                };
+            });
+
+            callback?.(response);
+        });
     },
     moveToBacklog: (taskId) => {
         set((state) => {
