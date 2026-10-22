@@ -25,6 +25,11 @@ const tasksApi = {
     moveToNextRelease: (taskId: string, onSuccess: () => void, onError?: (error: unknown) => void) => {
         api.put(`/tasks/${taskId}/move_to_next_release`).then(onSuccess).catch(onError);
     },
+    getDocument: (taskId: string, onSuccess: (response: any) => void, onError?: (error: unknown) => void) => {
+        api.get(`/tasks/${taskId}/document`)
+            .then((response) => onSuccess(response.data))
+            .catch(onError);
+    },
 };
 
 export default tasksApi;

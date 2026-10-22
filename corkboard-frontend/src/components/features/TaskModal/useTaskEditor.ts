@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useReleaseBoardStore } from "@/store/releaseBoardStore.ts";
-import { api } from "@/api";
+import tasksApi from "@/api/tasks.ts";
 
 export const useTaskEditor = (taskId: string) => {
     const task = useReleaseBoardStore((state) => state.tasks[taskId]);
@@ -11,15 +11,17 @@ export const useTaskEditor = (taskId: string) => {
     const [isDocumentReady, setIsDocumentReady] = useState(false);
 
     useEffect(() => {
-        api.get(`/tasks/${taskId}/document`).then((response) => {
-            setDocumentId(response.data.id);
+        tasksApi.getDocument(taskId, (response) => {
+            setDocumentId(response.id);
         });
     }, [taskId]);
 
     const handleUpdateTaskName = (value: string) => {
-        if (task.name !== value) {
-            api.put(`tasks/${taskId}`, { name: value }).then(() => {
-                updateTask(taskId, { name: value });
+        const trimmedValue = value.trim();
+
+        if (task.name !== trimmedValue) {
+            tasksApi.update(taskId, { name: trimmedValue }, (response) => {
+                updateTask(taskId, response);
             });
         }
     };
