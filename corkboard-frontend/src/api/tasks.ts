@@ -3,12 +3,12 @@ import type { TaskType } from "@/types/ReleaseBoardTypes.ts";
 
 const tasksApi = {
     getAll: (onSuccess: (response: TaskType[]) => void, onError?: (error: unknown) => void) => {
-        api.get<TaskType[]>(`/tasks`)
+        api.get(`/tasks`)
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
     create: (data: Partial<TaskType>, onSuccess: (response: TaskType) => void, onError?: (error: unknown) => void) => {
-        api.post<TaskType>(`/tasks`, data)
+        api.post(`/tasks`, data)
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },

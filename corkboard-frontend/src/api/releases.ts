@@ -4,17 +4,17 @@ import type { ReleaseTasks } from "@/types/ReleaseBoardTypes.ts";
 
 const releasesApi = {
     getAll: (workspaceId: string, onSuccess: (response: ReleaseType[]) => void, onError?: (error: unknown) => void) => {
-        api.get<ReleaseType[]>(`/releases`, { params: { workspace_id: workspaceId } })
+        api.get(`/releases`, { params: { workspace_id: workspaceId } })
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
     create: (data: Partial<ReleaseType> & { workspace_id: string }, onSuccess: (response: ReleaseType) => void, onError?: (error: unknown) => void) => {
-        api.post<ReleaseType>(`/releases`, data)
+        api.post(`/releases`, data)
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
     update: (releaseId: string, data: Partial<ReleaseType>, onSuccess: (response: ReleaseType) => void, onError?: (error: unknown) => void) => {
-        api.put<ReleaseType>(`/releases/${releaseId}`, data)
+        api.put(`/releases/${releaseId}`, data)
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
@@ -27,7 +27,7 @@ const releasesApi = {
             .catch(onError);
     },
     move: (releaseId: string, data: any, onSuccess: (response: ReleaseType[]) => void, onError?: (error: unknown) => void) => {
-        api.put<ReleaseType[]>(`/releases/${releaseId}/move`, data)
+        api.put(`/releases/${releaseId}/move`, data)
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },

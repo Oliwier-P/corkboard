@@ -2,13 +2,13 @@ import "./BacklogPage.scss";
 import { Page } from "@/layout/Page/Page.tsx";
 import { BacklogColumn } from "@/pages/BacklogPage/BacklogColumn/BacklogColumn.tsx";
 import { useEffect, useState } from "react";
-import { api } from "@/api";
 import { useWorkspaceStore } from "@/store/workspaceStore.ts";
 import { useReleaseBoardStore } from "@/store/releaseBoardStore.ts";
 import { BoardColumn } from "@/features/BoardColumn/BoardColumn.tsx";
 import { useShallow } from "zustand/react/shallow";
 import type { ReleaseType } from "@/types/ReleaseType.ts";
 import Loading from "@/ui/Loading/Loading.tsx";
+import workspacesApi from "@/api/workspaces.ts";
 
 export const BacklogPage = () => {
     const workspaceId = useWorkspaceStore((state) => state.workspace?.id);
@@ -23,10 +23,9 @@ export const BacklogPage = () => {
 
     useEffect(() => {
         if (workspaceId) {
-            api.get(`/workspaces/${workspaceId}/current_release`).then((res) => {
-                const release = res.data;
-                setRelease(release);
-                fetchBoard(release.id, () => fetchBacklog(workspaceId));
+            workspacesApi.getCurrentRelease(workspaceId, (response) => {
+                setRelease(response);
+                fetchBoard(response.id, () => fetchBacklog(workspaceId));
             });
         }
     }, [workspaceId, fetchBoard, fetchBacklog]);

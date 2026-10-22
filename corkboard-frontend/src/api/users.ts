@@ -11,12 +11,12 @@ type MeResponse = {
 
 const usersApi = {
     getAll: (onSuccess: (response: UserSettings[]) => void, onError?: (error: unknown) => void) => {
-        api.get<UserSettings[]>(`/users`)
+        api.get(`/users`)
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
     get: (userId: string, onSuccess: (response: UserSettings) => void, onError?: (error: unknown) => void) => {
-        api.get<UserSettings>(`/users/${userId}`)
+        api.get(`/users/${userId}`)
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
@@ -26,7 +26,7 @@ const usersApi = {
         onSuccess: (response: UserSettings) => void,
         onError?: (error: unknown) => void,
     ) => {
-        api.put<UserSettings>(`/users/${userId}`, data)
+        api.put(`/users/${userId}`, data)
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
@@ -34,12 +34,12 @@ const usersApi = {
         api.delete(`/users/${userId}`).then(onSuccess).catch(onError);
     },
     me: (onSuccess: (response: MeResponse) => void, onError?: (error: unknown) => void) => {
-        api.get<MeResponse>(`/users/me`)
+        api.get(`/users/me`)
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
     updatePreferences: (data: Partial<UserPreferences>, onSuccess: (response: UserSettings) => void, onError?: (error: unknown) => void) => {
-        api.put<UserSettings>(`/user_preferences`, data)
+        api.put(`/user_preferences`, data)
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },

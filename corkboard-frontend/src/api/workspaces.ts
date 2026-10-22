@@ -1,6 +1,7 @@
 import { api } from "@/api";
 import type { ReleaseTasks, TaskType } from "@/types/ReleaseBoardTypes.ts";
 import type { WorkspaceType } from "@/types/WorkspaceType.ts";
+import type { ReleaseType } from "@/types/ReleaseType.ts";
 
 type BacklogResponse = {
     backlog_tasks: TaskType[];
@@ -74,7 +75,7 @@ const workspacesApi = {
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
-    getCurrentRelease: (workspaceId: string, onSuccess: (response: any) => void, onError?: (error: unknown) => void) => {
+    getCurrentRelease: (workspaceId: string, onSuccess: (response: ReleaseType) => void, onError?: (error: unknown) => void) => {
         api.get(`/workspaces/${workspaceId}/current_release`)
             .then((response) => onSuccess(response.data))
             .catch(onError);

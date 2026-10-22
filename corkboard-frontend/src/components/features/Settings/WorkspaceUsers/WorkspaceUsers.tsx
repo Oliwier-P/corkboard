@@ -1,6 +1,6 @@
 import "./WorkspaceUsers.scss";
 import { WorkspaceUser } from "./WorkspaceUser.tsx";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/ui/Button/Button.tsx";
 import { useParams } from "react-router-dom";
 import { Table } from "@/ui/Table/Table.tsx";
@@ -13,24 +13,25 @@ import { useToast } from "@/hooks/useToast.ts";
 import CreateModal from "@/ui/Modals/CreateModal.tsx";
 import ConfirmationModal from "@/ui/Modals/ConfirmationModal.tsx";
 import workspacesApi from "@/api/workspaces.ts";
+import { useCollaborators, useCollaboratorsCache, useInvitedUsers } from "@/hooks/useCollaborators.ts";
 
 const WorkspaceUsers = () => {
-    const [users, setUsers] = useState<User[]>([]);
-    const [invitedUsers, setInvitedUsers] = useState<User[]>([]);
     const [showInviteModal, setShowInviteModal] = useState(false);
-    const [loading, setLoading] = useState<boolean>(true);
     const { workspaceId } = useParams();
     const { user } = useAuth();
     const workspace = useWorkspaceStore((state) => state.workspace);
     const [userToDelete, setUserToDelete] = useState<User | null>(null);
     const toast = useToast();
+    const { data: users = [], isLoading: isLoadingCollaborators } = useCollaborators(workspace?.id);
+    const { data: invitedUsers = [], isLoading: isLoadingInvitedUsers } = useInvitedUsers(workspace?.id);
+    const { addInvitedUser, removeCollaborator } = useCollaboratorsCache(workspaceId!);
 
     const handleDeleteWorkspaceUser = () => {
         if (!workspaceId || !userToDelete) return;
 
         workspacesApi.deleteUser(workspaceId, { user_id: userToDelete.id, username: userToDelete.username }, (response) => {
             setUserToDelete(null);
-            setUsers((prev) => prev.filter((u) => u.id !== userToDelete.id));
+            removeCollaborator(userToDelete.id);
             toast.success(response.message);
         });
     };
@@ -41,7 +42,7 @@ const WorkspaceUsers = () => {
         workspacesApi.inviteUser(workspaceId, { username: data.name.toLowerCase() }, (response) => {
             if (response.status === "success") {
                 toast.success(response.message);
-                invitedUsers.push(response.user);
+                addInvitedUser(response.user);
                 setShowInviteModal(false);
             } else {
                 toast.warning(response.message);
@@ -50,27 +51,14 @@ const WorkspaceUsers = () => {
         });
     };
 
-    useEffect(() => {
-        if (!workspaceId) return;
-
-        workspacesApi.getCollaborators(workspaceId, (response) => {
-            setUsers(response.collaborators);
-            setInvitedUsers(response.invited_users);
-            setLoading(false);
-        });
-    }, [workspaceId]);
-
-    if (loading) return <Loading overlay={true} />;
+    if (isLoadingCollaborators || isLoadingInvitedUsers) return <Loading overlay={true} />;
 
     return (
         <div className="workspace-users">
             <span className="workspace-users__title">Manage people</span>
 
             <div className="workspace-users__list">
-                {invitedUsers &&
-                    invitedUsers.map((user, index) => (
-                        <WorkspaceUser key={index} user={user} onCancel={() => setInvitedUsers((prev) => prev.filter((u) => u.id !== user.id))} isInvited />
-                    ))}
+                {invitedUsers && invitedUsers.map((user, index) => <WorkspaceUser key={index} user={user} isInvited />)}
 
                 <Table
                     data={users}
@@ -87,7 +75,6 @@ const WorkspaceUsers = () => {
                                 <>
                                     {workspace?.owner.id === user?.id && user?.id !== row.id && (
                                         <>
-                                            <Button icon="edit" variant="icon" size="small" color="outlined" />
                                             <Button icon="trash" variant="icon" size="small" color="outlined" onClick={() => setUserToDelete(row)} />
                                         </>
                                     )}

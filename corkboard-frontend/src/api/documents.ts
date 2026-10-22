@@ -3,22 +3,22 @@ import type { DocumentType } from "@/types/DocumentType.ts";
 
 const documentsApi = {
     getAll: (workspaceId: string, onSuccess: (response: DocumentType[]) => void, onError?: (error: unknown) => void) => {
-        api.get<DocumentType[]>("/documents", { params: { workspace_id: workspaceId } })
+        api.get("/documents", { params: { workspace_id: workspaceId } })
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
     get: (taskId: string, onSuccess: (response: DocumentType) => void, onError?: (error: unknown) => void) => {
-        api.get<DocumentType>("/documents", { params: { task_id: taskId } })
+        api.get("/documents", { params: { task_id: taskId } })
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
     create: (workspaceId: string, onSuccess: (response: DocumentType) => void, onError?: (error: unknown) => void) => {
-        api.post<DocumentType>(`/documents`, { workspace_id: workspaceId })
+        api.post(`/documents`, { workspace_id: workspaceId })
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
     update: (documentId: string, data: Partial<DocumentType>, onSuccess: (response: DocumentType) => void, onError?: (error: unknown) => void) => {
-        api.put<DocumentType>(`/documents/${documentId}`, data)
+        api.put(`/documents/${documentId}`, data)
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },

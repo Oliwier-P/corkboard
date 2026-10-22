@@ -7,17 +7,17 @@ const tagsApi = {
         onSuccess: (response: { tags: TagType[]; task_tags: TagType[] }) => void,
         onError?: (error: unknown) => void,
     ) => {
-        api.get<{ tags: TagType[]; task_tags: TagType[] }>(`/tags`, { params: data })
+        api.get(`/tags`, { params: data })
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
     create: (data: Partial<TagType> & { workspace_id: string }, onSuccess: (response: TagType) => void, onError?: (error: unknown) => void) => {
-        api.post<TagType>(`/tags`, data)
+        api.post(`/tags`, data)
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
     update: (tagId: string, data: Partial<TagType>, onSuccess: (response: TagType) => void, onError?: (error: unknown) => void) => {
-        api.put<TagType>(`/tags/${tagId}`, data)
+        api.put(`/tags/${tagId}`, data)
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
@@ -25,12 +25,12 @@ const tagsApi = {
         api.delete(`/tags/${tagId}`).then(onSuccess).catch(onError);
     },
     assign: (taskId: string, tagId: string, onSuccess: (response: TagType) => void, onError?: (error: unknown) => void) => {
-        api.post<TagType>(`/tasks/${taskId}/tags/${tagId}/assign`)
+        api.post(`/tasks/${taskId}/tags/${tagId}/assign`)
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
     unassign: (taskId: string, tagId: string, onSuccess: (response: TagType) => void, onError?: (error: unknown) => void) => {
-        api.delete<TagType>(`/tasks/${taskId}/tags/${tagId}/unassign`)
+        api.delete(`/tasks/${taskId}/tags/${tagId}/unassign`)
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },

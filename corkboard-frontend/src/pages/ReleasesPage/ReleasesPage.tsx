@@ -80,8 +80,7 @@ export const ReleasesPage = () => {
     }, [workspaceId]);
 
     useEffect(() => {
-        const currentRelease = releases.find((r) => r.current);
-        if (!currentRelease || !user) return;
+        if (!user) return;
 
         const subscription = cable.subscriptions.create(
             {
@@ -90,10 +89,10 @@ export const ReleasesPage = () => {
             },
             {
                 connected() {
-                    console.log("Connected to Workspace", currentRelease.id);
+                    console.log("Connected to Workspace");
                 },
                 disconnected: () => {
-                    console.log("Disconnected from Workspace", currentRelease.id);
+                    console.log("Disconnected from Workspace");
                 },
                 received: (event: ReleaseEvent) => {
                     if (event.actor_id !== user.id) {
