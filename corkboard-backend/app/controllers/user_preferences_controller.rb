@@ -6,7 +6,7 @@ class UserPreferencesController < ApplicationController
     @user = current_user
 
     if @user.user_preference.update(user_preference_params)
-      render template: "users/me"
+      render template: "users/show"
     else
       render json: { errors: @user.user_preference.errors }, status: :unprocessable_entity
     end

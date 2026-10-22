@@ -1,1 +1,1 @@
-json.extract! @release, :id, :name, :current, :position, :status, :progress
+json.extract! release, :id, :name, :current, :position, :status, :progress

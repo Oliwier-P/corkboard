@@ -8,6 +8,7 @@ class WorkspacesController < ApplicationController
 
   def create
     @workspace = current_user.workspaces.create!(workspace_params.merge(owner_id: current_user.id))
+    render "workspaces/show"
   end
 
   def update
@@ -15,6 +16,7 @@ class WorkspacesController < ApplicationController
     code_prefix_changed = @workspace.code_prefix != params[:code_prefix]
     @workspace&.update!(workspace_params)
     @workspace.rebuild_task_codes! if code_prefix_changed
+    render "workspaces/show"
   end
 
   def show

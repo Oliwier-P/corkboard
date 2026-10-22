@@ -1,12 +1,27 @@
 {
-  "id": "ANY",
-  "username": "User1",
-  "role": "user",
-  "created_at": "ANY",
-  "updated_at": "ANY",
-  "preferences": {
-    "task_display": "modal",
-    "show_board_tags": true,
-    "spellcheck": false
+  "user": {
+    "id": "ANY",
+    "username": "User1",
+    "role": "user",
+    "created_at": "ANY",
+    "updated_at": "ANY",
+    "preferences": {
+      "task_display": "modal",
+      "show_board_tags": true,
+      "spellcheck": false
+    }
+  },
+  "workspace": {
+    "id": "ANY",
+    "name": "User1's Workspace",
+    "owner_id": "ANY",
+    "code_prefix": "UW",
+    "code_prefix_enabled": false,
+    "auto_assign": false,
+    "owner": {
+      "id": "ANY",
+      "username": "User1"
+    },
+    "number_of_members": 1
   }
 }
