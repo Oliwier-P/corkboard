@@ -2,7 +2,7 @@ import { ClassNames } from "@/global/utils.ts";
 import "./BoardColumn.scss";
 import { Button } from "@/components/ui/Button/Button.tsx";
 import * as _ from "lodash";
-import { type Dispatch, memo, type SetStateAction, useEffect, useRef, useState } from "react";
+import { type Dispatch, Fragment, memo, type SetStateAction, useEffect, useRef, useState } from "react";
 import { TaskForm } from "../TaskForm/TaskForm.tsx";
 import { useReleaseBoardStore } from "@/store/releaseBoardStore.ts";
 import { Task } from "../Task/Task.tsx";
@@ -134,10 +134,10 @@ export const BoardColumn = memo(({ columnId, isCreateTaskOpen, setIsCreateTaskOp
             </div>
             <div ref={tasksContainerRef} className="board-column__tasks">
                 {taskIds.map((taskId, index) => (
-                    <>
+                    <Fragment key={taskId}>
                         {dragOverIndex === index && <div className="board-column__placeholder" />}
-                        <Task key={taskId} taskId={taskId} />
-                    </>
+                        <Task taskId={taskId} />
+                    </Fragment>
                 ))}
                 {dragOverIndex === taskIds.length && <div className="board-column__placeholder" />}
                 {showCreateTask && <TaskForm onSave={handleTaskAdd} ref={newTaskRef} />}

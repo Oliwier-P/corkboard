@@ -1,5 +1,11 @@
 import { api } from "@/api";
 import type { TaskType } from "@/types/ReleaseBoardTypes.ts";
+import type { User } from "@/context/auth/types.ts";
+
+type UpdateResponse = {
+    task: TaskType;
+    user: User;
+};
 
 const tasksApi = {
     getAll: (onSuccess: (response: TaskType[]) => void, onError?: (error: unknown) => void) => {
@@ -12,7 +18,12 @@ const tasksApi = {
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
-    update: (taskId: string, data: Partial<TaskType & { user_id: string }>, onSuccess: (response: TaskType) => void, onError?: (error: unknown) => void) => {
+    update: (
+        taskId: string,
+        data: Partial<TaskType & { user_id: string | null }>,
+        onSuccess: (response: UpdateResponse) => void,
+        onError?: (error: unknown) => void,
+    ) => {
         api.put(`/tasks/${taskId}`, data)
             .then((response) => onSuccess(response.data))
             .catch(onError);

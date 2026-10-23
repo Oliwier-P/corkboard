@@ -6,14 +6,17 @@ import { useReleaseBoardStore } from "@/store/releaseBoardStore.ts";
 type ReleaseEvent =
     | {
           type: "task_created";
+          actor_id: string;
           task: TaskType;
       }
     | {
           type: "task_updated";
+          actor_id: string;
           task: TaskType;
       }
     | {
           type: "task_destroyed";
+          actor_id: string;
           task: TaskType;
       };
 
@@ -38,7 +41,7 @@ export const useReleaseSubscription = (releaseId: string | null, userId: string 
                     console.log("Disconnected from Release", releaseId);
                 },
                 received: (event: ReleaseEvent) => {
-                    if (event.task.actor_id !== userId) {
+                    if (event.actor_id !== userId) {
                         switch (event.type) {
                             case "task_created":
                                 applyTaskCreated(event.task);

@@ -35,7 +35,7 @@ const UserPopover = ({ taskId, taskUser, variant = "task" }: UserSelectProps) =>
                         <Popover.PopoverItem
                             icon={<UserAvatar username={user.username} />}
                             label={user.username}
-                            value={user.id}
+                            value={user}
                             selected={user.id === taskUser?.id}
                             onSelect={handleAssignUserToTask}
                         />

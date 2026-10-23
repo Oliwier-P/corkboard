@@ -13,7 +13,6 @@ export type TaskType = {
     priority: string | null;
     code_name: string;
     user: User | null;
-    actor_id?: string;
     tags: TagType[];
 };
 
