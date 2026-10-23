@@ -1,21 +1,23 @@
-import type { Column, TaskType } from "@/types/ReleaseBoardTypes.ts";
+import type { Column, TaskStatus, TaskType } from "@/types/ReleaseBoardTypes.ts";
 import { create } from "zustand";
 import { api } from "@/api";
 import { useWorkspaceStore } from "./workspaceStore.ts";
 import { insertTaskIntoColumn } from "./releaseBoardHelpers.ts";
 import { v4 as uuid } from "uuid";
+import tagsApi from "@/api/tags.ts";
+import type { TagType } from "@/types/TagType.ts";
 
 const INITIAL_STATE = {
     id: "",
     tasks: {},
     columns: [
-        { id: "backlog", taskIds: [] },
-        { id: "adjustments", taskIds: [] },
-        { id: "todo", taskIds: [] },
-        { id: "in_progress", taskIds: [] },
-        { id: "review_pending", taskIds: [] },
-        { id: "testing", taskIds: [] },
-        { id: "accepted", taskIds: [] },
+        { id: "backlog" as TaskStatus, taskIds: [] },
+        { id: "adjustments" as TaskStatus, taskIds: [] },
+        { id: "todo" as TaskStatus, taskIds: [] },
+        { id: "in_progress" as TaskStatus, taskIds: [] },
+        { id: "review_pending" as TaskStatus, taskIds: [] },
+        { id: "testing" as TaskStatus, taskIds: [] },
+        { id: "accepted" as TaskStatus, taskIds: [] },
     ],
 };
 
@@ -41,6 +43,8 @@ interface ReleaseBoardStore {
     updateTaskUser: (taskId: string, userId: string) => void;
     moveToBacklog: (taskId: string) => void;
     deleteTask: (taskId: string) => void;
+    addTagToTask: (taskId: string, tagId: string, callback?: (response: TagType) => void) => void;
+    removeTagFromTask: (taskId: string, tagId: string, callback?: (response: TagType) => void) => void;
     moveTaskToNextRelease: (taskId: string) => void;
 
     getColumn: (id: string) => Column | undefined;
@@ -69,7 +73,7 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
             .then(() => callback && callback());
     },
     fetchBacklog: (workspaceId) => {
-        api.get(`/backlog/${workspaceId}`).then((res) => {
+        api.get(`/workspaces/${workspaceId}/backlog`).then((res) => {
             set((state) => {
                 const taskIds = res.data.taskIds;
                 return {
@@ -106,8 +110,8 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
             };
         });
 
-        api.put(`/tasks/${activeId}`, { status: toColumnId, order: insertAt, release_id: get().id }).then(() => {
-            get().updateTask(activeId, { status: toColumnId, order: insertAt, release_id: get().id });
+        api.put(`/tasks/${activeId}`, { status: toColumnId, position: insertAt, release_id: get().id }).then(() => {
+            get().updateTask(activeId, { status: toColumnId as TaskStatus, position: insertAt, release_id: get().id });
         });
     },
     reorderTaskInColumn: (columnId, activeId, insertAt) => {
@@ -120,25 +124,25 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
             }),
         }));
 
-        api.put(`/tasks/${activeId}`, { order: insertAt });
+        api.put(`/tasks/${activeId}`, { position: insertAt });
     },
     addTask: (columnId, name) => {
         const temporaryId = uuid();
         const column = get().columns.find((col) => col.id === columnId);
-        const maxOrder =
+        const maxPosition =
             column?.taskIds.reduce((max, taskId) => {
-                const taskOrder = get().tasks[taskId]?.order ?? 0;
-                return Math.max(max, taskOrder);
+                const taskPosition = get().tasks[taskId]?.position ?? 0;
+                return Math.max(max, taskPosition);
             }, -1) ?? -1;
-        const order = maxOrder + 1;
+        const position = maxPosition + 1;
         const workspaceId = useWorkspaceStore.getState().workspace?.id;
         const newTask: TaskType = {
             id: temporaryId,
             name,
-            order,
+            position,
             release_id: columnId === "backlog" ? null : get().id,
             workspace_id: workspaceId || null,
-            status: columnId,
+            status: columnId as TaskStatus,
             user: null,
             priority: null,
             tags: [],
@@ -189,6 +193,43 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
             };
         });
         api.put(`tasks/${taskId}`, { ...task });
+    },
+    addTagToTask: (taskId, tagId, callback) => {
+        tagsApi.assign(taskId, tagId, (response) => {
+            set((state) => {
+                const task = state.tasks[taskId];
+                if (!task) return state;
+
+                return {
+                    tasks: {
+                        ...state.tasks,
+                        [taskId]: { ...task, tags: [...task.tags, response] },
+                    },
+                };
+            });
+
+            callback?.(response);
+        });
+    },
+    removeTagFromTask: (taskId, tagId, callback) => {
+        tagsApi.unassign(taskId, tagId, (response) => {
+            set((state) => {
+                const task = state.tasks[taskId];
+                if (!task) return state;
+
+                return {
+                    tasks: {
+                        ...state.tasks,
+                        [taskId]: {
+                            ...task,
+                            tags: (task.tags ?? []).filter((t) => t.id !== tagId),
+                        },
+                    },
+                };
+            });
+
+            callback?.(response);
+        });
     },
     moveToBacklog: (taskId) => {
         set((state) => {
@@ -272,7 +313,7 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
                     ...state.tasks,
                     [task.id]: task,
                 },
-                columns: exists ? state.columns : insertTaskIntoColumn(state.columns, task.id, task.status, task.order),
+                columns: exists ? state.columns : insertTaskIntoColumn(state.columns, task.id, task.status, task.position),
             };
         });
     },
@@ -300,7 +341,7 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
                         ...task,
                     },
                 },
-                columns: insertTaskIntoColumn(state.columns, task.id, task.status, task.order),
+                columns: insertTaskIntoColumn(state.columns, task.id, task.status, task.position),
             };
         });
     },

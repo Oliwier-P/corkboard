@@ -1,14 +1,14 @@
 import "./TaskDisplaySection.scss";
 import { useAuth } from "@/context/auth/useAuth.ts";
 import type { TaskDisplayType } from "@/types/TaskDisplayType.ts";
-import { api } from "@/api";
+import usersApi from "@/api/users.ts";
 
 const TaskDisplaySection = () => {
     const { user, setUser } = useAuth();
 
     const handleChangeTaskDisplay = (value: TaskDisplayType) => {
-        api.put("user_preferences", { task_display: value }).then((response) => {
-            setUser(response.data);
+        usersApi.updatePreferences({ task_display: value }, (response) => {
+            setUser(response);
         });
     };
 

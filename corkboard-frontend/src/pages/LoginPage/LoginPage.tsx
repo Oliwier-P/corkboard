@@ -2,11 +2,11 @@ import "./LoginPage.scss";
 import { Button } from "@/ui/Button/Button.tsx";
 import { LabeledInput } from "@/ui/LabeledInput/LabeledInput.tsx";
 import { type SubmitHandler, useForm } from "react-hook-form";
-import { api } from "@/api";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "@/ui/Icons/Icon.tsx";
 import { useAuth } from "@/context/auth/useAuth.ts";
 import { useToast } from "@/hooks/useToast.ts";
+import sessionApi from "@/api/session.ts";
 
 type Inputs = {
     username: string;
@@ -20,18 +20,18 @@ export const LoginPage = () => {
     const toast = useToast();
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        api.post("/login", { user: data }).then((response) => {
-            localStorage.setItem("token", response.data.token);
-            setToken(response.data.token);
-            setUser(response.data.user);
+        sessionApi.login(data, (response) => {
+            localStorage.setItem("token", response.token);
+            setToken(response.token);
+            setUser(response.user);
 
-            if (response.data.user.role === "superadmin") {
+            if (response.user.role === "superadmin") {
                 navigate(`/superadmin`);
             } else {
-                navigate(`/workspaces/${response.data.workspace_id}/current_release`);
+                navigate(`/workspaces/${response.workspace_id}/current_release`);
             }
 
-            toast.success(response.data.message);
+            toast.success(response.message);
         });
     };
 

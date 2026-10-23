@@ -20,84 +20,88 @@ import ToastContainer from "@/ui/Toast/ToastContainer.tsx";
 import SuperAdminUsers from "@/features/SuperAdmin/SuperAdminUsers/SuperAdminUsers.tsx";
 import SuperAdminUser from "@/features/SuperAdmin/SuperAdminUsers/SuperAdminUser.tsx";
 import TagsManager from "@/features/Settings/TagsManager/TagsManager.tsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
-        <AuthProvider>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<LoginPage />} />
-                    <Route path="/signup" element={<SignUpPage />} />
-                    <Route
-                        path="/workspaces/:workspaceId/current_release"
-                        element={
-                            <ProtectedRoute>
-                                <CurrentReleasePage />
-                            </ProtectedRoute>
-                        }
-                    />
-                    <Route
-                        path="/workspaces/:workspaceId/releases"
-                        element={
-                            <ProtectedRoute>
-                                <ReleasesPage />
-                            </ProtectedRoute>
-                        }
-                    />
-                    <Route
-                        path="/settings"
-                        element={
-                            <ProtectedRoute>
-                                <SettingsPage />
-                            </ProtectedRoute>
-                        }
-                    >
-                        <Route index element={<Navigate to="user/profile" />} />
+        <QueryClientProvider client={queryClient}>
+            <AuthProvider>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/" element={<LoginPage />} />
+                        <Route path="/signup" element={<SignUpPage />} />
+                        <Route
+                            path="/workspaces/:workspaceId/current_release"
+                            element={
+                                <ProtectedRoute>
+                                    <CurrentReleasePage />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/workspaces/:workspaceId/releases"
+                            element={
+                                <ProtectedRoute>
+                                    <ReleasesPage />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/workspaces/:workspaceId/backlog/:releaseId?"
+                            element={
+                                <ProtectedRoute>
+                                    <BacklogPage />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/settings"
+                            element={
+                                <ProtectedRoute>
+                                    <SettingsPage />
+                                </ProtectedRoute>
+                            }
+                        >
+                            <Route index element={<Navigate to="user/profile" />} />
 
-                        <Route path="workspace/:workspaceId/general" element={<WorkspaceGeneral />} />
-                        <Route path="workspace/:workspaceId/users" element={<WorkspaceUsers />} />
-                        <Route path="workspace/:workspaceId/tags" element={<TagsManager />} />
-                        <Route path="user/profile" element={<UserProfile />} />
-                        <Route path="user/workspaces" element={<WorkspaceList />} />
-                    </Route>
+                            <Route path="workspace/:workspaceId/general" element={<WorkspaceGeneral />} />
+                            <Route path="workspace/:workspaceId/users" element={<WorkspaceUsers />} />
+                            <Route path="workspace/:workspaceId/tags" element={<TagsManager />} />
+                            <Route path="user/profile" element={<UserProfile />} />
+                            <Route path="user/workspaces" element={<WorkspaceList />} />
+                        </Route>
 
-                    <Route
-                        path="/backlog/:releaseId?"
-                        element={
-                            <ProtectedRoute>
-                                <BacklogPage />
-                            </ProtectedRoute>
-                        }
-                    />
+                        <Route
+                            path="workspaces/:workspaceId/documents/:documentId?"
+                            element={
+                                <ProtectedRoute>
+                                    <Documents />
+                                </ProtectedRoute>
+                            }
+                        />
 
-                    <Route
-                        path="workspaces/:workspaceId/documents/:documentId?"
-                        element={
-                            <ProtectedRoute>
-                                <Documents />
-                            </ProtectedRoute>
-                        }
-                    />
+                        <Route
+                            path="/superadmin"
+                            element={
+                                <ProtectedRoute role="superadmin">
+                                    <Outlet />
+                                </ProtectedRoute>
+                            }
+                        >
+                            <Route index element={<Navigate to="users" />} />
+                            <Route path="users" element={<SuperAdminUsers />} />
+                            <Route path="users/:id" element={<SuperAdminUser />} />
+                        </Route>
 
-                    <Route
-                        path="/superadmin"
-                        element={
-                            <ProtectedRoute role="superadmin">
-                                <Outlet />
-                            </ProtectedRoute>
-                        }
-                    >
-                        <Route index element={<Navigate to="users" />} />
-                        <Route path="users" element={<SuperAdminUsers />} />
-                        <Route path="users/:id" element={<SuperAdminUser />} />
-                    </Route>
+                        <Route path="*" element={<div>NO ROUTE</div>} />
+                    </Routes>
 
-                    <Route path="*" element={<div>NO ROUTE</div>} />
-                </Routes>
-
-                <TaskDisplay />
-                <ToastContainer />
-            </BrowserRouter>
-        </AuthProvider>
+                    <TaskDisplay />
+                    <ToastContainer />
+                </BrowserRouter>
+            </AuthProvider>
+        </QueryClientProvider>
     </StrictMode>,
 );

@@ -8,8 +8,8 @@ export type TaskType = {
     name: string;
     release_id: string | null;
     workspace_id: string | null;
-    status: string;
-    order: number;
+    status: TaskStatus;
+    position: number;
     priority: string | null;
     code_name: string;
     user: User | null;
@@ -18,6 +18,10 @@ export type TaskType = {
 };
 
 export type Column = {
-    id: string;
+    id: TaskStatus;
     taskIds: string[];
 };
+
+export type TaskStatus = "backlog" | "todo" | "in_progress" | "review_pending" | "testing" | "adjustments" | "accepted";
+
+export type ReleaseTasks = Record<TaskStatus, TaskType[]>;

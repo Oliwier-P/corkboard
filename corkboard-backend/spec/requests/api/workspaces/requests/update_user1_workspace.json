@@ -1,7 +1,5 @@
 {
-  "workspace": {
-    "name": "New Workspace Name",
-    "code_prefix_enabled": true,
-    "code_prefix": "XX"
-  }
+  "name": "New Workspace Name",
+  "code_prefix_enabled": true,
+  "code_prefix": "XX"
 }

@@ -2,29 +2,32 @@ import "./DocumentPage.scss";
 import { UserAvatar } from "@/ui/UserAvatar/UserAvatar.tsx";
 import type { DocumentType } from "@/types/DocumentType.ts";
 import { Input } from "@/ui/Input/Input.tsx";
-import { api } from "@/api";
 import { CollaborativeEditor } from "../CollaborativeEditor/CollaborativeEditor.tsx";
 import { useAuth } from "@/context/auth/useAuth.ts";
-import { useDocumentsStore } from "@/store/documentsStore.ts";
 import { useEffect, useState } from "react";
 import Loading from "@/ui/Loading/Loading.tsx";
 import classNames from "classnames";
+import documentsApi from "@/api/documents.ts";
 
 interface DocumentPageProps {
     document: DocumentType;
+    onUpdate: (response: DocumentType) => void;
 }
 
-const DocumentPage = ({ document }: DocumentPageProps) => {
+const DocumentPage = ({ document, onUpdate }: DocumentPageProps) => {
     const [documentName, setDocumentName] = useState("");
     const [isDocumentReady, setIsDocumentReady] = useState<boolean>(false);
     const { user, token } = useAuth();
-    const updateDocument = useDocumentsStore((state) => state.updateDocument);
 
     const handleUpdateDocumentName = (value: string) => {
-        if (document.name !== value) {
-            api.put(`documents/${document.id}`, { name: value }).then(() => {
-                updateDocument({ ...document, name: value });
+        const trimmed = value.trim();
+
+        if (trimmed && trimmed !== document.name) {
+            documentsApi.update(document.id, { name: value }, (response) => {
+                onUpdate(response);
             });
+        } else {
+            setDocumentName(document.name);
         }
     };
 

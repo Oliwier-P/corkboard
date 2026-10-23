@@ -1,7 +1,9 @@
 export type ReleaseType = {
     id: string;
     name: string;
-    order: number;
+    position: number;
+    current: boolean;
+    next?: boolean;
     status: "NOT_QUEUED" | "QUEUED";
     progress: {
         tasks: number;

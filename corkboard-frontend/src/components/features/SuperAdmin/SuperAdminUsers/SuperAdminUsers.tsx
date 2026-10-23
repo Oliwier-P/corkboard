@@ -3,11 +3,11 @@ import { Table } from "@/ui/Table/Table.tsx";
 import { Button } from "@/ui/Button/Button.tsx";
 import { useEffect, useMemo, useState } from "react";
 import type { UserSettings } from "@/context/auth/types.ts";
-import { api } from "@/api";
 import Loading from "@/ui/Loading/Loading.tsx";
 import Modal from "@/ui/Modal/Modal.tsx";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/ui/Input/Input.tsx";
+import usersApi from "@/api/users.ts";
 
 const SuperAdminUsers = () => {
     const [users, setUsers] = useState<UserSettings[]>([]);
@@ -16,14 +16,16 @@ const SuperAdminUsers = () => {
     const navigate = useNavigate();
 
     const handleUserDelete = () => {
-        api.delete(`users/${user?.id}`).then(() => {
+        usersApi.delete(user!.id, () => {
             setUsers(users.filter((u) => u.id !== user?.id));
             setUser(null);
         });
     };
 
     useEffect(() => {
-        api.get("/users").then((response) => setUsers(response.data));
+        usersApi.getAll((response) => {
+            setUsers(response);
+        });
     }, []);
 
     const filteredUsers = useMemo(() => {

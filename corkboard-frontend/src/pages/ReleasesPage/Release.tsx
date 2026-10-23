@@ -1,5 +1,4 @@
 import "./Release.scss";
-import { useReleasesStore } from "@/store/releasesStore.ts";
 import { ClassNames } from "@/global/utils.ts";
 import { Progress } from "@/ui/ProgressBar/Progress.tsx";
 import type { ReleaseType } from "@/types/ReleaseType.ts";
@@ -16,12 +15,7 @@ type ReleasesListItemProps = {
 
 export const Release = ({ release, onDeleteClick, onEditClick, isNotDraggable }: ReleasesListItemProps) => {
     const [isDragging, setIsDragging] = useState(false);
-
-    const currentReleaseId = useReleasesStore((state) => state.currentReleaseId);
-    const nextReleaseId = useReleasesStore((state) => state.nextReleaseId);
-
     const ref = useRef<HTMLDivElement>(null);
-
     const releaseId = release.id;
 
     useEffect(() => {
@@ -47,7 +41,7 @@ export const Release = ({ release, onDeleteClick, onEditClick, isNotDraggable }:
                 type: "button",
                 label: "Select as Current",
                 icon: "exclamationMark",
-                onClick: () => onEditClick(),
+                onClick: () => {},
             },
             {
                 type: "hr",
@@ -67,16 +61,16 @@ export const Release = ({ release, onDeleteClick, onEditClick, isNotDraggable }:
         <ContextMenu items={contextMenuOptions()}>
             <div className={ClassNames("release", { ghost: isDragging, "not-draggable": isNotDraggable })} ref={isNotDraggable ? null : ref}>
                 <div className="release__name">
-                    <div className="release__number">{release.order + 1}</div>
+                    <div className="release__number">{release.position}</div>
                     {release.name}
                     <div
                         className={ClassNames("release__badge", {
-                            current: currentReleaseId === release.id,
-                            next: nextReleaseId === release.id,
+                            current: release.current,
+                            next: release.next,
                         })}
                     >
-                        {currentReleaseId === release.id && "Current"}
-                        {nextReleaseId === release.id && "Next"}
+                        {release.current && "Current"}
+                        {release.next && "Next"}
                     </div>
                 </div>
 

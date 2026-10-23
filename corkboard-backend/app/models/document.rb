@@ -29,6 +29,7 @@ class Document < ApplicationRecord
   def broadcast(type, current_user)
     ActionCable.server.broadcast "documents_#{self.workspace_id}", {
       type: type,
+      actor_id: current_user&.id,
       document: {
         id: self.id,
         name: self.name,
@@ -37,7 +38,6 @@ class Document < ApplicationRecord
           id: self.owner.id,
           username: self.owner.username
         },
-        actor_id: current_user&.id
       }
     }
   end

@@ -2,25 +2,28 @@ import "./WorkspaceUser.scss";
 import { Button } from "@/ui/Button/Button.tsx";
 import { UserAvatar } from "@/ui/UserAvatar/UserAvatar.tsx";
 import { ClassNames } from "@/global/utils.ts";
-import { api } from "@/api";
 import { useToast } from "@/hooks/useToast.ts";
 import { useParams } from "react-router-dom";
 import type { User } from "@/context/auth/types.ts";
+import workspacesApi from "@/api/workspaces.ts";
+import { useCollaboratorsCache } from "@/hooks/useCollaborators.ts";
 
 type WorkspaceUserProps = {
     user: User;
-    onCancel: (user: User) => void;
     isInvited?: boolean;
 };
 
-export const WorkspaceUser = ({ user, onCancel, isInvited }: WorkspaceUserProps) => {
+export const WorkspaceUser = ({ user, isInvited }: WorkspaceUserProps) => {
     const toast = useToast();
     const { workspaceId } = useParams();
+    const { removeInvitedUser } = useCollaboratorsCache(workspaceId!);
 
     const handleCancelUserInvite = () => {
-        api.delete(`/workspaces/${workspaceId}/cancel_invitation`, { data: { invited_user_id: user.id } }).then((response) => {
-            toast.success(response.data.message);
-            onCancel(response.data.user);
+        if (!workspaceId) return;
+
+        workspacesApi.cancelInvitation(workspaceId, { invited_user_id: user.id }, (response) => {
+            removeInvitedUser(user.id);
+            toast.success(response.message);
         });
     };
 

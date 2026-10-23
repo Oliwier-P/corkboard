@@ -1,7 +1,5 @@
 {
-  "user_preference": {
-    "task_display": "sidebar",
-    "show_board_tags": false,
-    "spellcheck": true
-  }
+  "task_display": "sidebar",
+  "show_board_tags": false,
+  "spellcheck": true
 }
