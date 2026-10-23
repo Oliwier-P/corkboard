@@ -25,10 +25,9 @@ Rails.application.routes.draw do
   resources :releases do
     member do
       get "board"
+      put "move"
     end
   end
-
-  resources :backlog
 
   resources :tasks do
     member do
@@ -46,9 +45,9 @@ Rails.application.routes.draw do
 
   resources :workspaces do
     member do
+      get :backlog
       get :collaborators
       get :current_release
-      get :releases
       post :invite_user
       post :accept_invitation
       delete :decline_invitation

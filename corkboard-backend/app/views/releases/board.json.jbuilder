@@ -1,10 +1,7 @@
 json.tasks do
   @tasks.each do |task|
     json.set! task.id do
-      json.extract! task, :id, :name, :status, :priority, :code_name
-      json.tags task.tags do |tag|
-        json.partial! "tags/tag", tag: tag
-      end
+      json.partial! "tasks/task", task: task
 
       json.user do
         if task.user
@@ -20,6 +17,6 @@ end
 json.columns do
   json.array!(Task.statuses.keys.select{|key| key != Task.statuses[:backlog]}) do |status|
     json.id status
-    json.taskIds @tasks.order("tasks.order ASC").select { |task| task.status == status }.map { |task| task.id }
+    json.taskIds @tasks.order("tasks.position ASC").select { |task| task.status == status }.map { |task| task.id }
   end
 end

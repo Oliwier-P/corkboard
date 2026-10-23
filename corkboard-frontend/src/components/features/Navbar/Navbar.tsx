@@ -5,13 +5,13 @@ import { useAuth } from "@/context/auth/useAuth.ts";
 import { Workspace } from "../Workspace/Workspace.tsx";
 import { WorkspaceMenu } from "../Workspace/WorkspaceMenu.tsx";
 import { useEffect, useRef, useState } from "react";
-import { api } from "@/api";
 import type { WorkspaceType } from "@/types/WorkspaceType.ts";
 import { useWorkspaceStore } from "@/store/workspaceStore.ts";
 import { useWorkspaceMenuStore } from "@/store/workspaceMenuStore.ts";
 import { UserNotifications } from "../UserNotifications/UserNotifications.tsx";
 import ProfilePopover from "@/ui/Popovers/ProfilePopover/ProfilePopover.tsx";
 import CreateModal from "@/ui/Modals/CreateModal.tsx";
+import workspacesApi from "@/api/workspaces.ts";
 
 export const Navbar = () => {
     const { user } = useAuth();
@@ -34,8 +34,8 @@ export const Navbar = () => {
     };
 
     const handleCreateWorkspace = (data: { name: string }) => {
-        api.post("/workspaces", { name: data.name }).then((response) => {
-            workspaces.push(response.data);
+        workspacesApi.create({ name: data.name }, (response) => {
+            workspaces.push(response);
             setShowWorkspaceForm(false);
         });
     };
@@ -63,16 +63,15 @@ export const Navbar = () => {
     }, [isMenuOpen, setMenuOpen, showUserModal]);
 
     useEffect(() => {
-        api.get("/workspaces").then((res) => {
-            setWorkspaces(res.data);
-
+        workspacesApi.getAll((response) => {
             const storageId = localStorage.getItem("workspace_id");
+            setWorkspaces(response);
 
             if (!storageId) {
-                localStorage.setItem("workspace_id", res.data[0].id.toString());
-                setWorkspace(res.data[0]);
+                localStorage.setItem("workspace_id", response[0].id.toString());
+                setWorkspace(response[0]);
             } else {
-                setWorkspace(res.data.find((w: WorkspaceType) => w.id.toString() == storageId) ?? res.data[0]);
+                setWorkspace(response.find((w: WorkspaceType) => w.id.toString() == storageId) ?? response[0]);
             }
         });
     }, [setWorkspace]);
@@ -101,7 +100,7 @@ export const Navbar = () => {
             {user?.role === "user" && (
                 <>
                     <NavbarItem icon="box" label="Current Release" path={`/workspaces/${workspace?.id}/current_release`} />
-                    <NavbarItem icon="rows" label="Backlog" path="/backlog" />
+                    <NavbarItem icon="rows" label="Backlog" path={`/workspaces/${workspace?.id}/backlog`} />
                     <NavbarItem icon="bookmarks" label="Releases" path={`/workspaces/${workspace?.id}/releases`} />
                     <NavbarItem icon="document" label="Docs" path={`/workspaces/${workspace?.id}/documents/`} isActive={isActiveDocumentLink} />
                 </>

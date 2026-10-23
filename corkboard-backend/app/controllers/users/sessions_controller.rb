@@ -5,7 +5,7 @@ class Users::SessionsController < Devise::SessionsController
   def create
     user = User.find_by(username: params[:user][:username])
 
-    if user&.valid_password?(params[:user][:password])
+    if user && user.valid_password?(params[:user][:password])
       sign_in(user)
       token = request.env["warden-jwt_auth.token"]
       workspace_id = user.last_workspace_id

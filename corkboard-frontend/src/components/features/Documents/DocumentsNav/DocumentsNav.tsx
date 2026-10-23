@@ -4,32 +4,30 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { Icon } from "@/ui/Icons/Icon.tsx";
 import { Button } from "@/ui/Button/Button.tsx";
 import { useWorkspaceStore } from "@/store/workspaceStore.ts";
-import { api } from "@/api";
 import type { DocumentType } from "@/types/DocumentType.ts";
-import { useDocumentsStore } from "@/store/documentsStore.ts";
+import documentsApi from "@/api/documents.ts";
 
 interface DocumentNavProps {
     documents: DocumentType[];
+    onAdd: (response: DocumentType) => void;
 }
 
-const DocumentsNav = ({ documents }: DocumentNavProps) => {
+const DocumentsNav = ({ documents, onAdd }: DocumentNavProps) => {
     const workspace = useWorkspaceStore((state) => state.workspace);
     const navigate = useNavigate();
-
-    const addDocument = useDocumentsStore((state) => state.addDocument);
 
     const handleCreateDocument = () => {
         if (!workspace?.id) return;
 
-        api.post("documents", { workspace_id: workspace.id }).then((response) => {
-            addDocument(response.data);
+        documentsApi.create(workspace.id, (response) => {
+            onAdd(response);
         });
     };
 
     const handleDeleteDocument = (id: string) => {
         if (!workspace?.id) return;
 
-        api.delete(`documents/${id}`).then(() => {
+        documentsApi.delete(id, () => {
             navigate(`/workspaces/${workspace.id}/documents/`);
         });
     };

@@ -2,13 +2,13 @@ import "./TagsManager.scss";
 import { Table } from "@/ui/Table/Table.tsx";
 import { useEffect, useState } from "react";
 import type { TagType } from "@/types/TagType.ts";
-import { api } from "@/api";
 import { useWorkspaceStore } from "@/store/workspaceStore.ts";
 import { Button } from "@/ui/Button/Button.tsx";
 import { reverseColor } from "@/global/utils.ts";
 import ConfirmationModal from "@/ui/Modals/ConfirmationModal.tsx";
 import CreateTagModal from "@/ui/Popovers/TagsPopover/CreateTagModal.tsx";
 import Loading from "@/ui/Loading/Loading.tsx";
+import tagsApi from "@/api/tags.ts";
 
 const TagsManager = () => {
     const [tags, setTags] = useState<TagType[]>([]);
@@ -20,15 +20,17 @@ const TagsManager = () => {
     const handleDeleteTag = () => {
         if (!tagToDelete) return;
 
-        api.delete(`/tags/${tagToDelete.id}`).then((response) => {
-            setTags((prev) => prev.filter((t) => t.id !== response.data.id));
+        tagsApi.delete(tagToDelete.id, () => {
+            setTags((prev) => prev.filter((t) => t.id !== tagToDelete.id));
             setTagToDelete(null);
         });
     };
 
     useEffect(() => {
-        api.get(`/tags`, { params: { workspace_id: workspaceId } }).then((response) => {
-            setTags(response.data.tags);
+        if (!workspaceId) return;
+
+        tagsApi.getAll({ workspace_id: workspaceId }, (response) => {
+            setTags(response.tags);
             setLoading(false);
         });
     }, [workspaceId]);

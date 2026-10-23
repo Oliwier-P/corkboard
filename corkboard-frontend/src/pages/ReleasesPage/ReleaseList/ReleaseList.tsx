@@ -3,22 +3,23 @@ import { Release } from "@/pages/ReleasesPage/Release.tsx";
 import type { ReleaseType } from "@/types/ReleaseType.ts";
 import { useEffect, useRef, useState } from "react";
 import { dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
-import { useReleasesStore } from "@/store/releasesStore.ts";
 import { ClassNames } from "@/global/utils.ts";
 import { motion, LayoutGroup } from "framer-motion";
+import releasesApi from "@/api/releases.ts";
+import { useWorkspaceStore } from "@/store/workspaceStore.ts";
 
 type ReleaseListProps = {
     releases: ReleaseType[];
+    onMove: (releases: ReleaseType[]) => void;
     onEdit: (release: ReleaseType) => void;
     onDelete: (release: ReleaseType) => void;
     columnId: string;
 };
-export const ReleaseList = ({ columnId, releases, onEdit, onDelete }: ReleaseListProps) => {
+export const ReleaseList = ({ columnId, releases, onMove, onEdit, onDelete }: ReleaseListProps) => {
     const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
-
     const ref = useRef<HTMLDivElement>(null);
-
     const releaseIds = releases.map((release) => release.id);
+    const workspace = useWorkspaceStore((state) => state.workspace);
 
     useEffect(() => {
         if (!ref.current) return;
@@ -52,7 +53,6 @@ export const ReleaseList = ({ columnId, releases, onEdit, onDelete }: ReleaseLis
                 const releaseId = source.data.releaseId as string;
                 if (!releaseIds) return;
 
-                const { releases, moveReleaseBetweenColumns, reorderReleaseInColumn } = useReleasesStore.getState();
                 const fromColumn = releases.map((r) => r.id).includes(releaseId) ? "QUEUED" : "NOT_QUEUED";
                 if (!fromColumn) return;
 
@@ -69,11 +69,9 @@ export const ReleaseList = ({ columnId, releases, onEdit, onDelete }: ReleaseLis
                     }
                 });
 
-                if (fromColumn !== columnId) {
-                    moveReleaseBetweenColumns(releaseId, fromColumn, columnId, index);
-                } else {
-                    reorderReleaseInColumn(columnId, releaseId, index);
-                }
+                releasesApi.move(releaseId, { workspace_id: workspace?.id, status: columnId, position: index }, (response) => {
+                    onMove(response);
+                });
             },
         });
     });

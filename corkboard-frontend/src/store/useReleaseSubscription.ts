@@ -1,7 +1,7 @@
 import type { TaskType } from "@/types/ReleaseBoardTypes.ts";
-import { useReleaseBoardStore } from "./releaseBoardStore.ts";
 import { useEffect } from "react";
 import { cable } from "@/lib/cable.ts";
+import { useReleaseBoardStore } from "@/store/releaseBoardStore.ts";
 
 type ReleaseEvent =
     | {
@@ -60,5 +60,5 @@ export const useReleaseSubscription = (releaseId: string | null, userId: string 
         return () => {
             subscription.unsubscribe();
         };
-    }, [releaseId, applyTaskCreated]);
+    }, [applyTaskCreated, applyTaskDestroyed, applyTaskUpdated, releaseId, userId]);
 };

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_13_093833) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_20_180407) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -43,10 +43,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_13_093833) do
     t.datetime "created_at", null: false
     t.boolean "current", null: false
     t.string "name", null: false
-    t.integer "order", null: false
+    t.integer "position", null: false
     t.string "status", default: "NOT_QUEUED", null: false
     t.datetime "updated_at", null: false
     t.uuid "workspace_id", null: false
+    t.index ["workspace_id", "status", "position"], name: "index_releases_on_workspace_id_and_status_and_position"
   end
 
   create_table "tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -64,13 +65,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_13_093833) do
     t.integer "code_number"
     t.datetime "created_at", null: false
     t.string "name"
-    t.integer "order"
+    t.integer "position"
     t.string "priority"
     t.uuid "release_id"
     t.string "status"
     t.datetime "updated_at", null: false
     t.uuid "user_id"
     t.uuid "workspace_id"
+    t.index ["release_id", "status", "position"], name: "index_tasks_on_release_id_and_status_and_position"
     t.index ["workspace_id", "code_name"], name: "index_tasks_on_workspace_id_and_code_name", unique: true
   end
 

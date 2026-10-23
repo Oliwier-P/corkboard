@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useToast } from "@/hooks/useToast.ts";
-import { api } from "@/api";
 import { useWorkspaceStore } from "@/store/workspaceStore.ts";
 import type { WorkspaceType } from "@/types/WorkspaceType.ts";
+import workspacesApi from "@/api/workspaces.ts";
 
 type InvitationType = {
     invited_by: string;
     workspace: {
-        id: number;
+        id: string;
         name: string;
     };
 };
@@ -25,7 +25,9 @@ const useUserNotification = ({ updateWorkspaces }: UseUserNotificationProps) => 
     const setWorkspace = useWorkspaceStore((state) => state.setWorkspace);
 
     useEffect(() => {
-        api.get("workspaces/invitation").then((res) => setInvitations(res.data));
+        workspacesApi.getInvitation((response) => {
+            setInvitations(response);
+        });
     }, []);
 
     useEffect(() => {
@@ -46,18 +48,18 @@ const useUserNotification = ({ updateWorkspaces }: UseUserNotificationProps) => 
         };
     }, [showNotifications, setShowNotifications]);
 
-    const acceptInvitation = (invitationId: number) => {
-        api.post(`workspaces/${invitationId}/accept_invitation`).then((response) => {
-            setInvitations((prev) => prev.filter((invitation) => invitation.workspace.id !== invitationId));
-            toast.success(response.data.message);
-            updateWorkspaces(response.data.workspace);
-            setWorkspace(response.data.workspace);
+    const acceptInvitation = (workspaceId: string) => {
+        workspacesApi.acceptInvitation(workspaceId, (response) => {
+            setInvitations((prev) => prev.filter((i) => i.workspace.id !== workspaceId));
+            toast.success(response.message);
+            updateWorkspaces(response.workspace);
+            setWorkspace(response.workspace);
         });
     };
 
-    const declineInvitation = (invitationId: number, invitationName: string) => {
-        api.delete(`workspaces/${invitationId}/decline_invitation`, { data: { name: invitationName } }).then((response) => {
-            setInvitations((prev) => prev.filter((invitation) => invitation.workspace.id !== invitationId));
+    const declineInvitation = (workspaceId: string, invitationName: string) => {
+        workspacesApi.declineInvitation(workspaceId, { name: invitationName }, (response) => {
+            setInvitations((prev) => prev.filter((i) => i.workspace.id !== workspaceId));
             toast.success(response.data.message);
         });
     };

@@ -2,13 +2,13 @@ import "./SuperAdminUser.scss";
 import { LabeledInput } from "@/ui/LabeledInput/LabeledInput.tsx";
 import { useEffect, useState } from "react";
 import type { UserSettings } from "@/context/auth/types.ts";
-import { api } from "@/api";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "@/ui/Loading/Loading.tsx";
 import { Button } from "@/ui/Button/Button.tsx";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useToast } from "@/hooks/useToast.ts";
+import usersApi from "@/api/users.ts";
 
 const validationSchema = Yup.object({
     username: Yup.string().trim().required("Username is required"),
@@ -31,19 +31,6 @@ const SuperAdminUser = () => {
     const navigate = useNavigate();
     const [saving, setSaving] = useState(false);
     const toast = useToast();
-
-    useEffect(() => {
-        api.get(`/users/${id}`).then((response) => {
-            setUser(response.data);
-            formik.setValues({
-                username: response.data.username,
-                changePassword: false,
-                password: "",
-                confirmPassword: "",
-            });
-        });
-    }, [id]);
-
     const formik = useFormik({
         initialValues: {
             username: "",
@@ -73,7 +60,7 @@ const SuperAdminUser = () => {
             setSaving(true);
 
             try {
-                api.put(`/users/${id}`, { ...payload }).then(() => {
+                usersApi.update(id!, { ...payload }, () => {
                     navigate("/superadmin/users");
                 });
             } catch {
@@ -83,6 +70,20 @@ const SuperAdminUser = () => {
             }
         },
     });
+
+    useEffect(() => {
+        if (!id) return;
+
+        usersApi.get(id, (response) => {
+            setUser(response);
+            formik.setValues({
+                username: response.username,
+                changePassword: false,
+                password: "",
+                confirmPassword: "",
+            });
+        });
+    }, [id]);
 
     if (!user) {
         return <Loading overlay={true} />;

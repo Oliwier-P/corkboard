@@ -2,18 +2,21 @@ import "./SignUpPage.scss";
 import { Button } from "@/ui/Button/Button.tsx";
 import { LabeledInput } from "@/ui/LabeledInput/LabeledInput.tsx";
 import { useForm } from "react-hook-form";
-import { api } from "@/api";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Icon } from "@/ui/Icons/Icon.tsx";
 import { useToast } from "@/hooks/useToast.ts";
+import sessionApi from "@/api/session.ts";
 
 const schema = yup
     .object({
         username: yup.string().required("You have to enter a username!"),
         password: yup.string().required("You have to enter a password!"),
-        confirmPassword: yup.string().oneOf([yup.ref("password")], "Passwords must match"),
+        confirmPassword: yup
+            .string()
+            .required("You have to enter a password!")
+            .oneOf([yup.ref("password")], "Passwords must match"),
     })
     .required();
 
@@ -31,10 +34,10 @@ export const SignUpPage = () => {
     const navigate = useNavigate();
 
     const onSubmit = (data: FormData) => {
-        api.post("/signup", { user: data }).then((response) => {
-            localStorage.setItem("token", response.data.token);
+        sessionApi.signup(data, (response) => {
+            localStorage.setItem("token", response.token);
             navigate("/");
-            toast.success(response.data.message);
+            toast.success(response.message);
         });
     };
 

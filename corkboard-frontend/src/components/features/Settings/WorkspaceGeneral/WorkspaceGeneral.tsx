@@ -1,7 +1,6 @@
 import "./WorkspaceGeneral.scss";
 import { Input } from "@/ui/Input/Input.tsx";
 import { useNavigate, useParams } from "react-router-dom";
-import { api } from "@/api";
 import { Button } from "@/ui/Button/Button.tsx";
 import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
@@ -10,6 +9,8 @@ import { useAuth } from "@/context/auth/useAuth.ts";
 import { useWorkspaceStore } from "@/store/workspaceStore.ts";
 import Loading from "@/ui/Loading/Loading.tsx";
 import Switch from "@/ui/Switch/Switch.tsx";
+import workspacesApi from "@/api/workspaces.ts";
+import { api } from "@/api";
 
 const schema = yup
     .object({
@@ -56,16 +57,20 @@ const WorkspaceGeneral = () => {
     const workspaceOwner = getValues("owner")?.id === user?.id;
 
     const handleDeleteWorkspace = async () => {
-        api.delete(`/workspaces/${getValues("id")}`).then(() => {
+        workspacesApi.delete(getValues("id"), () => {
             navigate("/workspaces");
         });
     };
 
     const onSubmit = ({ id, name, code_prefix_enabled, code_prefix, auto_assign }: FormData) => {
-        api.put(`/workspaces/${id}`, { name, code_prefix_enabled, code_prefix, auto_assign }).then((res) => {
-            reset(res.data);
-            setWorkspace(res.data);
-        });
+        workspacesApi.update(
+            id,
+            { name, code_prefix_enabled: code_prefix_enabled ?? undefined, code_prefix: code_prefix ?? undefined, auto_assign: auto_assign ?? undefined },
+            (response) => {
+                reset(response);
+                setWorkspace(response);
+            },
+        );
     };
 
     if (isLoading) return <Loading overlay={true} />;

@@ -22,14 +22,15 @@ class TagsController < ApplicationController
   def update
     @tag = Tag.find(params[:id])
     @tag.update(tag_params)
+    render :show
   end
 
   def create
     @tag = Tag.create!(tag_params.to_h)
+    render :show
   end
 
   def destroy
-    @tag = Tag.find(params[:id])
     @tag.destroy
   end
 
@@ -38,6 +39,7 @@ class TagsController < ApplicationController
     @tag = Tag.find(params[:id])
 
     @tasks_tag = TasksTag.create!(task: task, tag: @tag)
+    render :show
   end
 
   def unassign
@@ -46,6 +48,7 @@ class TagsController < ApplicationController
 
     tasks_tag.destroy!
     @tag = Tag.find(params[:id])
+    render :show
   end
 
   private

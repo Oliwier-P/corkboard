@@ -4,7 +4,7 @@ class DocumentsController < ApplicationController
 
   def index
     authorize! :index, Document.new(workspace_id: params[:workspace_id])
-    @documents = Document.not_task_documents.where(workspace_id: params[:workspace_id])
+    @documents = Document.not_task_documents.where(workspace_id: params[:workspace_id]).order(:created_at)
   end
 
   def show
@@ -17,12 +17,13 @@ class DocumentsController < ApplicationController
 
     @document = Document.create!(name: "Untilted", owner_id: current_user.id, workspace_id: params[:workspace_id])
     @document.broadcast("document_created", current_user)
+    render :show
   end
 
   def update
     @document.update!(document_params)
     @document.broadcast("document_updated", current_user)
-    render json: { message: "Successfully updated!" }
+    render :show
   end
 
   def destroy

@@ -66,7 +66,7 @@ describe "Tags", type: :request do
       # user can delete a tag from own workspace
       tag = Tag.create!(name: "Temp tag", color: "#ffffff", workspace_id: user1_workspace.id)
       delete "/tags/#{tag.id}", headers: auth_headers(user1)
-      expect(response.body).to match_json_snapshot("deleted_user1_workspace_temp_tag")
+      expect(Tag.where(workspace_id: user1_workspace.id).count).to eq(3)
 
       # user can unassign a tag from a task in own workspace
       delete "/tasks/#{user1_workspace_task.id}/tags/#{user1_workspace_tag_bug.id}/unassign", headers: auth_headers(user1)

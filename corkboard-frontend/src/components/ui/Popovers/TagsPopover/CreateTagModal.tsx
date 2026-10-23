@@ -3,13 +3,13 @@ import Modal from "@/ui/Modal/Modal.tsx";
 import { Button } from "@/ui/Button/Button.tsx";
 import { LabeledInput } from "@/ui/LabeledInput/LabeledInput.tsx";
 import { type SubmitHandler, useForm } from "react-hook-form";
-import { api } from "@/api";
 import { useWorkspaceStore } from "@/store/workspaceStore.ts";
 import type { TagType } from "@/types/TagType.ts";
+import tagsApi from "@/api/tags.ts";
 
 interface CreateTagModalProps {
     tag?: TagType;
-    onSave: (data: any) => void;
+    onSave: (data: TagType) => void;
     onClose: () => void;
 }
 
@@ -24,12 +24,12 @@ const CreateTagModal = ({ tag, onSave, onClose }: CreateTagModalProps) => {
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         if (tag?.id) {
-            api.put(`/tags/${tag.id}`, { name: data.name, color: data.color }).then((response) => {
-                onSave(response.data);
+            tagsApi.update(tag.id, { name: data.name, color: data.color }, (response) => {
+                onSave(response);
             });
         } else {
-            api.post("/tags", { name: data.name, color: data.color, workspace_id: workspaceId }).then((response) => {
-                onSave(response.data);
+            tagsApi.create({ name: data.name, color: data.color, workspace_id: workspaceId! }, (response) => {
+                onSave(response);
             });
         }
     };
