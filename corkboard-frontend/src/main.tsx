@@ -20,6 +20,7 @@ import ToastContainer from "@/ui/Toast/ToastContainer.tsx";
 import SuperAdminUsers from "@/features/SuperAdmin/SuperAdminUsers/SuperAdminUsers.tsx";
 import SuperAdminUser from "@/features/SuperAdmin/SuperAdminUsers/SuperAdminUser.tsx";
 import TagsManager from "@/features/Settings/TagsManager/TagsManager.tsx";
+import GuestRoute from "@/features/GuestRoute.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
@@ -30,8 +31,22 @@ createRoot(document.getElementById("root")!).render(
             <AuthProvider>
                 <BrowserRouter>
                     <Routes>
-                        <Route path="/" element={<LoginPage />} />
-                        <Route path="/signup" element={<SignUpPage />} />
+                        <Route
+                        path="/"
+                        element={
+                            <GuestRoute>
+                                <LoginPage />
+                            </GuestRoute>
+                        }
+                    />
+                        <Route
+                        path="/signup"
+                        element={
+                            <GuestRoute>
+                                <SignUpPage />
+                            </GuestRoute>
+                        }
+                    />
                         <Route
                             path="/workspaces/:workspaceId/current_release"
                             element={
@@ -95,7 +110,7 @@ createRoot(document.getElementById("root")!).render(
                             <Route path="users/:id" element={<SuperAdminUser />} />
                         </Route>
 
-                        <Route path="*" element={<div>NO ROUTE</div>} />
+                        <Route path="*" element={<Navigate to="/" replace />} />
                     </Routes>
 
                     <TaskDisplay />
