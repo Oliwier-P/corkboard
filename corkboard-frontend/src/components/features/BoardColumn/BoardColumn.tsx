@@ -13,7 +13,7 @@ import { useWorkspaceStore } from "@/store/workspaceStore.ts";
 import type { TaskStatus } from "@/types/ReleaseBoardTypes.ts";
 
 type BoardColumnProps = {
-    columnId: string;
+    columnId: TaskStatus;
     releaseId: string;
     isCreateTaskOpen: boolean;
     setIsCreateTaskOpen: Dispatch<SetStateAction<boolean>>;
@@ -104,7 +104,7 @@ export const BoardColumn = memo(({ columnId, releaseId, isCreateTaskOpen, setIsC
                 });
 
                 const diffColumn = fromColumn.id !== columnId;
-                const payload = diffColumn ? { status: columnId as TaskStatus, position: index, release_id: releaseId } : { position: index };
+                const payload = diffColumn ? { status: columnId, position: index, release_id: releaseId } : { position: index };
 
                 tasksApi.update(taskId, payload, () => {
                     if (diffColumn) {
