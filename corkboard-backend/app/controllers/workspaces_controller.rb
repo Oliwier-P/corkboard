@@ -101,7 +101,7 @@ class WorkspacesController < ApplicationController
     current_release = workspace.current_release
     @next_release = workspace.next_release
 
-    current_release&.update!(completed: true, current: false)
+    current_release&.update!(completed: true, current: false, status: "COMPLETED")
     @next_release.update!(current: true) if @next_release
   end
 
