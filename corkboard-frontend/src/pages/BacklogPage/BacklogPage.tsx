@@ -6,31 +6,41 @@ import { useWorkspaceStore } from "@/store/workspaceStore.ts";
 import { useReleaseBoardStore } from "@/store/releaseBoardStore.ts";
 import { BoardColumn } from "@/features/BoardColumn/BoardColumn.tsx";
 import { useShallow } from "zustand/react/shallow";
-import type { ReleaseType } from "@/types/ReleaseType.ts";
 import Loading from "@/ui/Loading/Loading.tsx";
 import workspacesApi from "@/api/workspaces.ts";
+import releasesApi from "@/api/releases.ts";
 
 export const BacklogPage = () => {
     const workspaceId = useWorkspaceStore((state) => state.workspace?.id);
+    const release = useWorkspaceStore((state) => state.currentRelease);
+    const setRelease = useWorkspaceStore((state) => state.setCurrentRelease);
 
-    const fetchBoard = useReleaseBoardStore((state) => state.fetchBoard);
-    const fetchBacklog = useReleaseBoardStore((state) => state.fetchBacklog);
+    const setBacklog = useReleaseBoardStore((state) => state.setBacklog);
+    const setBoard = useReleaseBoardStore((state) => state.setBoard);
 
     const columnIds = useReleaseBoardStore(useShallow((state) => state.columns.map((col) => col.id)));
     const [isCreateTaskOpen, setIsCreateTaskOpen] = useState<boolean>(false);
 
-    const [release, setRelease] = useState<ReleaseType | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        if (workspaceId) {
-            workspacesApi.getCurrentRelease(workspaceId, (response) => {
+        if (!workspaceId) return;
+
+        workspacesApi.getCurrentRelease(workspaceId, (response) => {
+            setRelease(response);
+
+            if (response?.id) {
+                releasesApi.getBoard(response.id, (board) => {
+                    setBoard(response.id, board);
+                });
+            }
+
+            workspacesApi.getBacklog(workspaceId, (response) => {
+                setBacklog(response);
                 setLoading(false);
-                setRelease(response);
-                fetchBoard(response.id, () => fetchBacklog(workspaceId));
             });
-        }
-    }, [workspaceId, fetchBoard, fetchBacklog]);
+        });
+    }, [workspaceId, setRelease, setBoard, setBacklog]);
 
     if (loading) return <Loading overlay={true} />;
 

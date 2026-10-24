@@ -4,6 +4,7 @@ import { BoardColumn } from "../BoardColumn/BoardColumn.tsx";
 import "./ReleaseBoard.scss";
 import { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
+import releasesApi from "@/api/releases.ts";
 
 type ReleaseBoardProps = {
     releaseId: string;
@@ -11,14 +12,15 @@ type ReleaseBoardProps = {
 
 export const ReleaseBoard = ({ releaseId }: ReleaseBoardProps) => {
     const columnIds = useReleaseBoardStore(useShallow((state) => state.columns.map((col) => col.id)));
-    const fetchBoard = useReleaseBoardStore((state) => state.fetchBoard);
+    const setBoard = useReleaseBoardStore((state) => state.setBoard);
     const [isCreateTaskOpen, setIsCreateTaskOpen] = useState<boolean>(false);
 
     useEffect(() => {
-        if (releaseId) {
-            fetchBoard(releaseId);
-        }
-    }, [fetchBoard, releaseId]);
+        if (!releaseId) return;
+        releasesApi.getBoard(releaseId, (response) => {
+            setBoard(releaseId, response);
+        });
+    }, [releaseId, setBoard]);
 
     return (
         <div className="release-board">

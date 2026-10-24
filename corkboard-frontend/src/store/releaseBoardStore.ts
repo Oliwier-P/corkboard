@@ -1,6 +1,5 @@
 import type { Column, TaskStatus, TaskType } from "@/types/ReleaseBoardTypes.ts";
 import { create } from "zustand";
-import { api } from "@/api";
 import { insertTaskIntoColumn } from "./releaseBoardHelpers.ts";
 import type { TagType } from "@/types/TagType.ts";
 
@@ -30,8 +29,8 @@ interface ReleaseBoardStore {
 
     moveTaskBetweenColumns: (activeId: string, fromColumnId: string, toColumnId: string, insertAt?: number) => void;
     reorderTaskInColumn: (columnId: string, activeId: string, insertAt: number) => void;
-    fetchBoard: (releaseId: string, callback?: () => void) => void;
-    fetchBacklog: (workspaceId: string) => void;
+    setBoard: (releaseId: string, data: { tasks?: Record<string, TaskType>; columns?: Column[] }) => void;
+    setBacklog: (data: { taskIds?: string[]; tasks?: Record<string, TaskType> }) => void;
 
     addTask: (columnId: string, task: TaskType) => void;
     updateTask: (taskId: string, task: Partial<TaskType>) => void;
@@ -56,32 +55,23 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
     overColumnId: null,
     setActiveTask: (task) => set({ activeTask: task }),
     setOverColumnId: (id) => set({ overColumnId: id }),
-    fetchBoard: (releaseId, callback) => {
-        api.get(`/releases/${releaseId}/board`)
-            .then((res) => {
-                set({
-                    id: releaseId,
-                    tasks: res.data.tasks,
-                    columns: res.data.columns,
-                });
-            })
-            .then(() => callback && callback());
+    setBoard: (releaseId, { tasks = {}, columns = [] }) => {
+        set(() => ({
+            id: releaseId,
+            tasks,
+            columns,
+        }));
     },
-    fetchBacklog: (workspaceId) => {
-        api.get(`/workspaces/${workspaceId}/backlog`).then((res) => {
-            set((state) => {
-                const taskIds = res.data.taskIds;
-                return {
-                    columns: [
-                        ...state.columns,
-                        {
-                            id: "backlog",
-                            taskIds: taskIds,
-                        },
-                    ],
-                    tasks: { ...state.tasks, ...res.data.tasks },
-                };
-            });
+    setBacklog: ({ taskIds = [], tasks = {} }) => {
+        set((state) => {
+            const exists = state.columns.some((col) => col.id === "backlog");
+
+            return {
+                tasks: { ...state.tasks, ...tasks },
+                columns: exists
+                    ? state.columns.map((col) => (col.id === "backlog" ? { ...col, taskIds } : col))
+                    : [...state.columns, { id: "backlog", taskIds }],
+            };
         });
     },
     moveTaskBetweenColumns: (activeId, fromColumnId, toColumnId, insertAt) => {
