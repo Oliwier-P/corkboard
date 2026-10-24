@@ -30,7 +30,7 @@ class Release < ApplicationRecord
   before_save :set_current
 
   default_scope { where(completed: false) }
-  acts_as_list scope: [:workspace_id, :status]
+  acts_as_list scope: [:workspace_id, :status], top_of_list: 0
 
   NOT_QUEUED = "NOT_QUEUED"
   QUEUED = "QUEUED"

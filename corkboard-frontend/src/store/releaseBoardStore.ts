@@ -1,9 +1,7 @@
 import type { Column, TaskStatus, TaskType } from "@/types/ReleaseBoardTypes.ts";
 import { create } from "zustand";
 import { api } from "@/api";
-import { useWorkspaceStore } from "./workspaceStore.ts";
 import { insertTaskIntoColumn } from "./releaseBoardHelpers.ts";
-import { v4 as uuid } from "uuid";
 import type { TagType } from "@/types/TagType.ts";
 
 const INITIAL_STATE = {
@@ -35,7 +33,7 @@ interface ReleaseBoardStore {
     fetchBoard: (releaseId: string, callback?: () => void) => void;
     fetchBacklog: (workspaceId: string) => void;
 
-    addTask: (columnId: string, name: string) => void;
+    addTask: (columnId: string, task: TaskType) => void;
     updateTask: (taskId: string, task: Partial<TaskType>) => void;
     deleteTask: (taskId: string) => void;
 
@@ -106,10 +104,6 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
                 }),
             };
         });
-
-        api.put(`/tasks/${activeId}`, { status: toColumnId, position: insertAt, release_id: get().id }).then(() => {
-            get().updateTask(activeId, { status: toColumnId as TaskStatus, position: insertAt, release_id: get().id });
-        });
     },
     reorderTaskInColumn: (columnId, activeId, insertAt) => {
         set((state) => ({
@@ -120,64 +114,18 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
                 return { ...col, taskIds: newIds };
             }),
         }));
-
-        api.put(`/tasks/${activeId}`, { position: insertAt });
     },
-    addTask: (columnId, name) => {
-        const temporaryId = uuid();
-        const column = get().columns.find((col) => col.id === columnId);
-        const maxPosition =
-            column?.taskIds.reduce((max, taskId) => {
-                const taskPosition = get().tasks[taskId]?.position ?? 0;
-                return Math.max(max, taskPosition);
-            }, -1) ?? -1;
-        const position = maxPosition + 1;
-        const workspaceId = useWorkspaceStore.getState().workspace?.id;
-        const newTask: TaskType = {
-            id: temporaryId,
-            name,
-            position,
-            release_id: columnId === "backlog" ? null : get().id,
-            workspace_id: workspaceId || null,
-            status: columnId as TaskStatus,
-            user: null,
-            priority: null,
-            tags: [],
-            code_name: "",
-        };
+    addTask: (columnId, task) => {
         set((state) => {
+            const tasks = state.tasks ?? {};
+            if (tasks[task.id]) return state;
+
             return {
-                tasks: {
-                    ...state.tasks,
-                    [temporaryId]: newTask,
-                },
+                tasks: { ...tasks, [task.id]: task },
                 columns: state.columns.map((col) =>
-                    col.id === columnId
-                        ? {
-                              ...col,
-                              taskIds: [...col.taskIds, temporaryId],
-                          }
-                        : col,
+                    col.id === columnId && !col.taskIds.includes(task.id) ? { ...col, taskIds: [...col.taskIds, task.id] } : col,
                 ),
             };
-        });
-        api.post("/tasks", { ...newTask }).then((res) => {
-            set((state) => {
-                const tasks = { ...state.tasks };
-                const savedTask = res.data;
-                delete tasks[temporaryId];
-                return {
-                    tasks: { ...tasks, [savedTask.id]: savedTask },
-                    columns: state.columns.map((col) =>
-                        col.id === columnId
-                            ? {
-                                  ...col,
-                                  taskIds: col.taskIds.map((taskId) => (taskId === temporaryId ? savedTask.id : taskId)),
-                              }
-                            : col,
-                    ),
-                };
-            });
         });
     },
     updateTask: (taskId, task) => {

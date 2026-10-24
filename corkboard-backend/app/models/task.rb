@@ -60,7 +60,7 @@ class Task < ApplicationRecord
     urgent: "urgent",
   }
 
-  acts_as_list scope: [:release_id, :status], column: :position
+  acts_as_list scope: [:release_id, :status], column: :position, top_of_list: 0
 
   def clear_release_id_for_backlog
     # TODO: Add status_changed? when we are sure that the update is called only once
@@ -80,6 +80,7 @@ class Task < ApplicationRecord
         position: self.position,
         release_id: self.release_id,
         workspace_id: self.workspace_id,
+        tags: [],
         user: self.user ? {
           id: self.user.id,
           username: self.user.username,

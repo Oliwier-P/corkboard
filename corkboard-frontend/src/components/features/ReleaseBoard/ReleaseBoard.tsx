@@ -25,19 +25,26 @@ export const ReleaseBoard = ({ releaseId }: ReleaseBoardProps) => {
             {columnIds
                 .filter((col) => !["backlog", "review_pending", "testing", "accepted"].includes(col as string))
                 .map((col) => (
-                    <BoardColumn columnId={col} key={col} isCreateTaskOpen={isCreateTaskOpen} setIsCreateTaskOpen={setIsCreateTaskOpen} />
+                    <BoardColumn columnId={col} key={col} releaseId={releaseId} isCreateTaskOpen={isCreateTaskOpen} setIsCreateTaskOpen={setIsCreateTaskOpen} />
                 ))}
 
             <div className="release-board__column-group">
                 {columnIds
                     .filter((col) => ["review_pending", "testing"].includes(col as string))
                     .map((col) => (
-                        <BoardColumn columnId={col} key={col} isCreateTaskOpen={isCreateTaskOpen} setIsCreateTaskOpen={setIsCreateTaskOpen} />
+                        <BoardColumn
+                            columnId={col}
+                            key={col}
+                            releaseId={releaseId}
+                            isCreateTaskOpen={isCreateTaskOpen}
+                            setIsCreateTaskOpen={setIsCreateTaskOpen}
+                        />
                     ))}
             </div>
             <BoardColumn
                 columnId={columnIds[columnIds.length - 1]}
                 key="accepted"
+                releaseId={releaseId}
                 isCreateTaskOpen={isCreateTaskOpen}
                 setIsCreateTaskOpen={setIsCreateTaskOpen}
             />

@@ -8,14 +8,18 @@ import { useReleaseBoardStore } from "@/store/releaseBoardStore.ts";
 import { Task } from "../Task/Task.tsx";
 import { useShallow } from "zustand/react/shallow";
 import { dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
+import tasksApi from "@/api/tasks.ts";
+import { useWorkspaceStore } from "@/store/workspaceStore.ts";
+import type { TaskStatus } from "@/types/ReleaseBoardTypes.ts";
 
 type BoardColumnProps = {
     columnId: string;
+    releaseId: string;
     isCreateTaskOpen: boolean;
     setIsCreateTaskOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-export const BoardColumn = memo(({ columnId, isCreateTaskOpen, setIsCreateTaskOpen }: BoardColumnProps) => {
+export const BoardColumn = memo(({ columnId, releaseId, isCreateTaskOpen, setIsCreateTaskOpen }: BoardColumnProps) => {
     const [showCreateTask, setShowCreateTask] = useState(false);
     const newTaskRef = useRef<HTMLDivElement>(null);
     const ref = useRef<HTMLDivElement>(null);
@@ -25,10 +29,15 @@ export const BoardColumn = memo(({ columnId, isCreateTaskOpen, setIsCreateTaskOp
 
     const taskIds = useReleaseBoardStore(useShallow((state) => state.columns.find((col) => col.id === columnId)?.taskIds ?? []));
     const addTask = useReleaseBoardStore((state) => state.addTask);
+    const workspaceId = useWorkspaceStore((state) => state.workspace?.id);
 
     const handleTaskAdd = (name: string) => {
-        if (name.trim()) {
-            addTask(columnId, name.trim());
+        const trimmedName = name.trim();
+
+        if (trimmedName || workspaceId) {
+            tasksApi.create({ name: trimmedName, workspace_id: workspaceId, release_id: releaseId, status: columnId as TaskStatus }, (response) => {
+                addTask(columnId, response);
+            });
         }
 
         setIsCreateTaskOpen(false);
@@ -94,14 +103,19 @@ export const BoardColumn = memo(({ columnId, isCreateTaskOpen, setIsCreateTaskOp
                     }
                 });
 
-                if (fromColumn.id !== columnId) {
-                    moveTaskBetweenColumns(taskId, fromColumn.id, columnId, index);
-                } else {
-                    reorderTaskInColumn(columnId, taskId, index);
-                }
+                const diffColumn = fromColumn.id !== columnId;
+                const payload = diffColumn ? { status: columnId as TaskStatus, position: index, release_id: releaseId } : { position: index };
+
+                tasksApi.update(taskId, payload, () => {
+                    if (diffColumn) {
+                        moveTaskBetweenColumns(taskId, fromColumn.id, columnId, index);
+                    } else {
+                        reorderTaskInColumn(columnId, taskId, index);
+                    }
+                });
             },
         });
-    }, [columnId, taskIds]);
+    }, [columnId, releaseId, taskIds]);
 
     useEffect(() => {
         if (!isCreateTaskOpen) return;
