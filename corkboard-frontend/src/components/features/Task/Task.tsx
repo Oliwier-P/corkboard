@@ -35,6 +35,7 @@ export const Task = memo(({ taskId }: TaskProps) => {
     const setTaskId = useTaskStore((state) => state.setTaskId);
 
     const workspace = useWorkspaceStore((state) => state.workspace);
+    const nextRelease = useWorkspaceStore((state) => state.nextRelease);
     const task = useReleaseBoardStore((state) => state.tasks[taskId]);
     const updateTask = useReleaseBoardStore((state) => state.updateTask);
     const deleteTask = useReleaseBoardStore((state) => state.deleteTask);
@@ -100,7 +101,7 @@ export const Task = memo(({ taskId }: TaskProps) => {
                     icon: "boxArrowUp",
                     onClick: () => moveTaskBetweenColumns(taskId, "backlog", "todo"),
                 },
-                {
+                nextRelease && {
                     type: "button",
                     label: "Move To Next Release",
                     icon: "boxArrowUp",

@@ -14,7 +14,7 @@ import type { TaskStatus } from "@/types/ReleaseBoardTypes.ts";
 
 type BoardColumnProps = {
     columnId: TaskStatus;
-    releaseId: string;
+    releaseId: string | null;
     isCreateTaskOpen: boolean;
     setIsCreateTaskOpen: Dispatch<SetStateAction<boolean>>;
 };

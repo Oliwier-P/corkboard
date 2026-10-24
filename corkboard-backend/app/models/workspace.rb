@@ -39,13 +39,16 @@ class Workspace < ApplicationRecord
             format: { with: /\A[A-Z]+\z/, message: "only upper letters" }
   before_validation :generate_code_prefix
 
+  def queued_releases
+    releases.where(status: Release::QUEUED).reorder(:position)
+  end
+
   def current_release
-    self.releases.find_by(current: true)
+    queued_releases.first
   end
 
   def next_release
-    current_release = self.current_release
-    self.releases.where(current: false, status: Release::QUEUED, position: current_release&.position..).order(:position).first
+    queued_releases.offset(1).first
   end
 
   def generate_code_prefix

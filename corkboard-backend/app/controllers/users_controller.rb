@@ -6,6 +6,7 @@ class UsersController < ApplicationController
     @user = current_user
     @workspace = @user.last_workspace
     @release = @workspace.current_release
+    @next_release = @workspace.next_release
   end
 
   def index

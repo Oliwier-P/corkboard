@@ -37,13 +37,7 @@ export const BacklogPage = () => {
     return (
         <Page title="Backlog" subTitle={release?.name} className="backlog-page">
             <BacklogColumn title="Backlog" icon="rows">
-                <BoardColumn
-                    columnId="backlog"
-                    key="backlog"
-                    releaseId={release!.id}
-                    isCreateTaskOpen={isCreateTaskOpen}
-                    setIsCreateTaskOpen={setIsCreateTaskOpen}
-                />
+                <BoardColumn columnId="backlog" key="backlog" releaseId={null} isCreateTaskOpen={isCreateTaskOpen} setIsCreateTaskOpen={setIsCreateTaskOpen} />
             </BacklogColumn>
 
             <BacklogColumn title="Tasks" icon="box">
@@ -54,7 +48,7 @@ export const BacklogPage = () => {
                             <BoardColumn
                                 columnId={col}
                                 key={col}
-                                releaseId={release!.id}
+                                releaseId={release.id}
                                 isCreateTaskOpen={isCreateTaskOpen}
                                 setIsCreateTaskOpen={setIsCreateTaskOpen}
                             />
