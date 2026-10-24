@@ -2,6 +2,7 @@ import type { User } from "@/context/auth/types.ts";
 import { useWorkspaceStore } from "@/store/workspaceStore.ts";
 import { useReleaseBoardStore } from "@/store/releaseBoardStore.ts";
 import { useCollaborators } from "@/hooks/useCollaborators.ts";
+import tasksApi from "@/api/tasks.ts";
 
 interface useUserPopoverProps {
     taskId: string;
@@ -10,15 +11,13 @@ interface useUserPopoverProps {
 
 const useUserPopover = ({ taskId, taskUser }: useUserPopoverProps) => {
     const workspace = useWorkspaceStore((state) => state.workspace);
-    const updateTaskUser = useReleaseBoardStore((state) => state.updateTaskUser);
+    const updateTask = useReleaseBoardStore((state) => state.updateTask);
     const { data: users = [] } = useCollaborators(workspace?.id);
 
-    const handleAssignUserToTask = (userId: string) => {
-        if (userId === taskUser?.id) {
-            updateTaskUser(taskId, "");
-        } else {
-            updateTaskUser(taskId, userId);
-        }
+    const handleAssignUserToTask = (user: User) => {
+        tasksApi.update(taskId, { user_id: user.id === taskUser?.id ? null : user.id }, (response) => {
+            updateTask(taskId, { user: response.user });
+        });
     };
 
     return { users, handleAssignUserToTask };

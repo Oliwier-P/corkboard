@@ -15,14 +15,16 @@ const useTagsPopover = ({ taskId }: useTagsPopoverProps) => {
     const removeTagFromTask = useReleaseBoardStore((state) => state.removeTagFromTask);
 
     const handleAddTagToTask = (tagId: string) => {
-        addTagToTask(taskId, tagId, (response) => {
+        tagsApi.assign(taskId, tagId, (response) => {
+            addTagToTask(taskId, response);
             setTags((prev) => prev.filter((t) => t.id !== response.id));
             taskTags.push(response);
         });
     };
 
     const handleRemoveTagFromTask = (tagId: string) => {
-        removeTagFromTask(taskId, tagId, (response) => {
+        tagsApi.unassign(taskId, tagId, (response) => {
+            removeTagFromTask(taskId, tagId);
             setTaskTags((prev) => prev.filter((t) => t.id !== response.id));
             tags.push(response);
         });

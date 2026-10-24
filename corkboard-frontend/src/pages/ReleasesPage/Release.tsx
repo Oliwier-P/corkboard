@@ -61,7 +61,7 @@ export const Release = ({ release, onDeleteClick, onEditClick, isNotDraggable }:
         <ContextMenu items={contextMenuOptions()}>
             <div className={ClassNames("release", { ghost: isDragging, "not-draggable": isNotDraggable })} ref={isNotDraggable ? null : ref}>
                 <div className="release__name">
-                    <div className="release__number">{release.position}</div>
+                    <div className="release__number">{release.position + 1}</div>
                     {release.name}
                     <div
                         className={ClassNames("release__badge", {

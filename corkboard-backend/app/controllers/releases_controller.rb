@@ -48,7 +48,7 @@ class ReleasesController < ApplicationController
     workspace.with_lock do
       release.reload
       release.update!(status: new_status) if release.status != new_status
-      release.insert_at(position + 1)
+      release.insert_at(position)
     end
 
     WorkspaceBroadcaster.releases_moved(workspace, actor_id: current_user.id)

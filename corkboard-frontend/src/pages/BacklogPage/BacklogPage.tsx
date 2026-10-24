@@ -32,23 +32,27 @@ export const BacklogPage = () => {
         }
     }, [workspaceId, fetchBoard, fetchBacklog]);
 
-    useEffect(() => {
-        console.log(loading);
-    }, [loading]);
-
     if (loading) return <Loading overlay={true} />;
 
     return (
         <Page title="Backlog" subTitle={release?.name} className="backlog-page">
             <BacklogColumn title="Backlog" icon="rows">
-                <BoardColumn columnId="backlog" key="backlog" isCreateTaskOpen={isCreateTaskOpen} setIsCreateTaskOpen={setIsCreateTaskOpen} />
+                <BoardColumn columnId="backlog" key="backlog" releaseId={null} isCreateTaskOpen={isCreateTaskOpen} setIsCreateTaskOpen={setIsCreateTaskOpen} />
             </BacklogColumn>
 
             <BacklogColumn title="Tasks" icon="box">
                 {release ? (
                     columnIds
                         .filter((col) => !["backlog"].includes(col as string))
-                        .map((col) => <BoardColumn columnId={col} key={col} isCreateTaskOpen={isCreateTaskOpen} setIsCreateTaskOpen={setIsCreateTaskOpen} />)
+                        .map((col) => (
+                            <BoardColumn
+                                columnId={col}
+                                key={col}
+                                releaseId={release.id}
+                                isCreateTaskOpen={isCreateTaskOpen}
+                                setIsCreateTaskOpen={setIsCreateTaskOpen}
+                            />
+                        ))
                 ) : (
                     <div className="releases-empty-message">You don't have any active releases yet.</div>
                 )}

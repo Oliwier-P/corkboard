@@ -6,7 +6,8 @@ import type { ReleaseType } from "@/types/ReleaseType.ts";
 type MeResponse = {
     user: UserSettings;
     workspace: WorkspaceType;
-    release: ReleaseType;
+    release: ReleaseType | null;
+    next_release: ReleaseType | null;
 };
 
 const usersApi = {

@@ -21,7 +21,7 @@ export const useTaskEditor = (taskId: string) => {
 
         if (task.name !== trimmedValue) {
             tasksApi.update(taskId, { name: trimmedValue }, (response) => {
-                updateTask(taskId, response);
+                updateTask(taskId, { name: response.task.name });
             });
         }
     };
