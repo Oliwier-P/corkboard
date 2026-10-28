@@ -68,6 +68,11 @@ const workspacesApi = {
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
+    leaveWorkspace: (workspaceId: string, onSuccess: (response: any) => void, onError?: (error: unknown) => void) => {
+        api.delete(`/workspaces/${workspaceId}/leave_workspace`)
+            .then((response) => onSuccess(response.data))
+            .catch(onError);
+    },
     getCurrentRelease: (workspaceId: string, onSuccess: (response: ReleaseType | null) => void, onError?: (error: unknown) => void) => {
         api.get(`/workspaces/${workspaceId}/current_release`)
             .then((response) => onSuccess(response.data))

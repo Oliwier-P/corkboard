@@ -53,6 +53,7 @@ Rails.application.routes.draw do
       delete :decline_invitation
       delete :cancel_invitation
       delete :delete_user
+      delete :leave_workspace
       post :complete_release
     end
 

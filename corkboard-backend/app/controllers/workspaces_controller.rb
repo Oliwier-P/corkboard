@@ -86,6 +86,11 @@ class WorkspacesController < ApplicationController
     render json: { message: "User #{params[:username]} was removed from the workspace" }, status: :ok
   end
 
+  def leave_workspace
+    UsersWorkspaces.where(workspace_id: params[:id], user_id: current_user.id).delete_all
+    @workspace = current_user.workspaces.first
+  end
+
   def current_release
     workspace = Workspace.find(params[:id])
     @current_release = workspace.releases.find_by(current: true)
