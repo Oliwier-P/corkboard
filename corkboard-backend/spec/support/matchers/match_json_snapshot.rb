@@ -13,6 +13,8 @@ RSpec::Matchers.define :match_json_snapshot do |snapshot_name|
     spec_file = RSpec.current_example.metadata[:file_path]
     spec_dir = File.dirname(spec_file)
     path = Rails.root.join(spec_dir, "snapshots", "#{snapshot_name}.json")
+    @snapshot_name = snapshot_name
+    @snapshot_path = path
 
     if ENV["UPDATE_SNAPSHOTS"] == "true" || !File.exist?(path)
       existed = File.exist?(path)
@@ -68,7 +70,26 @@ RSpec::Matchers.define :match_json_snapshot do |snapshot_name|
   end
 
   failure_message do
-    "expected:\n#{JSON.pretty_generate(@diff_expected)}\n\n" \
-      "got:\n#{JSON.pretty_generate(mask_any(@diff_expected, @diff_actual))}"
+    expected_str = JSON.pretty_generate(@diff_expected)
+    got_str      = JSON.pretty_generate(mask_any(@diff_expected, @diff_actual))
+
+    diff = RSpec::Support::Differ.new(color: RSpec::Matchers.configuration.color?)
+                                 .diff(got_str, expected_str)
+
+    <<~MSG
+    snapshot: #{@snapshot_name}
+    file: #{@snapshot_path}
+
+    expected:
+    #{expected_str}
+
+    got:
+    #{got_str}
+
+    diff (- expected, + got):
+    #{diff}
+
+    To accept the new output: UPDATE_SNAPSHOTS=true bundle exec rspec #{RSpec.current_example.metadata[:location]}
+  MSG
   end
 end

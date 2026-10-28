@@ -12,7 +12,12 @@ class ApplicationController < ActionController::API
     devise_parameter_sanitizer.permit(:account_update, keys: [:username, :email, :password, :password_confirmation])
   end
 
-  rescue_from CanCan::AccessDenied do
-    render json: { error: "Forbidden" }, status: :forbidden
+  rescue_from CanCan::AccessDenied do |e|
+    if e.action == :destroy && e.subject.is_a?(Workspace) &&
+       e.subject.owner_id == current_user.id
+      render json: { message: "You can't delete your only workspace" }, status: :forbidden
+    else
+      render json: { message: "Not authorized" }, status: :forbidden
+    end
   end
 end

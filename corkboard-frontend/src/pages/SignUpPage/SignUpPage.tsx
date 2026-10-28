@@ -35,7 +35,6 @@ export const SignUpPage = () => {
 
     const onSubmit = (data: FormData) => {
         sessionApi.signup(data, (response) => {
-            localStorage.setItem("token", response.token);
             navigate("/");
             toast.success(response.message);
         });

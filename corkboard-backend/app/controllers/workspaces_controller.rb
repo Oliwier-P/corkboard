@@ -24,13 +24,7 @@ class WorkspacesController < ApplicationController
   end
 
   def destroy
-    workspace = Workspace.find(params[:id])
-
-    unless workspace.owner_id == current_user.id
-      return render json: { error: "Not authorized" }, status: :forbidden
-    end
-
-    workspace.destroy
+    @workspace.destroy
   end
 
   def collaborators
@@ -86,6 +80,11 @@ class WorkspacesController < ApplicationController
     render json: { message: "User #{params[:username]} was removed from the workspace" }, status: :ok
   end
 
+  def leave_workspace
+    UsersWorkspaces.where(workspace_id: params[:id], user_id: current_user.id).delete_all
+    @workspace = current_user.workspaces.first
+  end
+
   def current_release
     workspace = Workspace.find(params[:id])
     @current_release = workspace.releases.find_by(current: true)
@@ -98,10 +97,25 @@ class WorkspacesController < ApplicationController
 
   def complete_release
     workspace = Workspace.find(params[:id])
+    tasks_action = params[:tasks_action]
     current_release = workspace.current_release
     @next_release = workspace.next_release
 
-    current_release&.update!(completed: true, current: false, status: "COMPLETED")
+    if current_release
+      tasks = Task.where(release_id: current_release.id).where.not(status: "accepted")
+
+      case tasks_action
+      when "accepted"
+        tasks.update_all(status: "accepted")
+      when "next_release"
+        tasks.update_all(release_id: @next_release.id)
+      when "backlog"
+        tasks.update_all(release_id: nil, status: "backlog")
+      end
+
+      current_release.update!(completed: true, current: false, status: "COMPLETED")
+    end
+
     @next_release.update!(current: true) if @next_release
   end
 

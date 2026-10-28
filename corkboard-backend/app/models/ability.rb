@@ -18,6 +18,9 @@ class Ability
       can :manage, Document, workspace_id: workspace_ids
       can :create, Workspace
       can :manage, Workspace, id: workspace_ids
+      cannot :destroy, Workspace do |workspace|
+        workspace.owner_id != @user.id || @user.owned_workspaces.count <= 1
+      end
       can :manage, WorkspaceInvitation do |invitation|
         invitation.invited_by_user_id == @user.id || invitation.invited_user_id == @user.id
       end

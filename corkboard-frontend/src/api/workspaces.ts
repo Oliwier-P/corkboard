@@ -1,6 +1,12 @@
 import { api } from "@/api";
 import type { WorkspaceType } from "@/types/WorkspaceType.ts";
 import type { ReleaseType } from "@/types/ReleaseType.ts";
+import type { NotAcceptedTasksAction } from "@/pages/CurrentReleasePage/CompleteReleaseModal.tsx";
+
+type DeleteResponse = {
+    workspace?: WorkspaceType;
+    message: string;
+};
 
 const workspacesApi = {
     getAll: (onSuccess: (response: WorkspaceType[]) => void, onError?: (error: unknown) => void) => {
@@ -23,7 +29,7 @@ const workspacesApi = {
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
-    delete: (workspaceId: string, onSuccess: (response: WorkspaceType) => void, onError?: (error: unknown) => void) => {
+    delete: (workspaceId: string, onSuccess: (response: DeleteResponse) => void, onError?: (error: any) => void) => {
         api.delete(`/workspaces/${workspaceId}`)
             .then((response) => onSuccess(response.data))
             .catch(onError);
@@ -68,13 +74,18 @@ const workspacesApi = {
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
+    leaveWorkspace: (workspaceId: string, onSuccess: (response: any) => void, onError?: (error: unknown) => void) => {
+        api.delete(`/workspaces/${workspaceId}/leave_workspace`)
+            .then((response) => onSuccess(response.data))
+            .catch(onError);
+    },
     getCurrentRelease: (workspaceId: string, onSuccess: (response: ReleaseType | null) => void, onError?: (error: unknown) => void) => {
         api.get(`/workspaces/${workspaceId}/current_release`)
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
-    completeRelease: (workspaceId: string, onSuccess: (response: any) => void, onError?: (error: unknown) => void) => {
-        api.post(`/workspaces/${workspaceId}/complete_release`)
+    completeRelease: (workspaceId: string, tasks_action: NotAcceptedTasksAction, onSuccess: (response: any) => void, onError?: (error: unknown) => void) => {
+        api.post(`/workspaces/${workspaceId}/complete_release`, { tasks_action })
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },

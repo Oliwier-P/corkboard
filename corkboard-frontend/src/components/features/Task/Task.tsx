@@ -87,12 +87,6 @@ export const Task = memo(({ taskId }: TaskProps) => {
                     onClick: () => setIsEditing(true),
                 },
                 {
-                    type: "button",
-                    label: "Change Priority",
-                    icon: "exclamationMark",
-                    onClick: () => setIsEditing(true),
-                },
-                {
                     type: "hr",
                 },
                 task.status === "backlog" && {
