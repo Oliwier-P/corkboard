@@ -29,7 +29,7 @@ api.interceptors.response.use(
         if (status === 401) {
             addToast("error", message || "Invalid credentials");
         } else if (status === 403) {
-            addToast("error", "Access denied");
+            addToast("error", message || "Access denied");
         } else if (status === 404) {
             addToast("error", "Not found");
         } else if (status === 422) {

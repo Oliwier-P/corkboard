@@ -39,8 +39,10 @@ class User < ApplicationRecord
               message: "cannot contain spaces"
             }
   validates :password, length: { minimum: 6 }, if: -> { password.present? }
+
   has_and_belongs_to_many :workspaces
   has_many :documents, foreign_key: :owner_id, dependent: :destroy
+  has_many :owned_workspaces, class_name: "Workspace", foreign_key: :owner_id, inverse_of: :owner
   has_one :user_preference, dependent: :destroy
   belongs_to :last_workspace, class_name: "Workspace", optional: true
 

@@ -2,6 +2,11 @@ import { api } from "@/api";
 import type { WorkspaceType } from "@/types/WorkspaceType.ts";
 import type { ReleaseType } from "@/types/ReleaseType.ts";
 
+type DeleteResponse = {
+    workspace?: WorkspaceType;
+    message: string;
+};
+
 const workspacesApi = {
     getAll: (onSuccess: (response: WorkspaceType[]) => void, onError?: (error: unknown) => void) => {
         api.get(`/workspaces`)
@@ -23,7 +28,7 @@ const workspacesApi = {
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
-    delete: (workspaceId: string, onSuccess: (response: WorkspaceType) => void, onError?: (error: unknown) => void) => {
+    delete: (workspaceId: string, onSuccess: (response: DeleteResponse) => void, onError?: (error: any) => void) => {
         api.delete(`/workspaces/${workspaceId}`)
             .then((response) => onSuccess(response.data))
             .catch(onError);

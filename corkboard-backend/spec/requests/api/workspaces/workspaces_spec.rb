@@ -12,7 +12,6 @@ RSpec.describe "Workspaces", type: :request do
       check_authentication(:get, "/workspaces")
       check_authentication(:get, "/workspaces/#{user1_workspace.id}")
       check_authentication(:get, "/workspaces/#{user1_workspace.id}/collaborators")
-      check_authentication(:get, "/workspaces/#{user1_workspace.id}/releases")
       check_authentication(:get, "/workspaces/#{user1_workspace.id}/current_release")
       check_authentication(:put, "/workspaces/#{user1_workspace.id}", load_request("update_user1_workspace"))
       check_authentication(:delete, "/workspaces/#{user1_workspace.id}")
@@ -34,7 +33,6 @@ RSpec.describe "Workspaces", type: :request do
           check_permission(:post, "/workspaces/#{user1_workspace.id}/accept_invitation", user)
           check_permission(:get, "/workspaces/#{user1_workspace.id}", user)
           check_permission(:get, "/workspaces/#{user1_workspace.id}/collaborators", user)
-          check_permission(:get, "/workspaces/#{user1_workspace.id}/releases", user)
           check_permission(:get, "/workspaces/#{user1_workspace.id}/current_release", user)
           check_permission(:put, "/workspaces/#{user1_workspace.id}", user, load_request("update_user1_workspace"))
           check_permission(:delete, "/workspaces/#{user1_workspace.id}", user)
@@ -65,7 +63,7 @@ RSpec.describe "Workspaces", type: :request do
       expect(response.body).to match_json_snapshot("invited_user_user2_workspace")
 
       # user can accept invitation to workspace
-      WorkspaceInvitation.create!(invited_by_user_id: user2.id, invited_user_id: user5.id, workspace_id: user2_workspace.id)
+      WorkspaceInvitation.create!(invited_by_user_id: user2.id, invited_user_id: user5.id, workspace_id: user2_workspace.id, status: "PENDING")
       post "/workspaces/#{user2_workspace.id}/accept_invitation", headers: auth_headers(user5)
       expect(response.body).to match_json_snapshot("accepted_invitation_user2_workspace")
     end
@@ -79,10 +77,6 @@ RSpec.describe "Workspaces", type: :request do
       get "/workspaces/#{user1_workspace.id}", headers: auth_headers(user1)
       expect(response.body).to match_json_snapshot("user1_workspace")
 
-      # user can fetch releases
-      get "/workspaces/#{user1_workspace.id}/releases", headers: auth_headers(user1)
-      expect(response.body).to match_json_snapshot("user1_workspace_releases")
-
       # user can fetch current release
       get "/workspaces/#{user1_workspace.id}/current_release", headers: auth_headers(user1)
       expect(response.body).to match_json_snapshot("user1_workspace_current_release")
@@ -95,10 +89,14 @@ RSpec.describe "Workspaces", type: :request do
     end
 
     it "delete" do
-      # owner can delete workspace
+      # user can delete workspace when he is owner
       delete "/workspaces/#{second_user1_workspace.id}", headers: auth_headers(user1)
       get "/workspaces", headers: auth_headers(user1)
       expect(response.body).to match_json_snapshot("deleted_user1_workspace")
+
+      # user can't delete his last workspace
+      delete "/workspaces/#{user1_workspace.id}", headers: auth_headers(user1)
+      expect(response).to have_http_status(:forbidden)
 
       # user can decline invitation to workspace
       delete "/workspaces/#{user2_workspace.id}/decline_invitation", params: { name: second_user2_workspace.name }, headers: auth_headers(user2)

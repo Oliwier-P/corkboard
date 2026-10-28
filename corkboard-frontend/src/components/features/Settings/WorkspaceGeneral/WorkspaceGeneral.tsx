@@ -11,6 +11,7 @@ import Loading from "@/ui/Loading/Loading.tsx";
 import Switch from "@/ui/Switch/Switch.tsx";
 import workspacesApi from "@/api/workspaces.ts";
 import { api } from "@/api";
+import { useToast } from "@/hooks/useToast.ts";
 
 const schema = yup
     .object({
@@ -55,10 +56,12 @@ const WorkspaceGeneral = () => {
         },
     });
     const workspaceOwner = getValues("owner")?.id === user?.id;
+    const toast = useToast();
 
     const handleDeleteWorkspace = async () => {
-        workspacesApi.delete(getValues("id"), () => {
+        workspacesApi.delete(getValues("id"), (response) => {
             navigate("/workspaces");
+            toast.success(response.message);
         });
     };
 
