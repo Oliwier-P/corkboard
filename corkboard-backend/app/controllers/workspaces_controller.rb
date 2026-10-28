@@ -97,7 +97,7 @@ class WorkspacesController < ApplicationController
 
   def complete_release
     workspace = Workspace.find(params[:id])
-    tasks_action = params[:data][:tasks_action]
+    tasks_action = params[:tasks_action]
     current_release = workspace.current_release
     @next_release = workspace.next_release
 

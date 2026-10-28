@@ -84,13 +84,8 @@ const workspacesApi = {
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
-    completeRelease: (
-        workspaceId: string,
-        data: { tasks_action: NotAcceptedTasksAction },
-        onSuccess: (response: any) => void,
-        onError?: (error: unknown) => void,
-    ) => {
-        api.post(`/workspaces/${workspaceId}/complete_release`, { data })
+    completeRelease: (workspaceId: string, tasks_action: NotAcceptedTasksAction, onSuccess: (response: any) => void, onError?: (error: unknown) => void) => {
+        api.post(`/workspaces/${workspaceId}/complete_release`, { tasks_action })
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },

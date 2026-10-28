@@ -44,7 +44,7 @@ export const CurrentReleasePage = () => {
     const handleCompleteRelease = (tasksAction: NotAcceptedTasksAction) => {
         if (!workspaceId || !tasksAction) return;
 
-        workspacesApi.completeRelease(workspaceId, { tasks_action: tasksAction }, (response) => {
+        workspacesApi.completeRelease(workspaceId, tasksAction, (response) => {
             setRelease(response || null);
             setShowCompleteReleaseModal(false);
         });

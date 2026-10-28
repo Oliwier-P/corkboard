@@ -54,8 +54,8 @@ RSpec.describe "Workspaces", type: :request do
       post "/workspaces", params: load_request("create_user1_workspace"), headers: auth_headers(user1)
       expect(response.body).to match_json_snapshot("created_user1_workspace")
 
-      # user can complete release in workspace
-      post "/workspaces/#{user1_workspace.id}/complete_release", headers: auth_headers(user1)
+      # user can complete release in workspace and move tasks to accepted
+      post "/workspaces/#{user1_workspace.id}/complete_release", params: { tasks_action: "accepted" }, headers: auth_headers(user1)
       expect(response.body).to match_json_snapshot("completed_release_user1_workspace")
 
       # user can invite other user to workspace
