@@ -9,9 +9,9 @@ import { useReleaseSubscription } from "@/store/useReleaseSubscription.ts";
 import { useAuth } from "@/context/auth/useAuth.ts";
 import Loading from "@/ui/Loading/Loading.tsx";
 import CreateModal from "@/ui/Modals/CreateModal.tsx";
-import ConfirmationModal from "@/ui/Modals/ConfirmationModal.tsx";
 import releasesApi from "@/api/releases.ts";
 import workspacesApi from "@/api/workspaces.ts";
+import CompleteReleaseModal, { type NotAcceptedTasksAction } from "@/pages/CurrentReleasePage/CompleteReleaseModal.tsx";
 
 export const CurrentReleasePage = () => {
     const [release, setRelease] = useState<ReleaseType | null>(null);
@@ -41,10 +41,10 @@ export const CurrentReleasePage = () => {
         });
     };
 
-    const handleCompleteRelease = () => {
-        if (!workspaceId) return;
+    const handleCompleteRelease = (tasksAction: NotAcceptedTasksAction) => {
+        if (!workspaceId || !tasksAction) return;
 
-        workspacesApi.completeRelease(workspaceId, (response) => {
+        workspacesApi.completeRelease(workspaceId, { tasks_action: tasksAction }, (response) => {
             setRelease(response || null);
             setShowCompleteReleaseModal(false);
         });
@@ -75,16 +75,7 @@ export const CurrentReleasePage = () => {
             )}
 
             {showCreateReleaseModal && <CreateModal title="Create new release" onSave={handleCreateRelease} onClose={() => setShowCreateReleaseModal(false)} />}
-            {showCompleteReleaseModal && (
-                <ConfirmationModal
-                    title="Complete release"
-                    message="Are you sure you want to complete current release?"
-                    confirmButtonLabel="Complete"
-                    confirmButtonColor="primary"
-                    onDelete={handleCompleteRelease}
-                    onClose={() => setShowCompleteReleaseModal(false)}
-                />
-            )}
+            {showCompleteReleaseModal && <CompleteReleaseModal onClose={() => setShowCompleteReleaseModal(false)} onSave={handleCompleteRelease} />}
         </Page>
     );
 };

@@ -1,6 +1,7 @@
 import { api } from "@/api";
 import type { WorkspaceType } from "@/types/WorkspaceType.ts";
 import type { ReleaseType } from "@/types/ReleaseType.ts";
+import type { NotAcceptedTasksAction } from "@/pages/CurrentReleasePage/CompleteReleaseModal.tsx";
 
 type DeleteResponse = {
     workspace?: WorkspaceType;
@@ -83,8 +84,13 @@ const workspacesApi = {
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
-    completeRelease: (workspaceId: string, onSuccess: (response: any) => void, onError?: (error: unknown) => void) => {
-        api.post(`/workspaces/${workspaceId}/complete_release`)
+    completeRelease: (
+        workspaceId: string,
+        data: { tasks_action: NotAcceptedTasksAction },
+        onSuccess: (response: any) => void,
+        onError?: (error: unknown) => void,
+    ) => {
+        api.post(`/workspaces/${workspaceId}/complete_release`, { data })
             .then((response) => onSuccess(response.data))
             .catch(onError);
     },
