@@ -21,11 +21,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         if (localStorageToken) {
             usersApi.me(
                 (response) => {
-                    setUser(response.user);
                     setWorkspace(response.workspace);
                     setCurrentRelease(response.release);
                     setNextRelease(response.next_release);
                     setToken(localStorageToken);
+                    setUser(response.user);
                     setLoading(false);
                 },
                 () => {
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                 },
             );
         }
-    }, [setCurrentRelease, setWorkspace, token]);
+    }, [setCurrentRelease, setNextRelease, setWorkspace, token]);
 
     return <AuthContext.Provider value={{ user, setUser, loading, setLoading, token, setToken }}>{children}</AuthContext.Provider>;
 };

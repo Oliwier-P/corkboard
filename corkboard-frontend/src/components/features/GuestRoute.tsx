@@ -15,7 +15,7 @@ const GuestRoute = ({ children }: { children: React.ReactNode }) => {
     if (user) {
         const workspaceId = workspace?.id;
 
-        return workspaceId ? <Navigate to={`/workspaces/${workspaceId}/current_release`} replace /> : <Navigate to="/settings/user/workspaces" replace />;
+        return workspaceId ? <Navigate to={`/workspaces/${workspaceId}/current_release`} replace /> : <Navigate to="/settings/user/profile" replace />;
     }
 
     return <>{children}</>;

@@ -15,7 +15,7 @@ type Inputs = {
 
 export const LoginPage = () => {
     const { register, handleSubmit } = useForm<Inputs>();
-    const { setToken, setUser } = useAuth();
+    const { setToken } = useAuth();
     const navigate = useNavigate();
     const toast = useToast();
 
@@ -23,7 +23,6 @@ export const LoginPage = () => {
         sessionApi.login(data, (response) => {
             localStorage.setItem("token", response.token);
             setToken(response.token);
-            setUser(response.user);
 
             if (response.user.role === "superadmin") {
                 navigate(`/superadmin`);
