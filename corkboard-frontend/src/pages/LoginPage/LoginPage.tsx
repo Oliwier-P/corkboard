@@ -4,6 +4,7 @@ import { LabeledInput } from "@/ui/LabeledInput/LabeledInput.tsx";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "@/ui/Icons/Icon.tsx";
+import { useAuth } from "@/context/auth/useAuth.ts";
 import { useToast } from "@/hooks/useToast.ts";
 import sessionApi from "@/api/session.ts";
 
@@ -14,12 +15,14 @@ type Inputs = {
 
 export const LoginPage = () => {
     const { register, handleSubmit } = useForm<Inputs>();
+    const { setToken } = useAuth();
     const navigate = useNavigate();
     const toast = useToast();
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         sessionApi.login(data, (response) => {
             localStorage.setItem("token", response.token);
+            setToken(response.token);
 
             if (response.user.role === "superadmin") {
                 navigate(`/superadmin`);
