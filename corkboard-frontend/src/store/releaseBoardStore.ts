@@ -3,18 +3,20 @@ import { create } from "zustand";
 import { insertTaskIntoColumn } from "./releaseBoardHelpers.ts";
 import type { TagType } from "@/types/TagType.ts";
 
-const INITIAL_STATE = {
+const initialState = {
     id: "",
-    tasks: {},
+    tasks: {} as Record<string, TaskType>,
     columns: [
-        { id: "backlog" as TaskStatus, taskIds: [] },
-        { id: "adjustments" as TaskStatus, taskIds: [] },
-        { id: "todo" as TaskStatus, taskIds: [] },
-        { id: "in_progress" as TaskStatus, taskIds: [] },
-        { id: "review_pending" as TaskStatus, taskIds: [] },
-        { id: "testing" as TaskStatus, taskIds: [] },
-        { id: "accepted" as TaskStatus, taskIds: [] },
+        { id: "backlog" as TaskStatus, taskIds: [] as string[] },
+        { id: "adjustments" as TaskStatus, taskIds: [] as string[] },
+        { id: "todo" as TaskStatus, taskIds: [] as string[] },
+        { id: "in_progress" as TaskStatus, taskIds: [] as string[] },
+        { id: "review_pending" as TaskStatus, taskIds: [] as string[] },
+        { id: "testing" as TaskStatus, taskIds: [] as string[] },
+        { id: "accepted" as TaskStatus, taskIds: [] as string[] },
     ],
+    activeTask: null as TaskType | null,
+    overColumnId: null as string | null,
 };
 
 interface ReleaseBoardStore {
@@ -47,10 +49,12 @@ interface ReleaseBoardStore {
     applyTaskCreated: (task: TaskType) => void;
     applyTaskDestroyed: (taskId: string) => void;
     applyTaskUpdated: (task: TaskType) => void;
+
+    reset: () => void;
 }
 
 export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
-    ...INITIAL_STATE,
+    ...initialState,
     activeTask: null,
     overColumnId: null,
     setActiveTask: (task) => set({ activeTask: task }),
@@ -252,4 +256,5 @@ export const useReleaseBoardStore = create<ReleaseBoardStore>((set, get) => ({
             };
         });
     },
+    reset: () => set(initialState),
 }));

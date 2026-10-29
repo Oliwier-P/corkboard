@@ -5,8 +5,14 @@ import TaskDisplaySection from "@/features/Settings/UserProfile/Sections/TaskDis
 import SettingsSection from "@/features/Settings/SettingsSection.tsx";
 import ShowBoardTags from "@/features/Settings/UserProfile/Sections/ShowBoardTags.tsx";
 import SpellcheckSection from "@/features/Settings/UserProfile/Sections/SpellcheckSection.tsx";
+import { useAuth } from "@/context/auth/useAuth.ts";
+import Loading from "@/ui/Loading/Loading.tsx";
 
 const UserProfile = () => {
+    const { loading } = useAuth();
+
+    if (loading) return <Loading />;
+
     return (
         <div className="user-profile">
             <span className="title">My settings</span>
